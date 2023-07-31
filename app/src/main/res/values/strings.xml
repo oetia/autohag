@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">AutoHag</string>
 
+    <string name="log_tag">AutoHag</string>
+
     <string name="channel_id">autohag_notification_channel</string>
     <string name="channel_name">autohag</string>
     <string name="channel_description">status updates</string>

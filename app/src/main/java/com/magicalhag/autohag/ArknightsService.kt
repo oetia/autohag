@@ -1,40 +1,58 @@
 package com.magicalhag.autohag
 
+import android.app.Notification.FOREGROUND_SERVICE_IMMEDIATE
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
+import java.util.Timer
+import java.util.TimerTask
 
 class ArknightsService : Service() {
 
+    private val thread = Timer()
+    private var counter = 0
     override fun onCreate() {
         super.onCreate()
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(this, getString(R.string.channel_id))
-            .setContentTitle("Arknights Service")
-            .setContentText("Currently Running")
+            .setContentTitle("Arknights FS")
+            .setContentText("Running...")
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentIntent(pendingIntent)
+            .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
+            .setOngoing(true)
             .build()
 
         startForeground(1, notification)
 
+        thread.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                counter += 1
+                Log.d(getString(R.string.log_tag), "" + counter)
+            }
+        }, 0, 1000)
+
+        Log.d(getString(R.string.log_tag), "Arknights Service Created")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        thread.cancel()
+        Log.d(getString(R.string.log_tag), "Arknights Service Destroyed")
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_NOT_STICKY
     }
 
     override fun onBind(p0: Intent?): IBinder? {
         TODO("Not yet implemented")
     }
-
 }

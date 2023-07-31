@@ -11,7 +11,6 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.main_layout)
     }
 
-    // Might need to include view here
     fun startArknightsService(v: View) {
         val serviceIntent = Intent(this, ArknightsService::class.java)
         startService(serviceIntent)
