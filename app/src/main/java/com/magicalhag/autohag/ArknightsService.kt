@@ -1,5 +1,6 @@
 package com.magicalhag.autohag
 
+import android.app.Notification
 import android.app.Notification.FOREGROUND_SERVICE_IMMEDIATE
 import android.app.PendingIntent
 import android.app.Service
@@ -19,12 +20,19 @@ class ArknightsService : Service() {
         super.onCreate()
 
         val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent =
+        val pendingNotificationIntent =
             PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val stopIntent =
+            Intent(this, ArknightsService::class.java).setAction("STOP_SERVICE")
+        val pendingStopIntent = PendingIntent.getService(
+            this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+        )
 
         val notification = NotificationCompat.Builder(this, getString(R.string.channel_id))
             .setContentTitle("Arknights FS").setContentText("Running...")
-            .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(pendingIntent)
+            .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(pendingNotificationIntent)
+            .addAction(R.drawable.ic_launcher_foreground, "Stop", pendingStopIntent)
             .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE).setOngoing(true).build()
 
         startForeground(1, notification)
@@ -40,7 +48,6 @@ class ArknightsService : Service() {
 
         val launchIntent =
             packageManager.getLaunchIntentForPackage("com.YoStarEN.Arknights/com.u8.sdk.U8UnityContext")
-
         val intent = Intent().setComponent(
             ComponentName(
                 "com.YoStarEN.Arknights", "com.u8.sdk.U8UnityContext"
@@ -48,8 +55,9 @@ class ArknightsService : Service() {
         ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         try {
             startActivity(intent)
+            Log.d(getString(R.string.log_tag), "Arknights Opened")
         } catch (e: Exception) {
-            Log.d(getString(R.string.log_tag), "Failed to Start")
+            Log.d(getString(R.string.log_tag), "Failed to Open Arknights")
             stopSelf()
         }
     }
@@ -61,6 +69,12 @@ class ArknightsService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent != null) {
+            if (intent.action == "STOP_SERVICE") {
+                stopSelf()
+            }
+        }
+
         return START_NOT_STICKY
     }
 
