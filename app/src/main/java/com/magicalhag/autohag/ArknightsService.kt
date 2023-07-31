@@ -3,6 +3,7 @@ package com.magicalhag.autohag
 import android.app.Notification.FOREGROUND_SERVICE_IMMEDIATE
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ComponentName
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
@@ -22,13 +23,9 @@ class ArknightsService : Service() {
             PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(this, getString(R.string.channel_id))
-            .setContentTitle("Arknights FS")
-            .setContentText("Running...")
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentIntent(pendingIntent)
-            .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
-            .setOngoing(true)
-            .build()
+            .setContentTitle("Arknights FS").setContentText("Running...")
+            .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(pendingIntent)
+            .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE).setOngoing(true).build()
 
         startForeground(1, notification)
 
@@ -40,6 +37,21 @@ class ArknightsService : Service() {
         }, 0, 1000)
 
         Log.d(getString(R.string.log_tag), "Arknights Service Created")
+
+        val launchIntent =
+            packageManager.getLaunchIntentForPackage("com.YoStarEN.Arknights/com.u8.sdk.U8UnityContext")
+
+        val intent = Intent().setComponent(
+            ComponentName(
+                "com.YoStarEN.Arknights", "com.u8.sdk.U8UnityContext"
+            )
+        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.d(getString(R.string.log_tag), "Failed to Start")
+            stopSelf()
+        }
     }
 
     override fun onDestroy() {
