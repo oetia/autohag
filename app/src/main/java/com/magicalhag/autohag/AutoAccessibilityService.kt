@@ -2,7 +2,7 @@ package com.magicalhag.autohag
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
-import android.accessibilityservice.GestureDescription.StrokeDescription
+import android.content.Intent
 import android.graphics.Path
 import android.graphics.PixelFormat
 import android.util.Log
@@ -18,16 +18,6 @@ import android.widget.FrameLayout
 class AutoAccessibilityService : AccessibilityService() {
 
     private lateinit var mLayout: FrameLayout;
-    override fun onCreate() {
-        super.onCreate()
-        Log.d(getString(R.string.log_tag), "ASS Up")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(getString(R.string.log_tag), "ASS Destroyed")
-    }
-
     override fun onServiceConnected() {
         super.onServiceConnected()
         Log.d(getString(R.string.log_tag), "ASS Connected")
@@ -48,6 +38,27 @@ class AutoAccessibilityService : AccessibilityService() {
 
         configurePowerButton()
         configureSwipeButton()
+
+        Log.d(getString(R.string.log_tag), "ASS Laid Out")
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        Log.d(getString(R.string.log_tag), "START COMMAND RECEIVED")
+
+        if(intent != null) {
+            if(intent.action == "CLICK" && intent.extras != null) {
+                val x = intent.extras!!.getFloat("x")
+                val y = intent.extras!!.getFloat("y")
+                val duration = intent.extras!!.getInt("duration")
+
+                Log.d(getString(R.string.log_tag), "Click: " + x + " " + y + " " + duration)
+
+                dispatch(buildClick(x, y, duration.toLong()))
+            }
+        }
+
+        return super.onStartCommand(intent, flags, startId)
     }
 
     private fun configurePowerButton() {
@@ -63,75 +74,68 @@ class AutoAccessibilityService : AccessibilityService() {
         val swipeButton = mLayout.findViewById(R.id.swipe) as Button
         swipeButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                val swipePath = Path()
-                swipePath.moveTo(1000f, 1000f)
-                swipePath.lineTo(100f, 1000f)
-                val gestureBuilder = GestureDescription.Builder()
-                gestureBuilder.addStroke(GestureDescription.StrokeDescription(swipePath, 0, 500))
-                dispatchGesture(gestureBuilder.build(), object : GestureResultCallback() {
-                    override fun onCompleted(gestureDescription: GestureDescription?) {
-                        super.onCompleted(gestureDescription)
-                        Log.d(getString(R.string.log_tag), "gestureCompleted")
-                    }
-
-                    override fun onCancelled(gestureDescription: GestureDescription?) {
-                        super.onCancelled(gestureDescription)
-                        Log.d(getString(R.string.log_tag), "gestureCancelled")
-                    }
-                }, null)
+//                dispatch(buildSwipe(1000f, 1000f, 100f, 1000f, 500))
+                dispatch(buildClick(550f, 650f, 500))
             }
         })
     }
 
+    fun buildClick(x: Float, y: Float, duration: Long): GestureDescription {
+        val clickPath = Path()
+        clickPath.moveTo(x, y)
+
+        val gestureBuilder = GestureDescription.Builder()
+        gestureBuilder.addStroke(GestureDescription.StrokeDescription(clickPath, 0, duration))
+
+        return gestureBuilder.build()
+    }
+
+    fun buildSwipe(
+        startX: Float, startY: Float, endX: Float, endY: Float, duration: Long
+    ): GestureDescription {
+        val swipePath = Path()
+        swipePath.moveTo(startX, startY)
+        swipePath.lineTo(endX, endY)
+
+        val gestureBuilder = GestureDescription.Builder()
+        gestureBuilder.addStroke(GestureDescription.StrokeDescription(swipePath, 0, duration))
+
+        return gestureBuilder.build()
+    }
+
+
+    fun dispatch(gesture: GestureDescription): Boolean {
+        return dispatchGesture(gesture, object : GestureResultCallback() {
+            override fun onCompleted(gestureDescription: GestureDescription?) {
+                super.onCompleted(gestureDescription)
+                Log.d(getString(R.string.log_tag), "gestureCompleted")
+            }
+
+            override fun onCancelled(gestureDescription: GestureDescription?) {
+                super.onCancelled(gestureDescription)
+                Log.d(getString(R.string.log_tag), "gestureCancelled")
+            }
+        }, null)
+    }
+
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.d(getString(R.string.log_tag), "ASS Up")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(getString(R.string.log_tag), "ASS Destroyed")
+    }
 
     override fun onAccessibilityEvent(e: AccessibilityEvent?) {
         Log.d(getString(R.string.log_tag), "onAccessibilityEvent: $e")
     }
 
-    override fun onInterrupt() {}
-
-
-    private fun buildClick(x: Number, y: Number): GestureDescription {
-        val clickPath = Path()
-        clickPath.moveTo(x.toFloat(), y.toFloat())
-        val clickStroke = StrokeDescription(clickPath, 0, 1)
-        val clickBuilder = GestureDescription.Builder()
-        clickBuilder.addStroke(clickStroke)
-        return clickBuilder.build()
+    override fun onInterrupt() {
+        Log.d(getString(R.string.log_tag), "ASS Interrupted")
     }
 
-    private fun buildSwipe(
-        startX: Float,
-        startY: Float,
-        endX: Float,
-        endY: Float,
-        duration: Long
-    ): GestureDescription {
-        val swipePath = Path()
-        swipePath.moveTo(startX, startY)
-        swipePath.lineTo(endX, endY)
-        val swipeBuilder = GestureDescription.Builder()
-        swipeBuilder.addStroke(StrokeDescription(swipePath, 0, duration))
-        return swipeBuilder.build()
-    }
-
-
-    fun dispatch(x: Number, y: Number): Boolean {
-        val result = this.dispatchGesture(
-            buildClick(x, y),
-            object : GestureResultCallback() {
-                override fun onCompleted(gestureDescription: GestureDescription?) {
-                    super.onCompleted(gestureDescription)
-                    Log.d(getString(R.string.log_tag), "gestureCompleted")
-                }
-
-                override fun onCancelled(gestureDescription: GestureDescription?) {
-                    super.onCancelled(gestureDescription)
-                    Log.d(getString(R.string.log_tag), "gestureCancelled")
-                }
-            },
-            null
-        )
-        return result ?: false
-    }
 }
+

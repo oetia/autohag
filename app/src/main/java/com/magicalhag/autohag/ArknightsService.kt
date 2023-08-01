@@ -6,6 +6,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
@@ -21,26 +22,13 @@ class ArknightsService : Service() {
     private val thread = Timer()
     private var counter = 0
 
-//    private val mpm = (MediaProjectionManager)getSystem
+    //    private val mpm = (MediaProjectionManager)getSystem
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-    private val ass = AutoAccessibilityService()
 
     override fun onCreate() {
         super.onCreate()
 
         startForeground(1, buildNotification())
-
-//        val bitmap = uiAutomation.takeScreenshot()
-//        val image = InputImage.fromBitmap(bitmap, 0)
-
-//        val result = recognizer.process(image)
-//            .addOnSuccessListener { visionText ->
-//                Log.d(getString(R.string.log_tag), visionText.text)
-//            }
-
-//        MainActivity.makeScreenshot()
-
-//        openArknights()
 
         val callback = object : GestureResultCallback() {
             override fun onCompleted(gestureDescription: GestureDescription) {
@@ -56,18 +44,18 @@ class ArknightsService : Service() {
 
         thread.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
+//                ass.dispatch(ass.buildClick(550f, 650f, 500))
                 counter += 1
                 Log.d(getString(R.string.log_tag), "" + counter)
+
+                val intent = Intent(this@ArknightsService, AutoAccessibilityService::class.java)
+                    .setAction("CLICK")
+                    .putExtra("x", 550f)
+                    .putExtra("y", 650f)
+                    .putExtra("duration", 500)
+                startService(intent)
             }
-        }, 0, 1000)
-
-        try {
-            val res = ass.dispatch(500, 500)
-
-            Log.d(getString(R.string.log_tag), "res: " + res.toString())
-        } catch (e: Exception) {
-            Log.e(getString(R.string.log_tag), e.stackTraceToString())
-        }
+        }, 0, 3000)
 
         Log.d(getString(R.string.log_tag), "Arknights Service Created")
     }
@@ -76,13 +64,15 @@ class ArknightsService : Service() {
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingNotificationIntent = PendingIntent.getActivity(
             this, 0, notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         val stopIntent = Intent(this, ArknightsService::class.java)
             .setAction("STOP_SERVICE")
         val pendingStopIntent = PendingIntent.getService(
             this, 0, stopIntent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+        )
 
         return NotificationCompat.Builder(this, getString(R.string.channel_id))
             .setContentTitle("Arknights FS").setContentText("Running...")
@@ -107,7 +97,6 @@ class ArknightsService : Service() {
             Log.d(getString(R.string.log_tag), "Arknights Open Failed")
         }
     }
-
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
