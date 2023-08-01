@@ -15,8 +15,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.Spinner
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -55,6 +58,7 @@ class InputService : AccessibilityService() {
     private fun configureActionBar() {
         val wm = getSystemService(WINDOW_SERVICE) as WindowManager
         mLayout = FrameLayout(this)
+
         val lp = WindowManager.LayoutParams()
         lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
         lp.format = PixelFormat.TRANSLUCENT
@@ -66,6 +70,15 @@ class InputService : AccessibilityService() {
         val inflater = LayoutInflater.from(this)
         inflater.inflate(R.layout.action_bar, mLayout)
         wm.addView(mLayout, lp)
+
+//        val spinner = mLayout.findViewById<Spinner>(R.id.tasks_spinner)
+//        ArrayAdapter.createFromResource(this, R.array.tasks_array, android.R.layout.simple_spinner_item).also { adapter ->
+//            // Specify the layout to use when the list of choices appears
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            // Apply the adapter to the spinner
+//            spinner.adapter = adapter
+//        }
+
 
         configurePowerButton()
 //        configureOpenButton()
@@ -97,12 +110,9 @@ class InputService : AccessibilityService() {
 
 
     private fun configurePowerButton() {
-        val powerButton = mLayout.findViewById(R.id.power) as Button
+        val powerButton = mLayout.findViewById<ImageButton>(R.id.power)
         powerButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-//                performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)
-
-                Log.d(getString(R.string.log_tag), "\n\nAAAAAAAAAAAAAAAAAAAAAAA\n\n")
 
                 val launchIntent = Intent().setComponent(
                     ComponentName(
@@ -121,6 +131,7 @@ class InputService : AccessibilityService() {
             }
         })
     }
+
     private fun configureOpenButton() {
         val openButton = mLayout.findViewById(R.id.open) as Button
         openButton.setOnClickListener(object : View.OnClickListener {
@@ -151,11 +162,14 @@ class InputService : AccessibilityService() {
         startButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 threadPaused = false
-                if(!started) {
-                    Log.d(getString(R.string.log_tag), "Thread hasn't been started. Creating a new one. ")
+                if (!started) {
+                    Log.d(
+                        getString(R.string.log_tag),
+                        "Thread hasn't been started. Creating a new one. "
+                    )
                     thread.scheduleAtFixedRate(object : TimerTask() {
                         override fun run() {
-                            if(!threadPaused) {
+                            if (!threadPaused) {
                                 iteration()
 
                                 iterationCounter += 1
@@ -165,7 +179,10 @@ class InputService : AccessibilityService() {
                     }, 0, 3000)
                     started = true
                 } else {
-                    Log.d(getString(R.string.log_tag), "Thread already started. Not creating a new one. ")
+                    Log.d(
+                        getString(R.string.log_tag),
+                        "Thread already started. Not creating a new one. "
+                    )
                 }
             }
         })
@@ -175,7 +192,7 @@ class InputService : AccessibilityService() {
         val stopButton = mLayout.findViewById(R.id.stop) as Button
         stopButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-               threadPaused = true
+                threadPaused = true
             }
         })
 
@@ -191,8 +208,7 @@ class InputService : AccessibilityService() {
             object : TakeScreenshotCallback {
                 override fun onSuccess(screenshot: ScreenshotResult) {
                     val bitmap = Bitmap.wrapHardwareBuffer(
-                        screenshot.hardwareBuffer,
-                        screenshot.colorSpace
+                        screenshot.hardwareBuffer, screenshot.colorSpace
                     )
 
                     Log.d(getString(R.string.log_tag), screenshot.timestamp.toString())
@@ -203,66 +219,73 @@ class InputService : AccessibilityService() {
 
                     val image = InputImage.fromBitmap(bitmap, 0)
 
-                    val result = recognizer.process(image)
-                        .addOnSuccessListener { visionText ->
-                            for (block in visionText.textBlocks) {
-                                val blockText = block.text
-                                val blockCornerPoints = block.cornerPoints
-                                val blockCenter = getBoxCenter(blockCornerPoints as Array<Point>)
-                                if (Regex("start\\s+-\\d{1,2}").containsMatchIn(blockText.lowercase())) {
-                                    Log.d(
-                                        getString(R.string.log_tag),
-                                        blockText + "\n" + blockCenter.toString() + "\n" + blockCornerPoints.contentDeepToString()
-                                    )
+                    val result = recognizer.process(image).addOnSuccessListener { visionText ->
+                        for (block in visionText.textBlocks) {
+                            val blockText = block.text
+                            val blockCornerPoints = block.cornerPoints
+                            val blockCenter = getBoxCenter(blockCornerPoints as Array<Point>)
+                            if (Regex("start\\s+-\\d{1,2}").containsMatchIn(blockText.lowercase())) {
+                                Log.d(
+                                    getString(R.string.log_tag),
+                                    blockText + "\n" + blockCenter.toString() + "\n" + blockCornerPoints.contentDeepToString()
+                                )
 
-                                    dispatch(
-                                        buildClick(
-                                            blockCenter.x.toFloat(),
-                                            blockCenter.y.toFloat(),
-                                            500
+                                dispatch(
+                                    buildClick(
+                                        blockCenter.x.toFloat(), blockCenter.y.toFloat(), 500
+                                    )
+                                )
+                            } else if (Regex("mission\\s+start").containsMatchIn(blockText.lowercase())) {
+                                Log.d(
+                                    getString(R.string.log_tag),
+                                    blockText + "\n" + blockCenter.toString() + "\n" + blockCornerPoints.contentDeepToString()
+                                )
+
+                                dispatch(
+                                    buildClick(
+                                        blockCenter.x.toFloat(), blockCenter.y.toFloat(), 500
+                                    )
+                                )
+
+                                Thread()
+                            } else if (Regex("takeover").containsMatchIn(blockText.lowercase())) {
+
+                                Log.d(
+                                    getString(R.string.log_tag),
+                                    blockText + "\n" + blockCenter.toString() + "\n" + blockCornerPoints.contentDeepToString()
+                                )
+
+                                threadPaused = true
+                                val unpause = Timer()
+                                unpause.schedule(object : TimerTask() {
+                                    override fun run() {
+                                        Log.d(
+                                            getString(R.string.log_tag), "Unpaused"
                                         )
-                                    )
-                                }
-                                else if (Regex("mission\\s+start").containsMatchIn(blockText.lowercase())) {
-                                    Log.d(
-                                        getString(R.string.log_tag),
-                                        blockText + "\n" + blockCenter.toString() + "\n" + blockCornerPoints.contentDeepToString()
-                                    )
+                                        threadPaused = false
+                                    }
+                                }, 1000 * 10)
+                            } else if (Regex("mission\\s+results").containsMatchIn(blockText.lowercase())) {
+                                Log.d(
+                                    getString(R.string.log_tag),
+                                    blockText + "\n" + blockCenter.toString() + "\n" + blockCornerPoints.contentDeepToString()
+                                )
 
-                                    dispatch(
-                                        buildClick(
-                                            blockCenter.x.toFloat(),
-                                            blockCenter.y.toFloat(),
-                                            500
-                                        )
+                                dispatch(
+                                    buildClick(
+                                        blockCenter.x.toFloat(), blockCenter.y.toFloat(), 500
                                     )
-                                }
-                                else if (Regex("mission\\s+results").containsMatchIn(blockText.lowercase())) {
-                                    Log.d(
-                                        getString(R.string.log_tag),
-                                        blockText + "\n" + blockCenter.toString() + "\n" + blockCornerPoints.contentDeepToString()
-                                    )
+                                )
+                            } else if (Regex("restore").containsMatchIn(blockText.lowercase())) {
+                                Log.d(
+                                    getString(R.string.log_tag), "Sanity Gone: PAUSING"
+                                )
 
-                                    dispatch(
-                                        buildClick(
-                                            blockCenter.x.toFloat(),
-                                            blockCenter.y.toFloat(),
-                                            500
-                                        )
-                                    )
-                                }
-                                else if(Regex("potion").containsMatchIn(blockText.lowercase())) {
-                                    Log.d(
-                                        getString(R.string.log_tag),
-                                        "Sanity Gone: PAUSING"
-                                    )
-
-                                    threadPaused = true
-                                }
-
+                                threadPaused = true
                             }
-//                                    Log.d(getString(R.string.log_tag), visionText.text)
+
                         }
+                    }
 
                 }
 
