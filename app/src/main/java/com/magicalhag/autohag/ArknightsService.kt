@@ -47,7 +47,7 @@ class ArknightsService : Service() {
                 counter += 1
                 Log.d(getString(R.string.log_tag), "" + counter)
 
-                val intent = Intent(this@ArknightsService, AutoAccessibilityService::class.java)
+                val intent = Intent(this@ArknightsService, InputService::class.java)
                     .setAction("SCREENSHOT")
                 startService(intent)
 

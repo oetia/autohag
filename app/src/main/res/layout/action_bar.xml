@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:text="Power" />
 
+
+
     <Button
         android:id="@+id/shot"
         android:layout_width="wrap_content"
@@ -17,11 +19,28 @@
         android:text="Shot" />
 
     <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Begin" />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop" />
+
+    <Button
         android:id="@+id/scroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Scroll" />
 
+    <Button
+        android:id="@+id/open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open" />
     <Button
         android:id="@+id/swipe"
         android:layout_width="wrap_content"
