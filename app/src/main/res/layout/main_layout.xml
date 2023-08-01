@@ -23,4 +23,11 @@
         android:layout_height="wrap_content"
         android:onClick="stopArknightsService"
         android:text="Stop Service" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="makeScreenshot"
+        android:text="ScreenShot" />
+
 </LinearLayout>
