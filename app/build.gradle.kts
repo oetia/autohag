@@ -61,7 +61,6 @@ dependencies {
     implementation("androidx.compose.material3:material3")
 
     implementation("com.google.mlkit:text-recognition:16.0.0")
-    implementation("eu.bolt:screenshotty:1.0.4")
 
     testImplementation("junit:junit:4.13.2")
 

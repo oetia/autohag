@@ -95,6 +95,7 @@ class AutoAccessibilityService : AccessibilityService() {
 
                         val result = recognizer.process(image)
                             .addOnSuccessListener { visionText ->
+//                                visionText.textBlocks
                                 Log.d(getString(R.string.log_tag), visionText.text)
                             }
 
