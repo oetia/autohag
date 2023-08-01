@@ -11,10 +11,10 @@
         android:text="Power" />
 
     <Button
-        android:id="@+id/volume_up"
+        android:id="@+id/shot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volume" />
+        android:text="Shot" />
 
     <Button
         android:id="@+id/scroll"

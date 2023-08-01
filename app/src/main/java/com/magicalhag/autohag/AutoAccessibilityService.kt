@@ -3,9 +3,11 @@ package com.magicalhag.autohag
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Path
 import android.graphics.PixelFormat
 import android.util.Log
+import android.view.Display
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +15,18 @@ import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Button
 import android.widget.FrameLayout
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 
 class AutoAccessibilityService : AccessibilityService() {
 
     private lateinit var mLayout: FrameLayout;
+
+    val screenshotExecutor = ScreenshotExecutor();
+    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
     override fun onServiceConnected() {
         super.onServiceConnected()
         Log.d(getString(R.string.log_tag), "ASS Connected")
@@ -37,6 +46,7 @@ class AutoAccessibilityService : AccessibilityService() {
         wm.addView(mLayout, lp)
 
         configurePowerButton()
+        configureShotButton()
         configureSwipeButton()
 
         Log.d(getString(R.string.log_tag), "ASS Laid Out")
@@ -66,6 +76,34 @@ class AutoAccessibilityService : AccessibilityService() {
         powerButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 performGlobalAction(GLOBAL_ACTION_POWER_DIALOG)
+            }
+        })
+    }
+
+    private fun configureShotButton() {
+        val shotButton = mLayout.findViewById(R.id.shot) as Button
+        shotButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                takeScreenshot(Display.DEFAULT_DISPLAY, screenshotExecutor, object : TakeScreenshotCallback {
+                    override fun onSuccess(screenshot: ScreenshotResult) {
+                        val bitmap = Bitmap.wrapHardwareBuffer(screenshot.hardwareBuffer, screenshot.colorSpace)
+
+                        Log.d(getString(R.string.log_tag), screenshot.timestamp.toString())
+                        Log.d(getString(R.string.log_tag), bitmap!!.height.toString() + " " + bitmap!!.width.toString())
+
+                        val image = InputImage.fromBitmap(bitmap, 0)
+
+                        val result = recognizer.process(image)
+                            .addOnSuccessListener { visionText ->
+                                Log.d(getString(R.string.log_tag), visionText.text)
+                            }
+
+                    }
+
+                    override fun onFailure(errorCode: Int) {
+                        Log.e(getString(R.string.log_tag), "Screenshot Failed")
+                    }
+                })
             }
         })
     }
@@ -116,6 +154,8 @@ class AutoAccessibilityService : AccessibilityService() {
                 Log.d(getString(R.string.log_tag), "gestureCancelled")
             }
         }, null)
+
+
     }
 
 

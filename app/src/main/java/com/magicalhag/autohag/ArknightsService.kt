@@ -6,7 +6,6 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
@@ -49,11 +48,16 @@ class ArknightsService : Service() {
                 Log.d(getString(R.string.log_tag), "" + counter)
 
                 val intent = Intent(this@ArknightsService, AutoAccessibilityService::class.java)
-                    .setAction("CLICK")
-                    .putExtra("x", 550f)
-                    .putExtra("y", 650f)
-                    .putExtra("duration", 500)
+                    .setAction("SCREENSHOT")
                 startService(intent)
+
+
+//                val intent = Intent(this@ArknightsService, AutoAccessibilityService::class.java)
+//                    .setAction("CLICK")
+//                    .putExtra("x", 550f)
+//                    .putExtra("y", 650f)
+//                    .putExtra("duration", 500)
+//                startService(intent)
             }
         }, 0, 3000)
 
