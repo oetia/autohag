@@ -3,7 +3,6 @@ package com.magicalhag.autohag
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
-import android.gesture.Gesture
 import android.graphics.Path
 import android.graphics.PixelFormat
 import android.util.Log
@@ -21,7 +20,7 @@ class AutoAccessibilityService : AccessibilityService() {
     private lateinit var mLayout: FrameLayout;
     override fun onCreate() {
         super.onCreate()
-        Log.d(getString(R.string.log_tag), "ASS Created")
+        Log.d(getString(R.string.log_tag), "ASS Up")
     }
 
     override fun onDestroy() {
@@ -69,7 +68,17 @@ class AutoAccessibilityService : AccessibilityService() {
                 swipePath.lineTo(100f, 1000f)
                 val gestureBuilder = GestureDescription.Builder()
                 gestureBuilder.addStroke(GestureDescription.StrokeDescription(swipePath, 0, 500))
-                dispatchGesture(gestureBuilder.build(), null, null)
+                dispatchGesture(gestureBuilder.build(), object : GestureResultCallback() {
+                    override fun onCompleted(gestureDescription: GestureDescription?) {
+                        super.onCompleted(gestureDescription)
+                        Log.d(getString(R.string.log_tag), "gestureCompleted")
+                    }
+
+                    override fun onCancelled(gestureDescription: GestureDescription?) {
+                        super.onCancelled(gestureDescription)
+                        Log.d(getString(R.string.log_tag), "gestureCancelled")
+                    }
+                }, null)
             }
         })
     }
@@ -77,11 +86,9 @@ class AutoAccessibilityService : AccessibilityService() {
 
     override fun onAccessibilityEvent(e: AccessibilityEvent?) {
         Log.d(getString(R.string.log_tag), "onAccessibilityEvent: $e")
-
     }
 
     override fun onInterrupt() {}
-
 
 
     private fun buildClick(x: Number, y: Number): GestureDescription {
