@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.magicalhag.autohag.auto.AutoService
 import java.util.Timer
 import java.util.TimerTask
 
@@ -47,7 +48,7 @@ class ArknightsService : Service() {
                 counter += 1
                 Log.d(getString(R.string.log_tag), "" + counter)
 
-                val intent = Intent(this@ArknightsService, InputService::class.java)
+                val intent = Intent(this@ArknightsService, AutoService::class.java)
                     .setAction("SCREENSHOT")
                 startService(intent)
 

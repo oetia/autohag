@@ -7,12 +7,22 @@
     android:orientation="horizontal"
     >
 
+        <ImageButton
+            android:id="@+id/power"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="4dp"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
-            android:id="@+id/shot"
+            android:id="@+id/iterate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="Shot"
+            android:text="Iterate"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/power"
             app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +34,7 @@
             android:layout_marginStart="4dp"
             android:text="Begin"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/shot"
+            app:layout_constraintStart_toEndOf="@+id/iterate"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -35,16 +45,6 @@
             android:text="Stop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/start"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/power"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="4dp"
-            android:src="@mipmap/ic_launcher"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner

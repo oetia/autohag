@@ -1,4 +1,4 @@
-package com.magicalhag.autohag
+package com.magicalhag.autohag.auto
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
@@ -27,6 +27,8 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.magicalhag.autohag.R
+import com.magicalhag.autohag.ScreenshotExecutor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.util.Timer
@@ -38,25 +40,22 @@ import kotlin.math.roundToInt
 
 // I think that i'm just going to opt for hard coding atm
 
-class InputService : AccessibilityService() {
+class AutoService : AccessibilityService() {
 
     private lateinit var mLayout: FrameLayout;
 
     private val screenshotExecutor = ScreenshotExecutor();
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-    private val spinnerAcitivity = SpinnerActivity()
+    private val spinnerActivity = SpinnerActivity()
 
-    // private var currentRoutine = "0SANITY"
-    // private var currentRoutine = "BASE_COLLECT"
-    // private var currentRoutine = "BASE_SWAP_OPS"
-    private var currentRoutine = "EXIT_BASE"
+    private var currentRoutine = ""
 
-
-    private val thread = Timer()
-    private var started: Boolean = false
+    private val timerThread = Timer()
+    private val timerThreadPeriod: Long = 3000
+    private var timerThreadSpawned: Boolean = false
     private var threadPaused: Boolean = false
-    private var iterationCounter = 0
+    private var iterationCount = 0
 
     // BASE_COLLECT
     private var backlogChecked = false
@@ -84,7 +83,7 @@ class InputService : AccessibilityService() {
         wm.addView(mLayout, lp)
 
         configurePowerButton()
-        configureShotButton()
+        configureIterateButton()
         configureStartButton()
         configureStopButton()
         configureTasksSpinner()
@@ -93,101 +92,57 @@ class InputService : AccessibilityService() {
 
     private fun configurePowerButton() {
         val powerButton = mLayout.findViewById<ImageButton>(R.id.power)
-        powerButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-
-                resetInternalState()
-
-                val launchIntent = Intent().setComponent(
-                    ComponentName(
-                        "com.YoStarEN.Arknights", "com.u8.sdk.U8UnityContext"
-                    )
-                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                try {
-                    startActivity(launchIntent)
-                    Log.d(getString(R.string.log_tag), "Arknights Opened")
-                } catch (e: Exception) {
-                    stopSelf()
-                    Log.d(getString(R.string.log_tag), "Arknights Open Failed")
-                }
-
-            }
-        })
+        powerButton.setOnClickListener {
+            resetInternalState()
+            launchArknights()
+        }
     }
 
-    private fun configureShotButton() {
-        val shotButton = mLayout.findViewById(R.id.shot) as Button
-        shotButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) = runBlocking {
-                iteration()
+    private fun configureIterateButton() {
+        val shotButton = mLayout.findViewById(R.id.iterate) as Button
+        shotButton.setOnClickListener {
+            runBlocking {
+                iterate()
             }
-        })
+        }
     }
 
     private fun configureStartButton() {
         val startButton = mLayout.findViewById(R.id.start) as Button
-        startButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-                threadPaused = false
-                if (!started) {
-                    Log.d(
-                        getString(R.string.log_tag),
-                        "Thread hasn't been started. Creating a new one."
-                    )
-                    thread.scheduleAtFixedRate(object : TimerTask() {
-                        override fun run() = runBlocking {
-                            if (!threadPaused) {
-                                iteration()
-
-                                iterationCounter += 1
-                                Log.d(getString(R.string.log_tag), iterationCounter.toString())
-                            }
-                        }
-                    }, 0, 3000)
-                    started = true
-                } else {
-                    Log.d(
-                        getString(R.string.log_tag),
-                        "Thread already started. Not creating a new one. "
-                    )
-                }
+        startButton.setOnClickListener {
+            if (timerThreadSpawned) {
+                unpauseTimerThread()
+            } else {
+                spawnTimerThread()
             }
-        })
+        }
     }
 
     private fun configureStopButton() {
         val stopButton = mLayout.findViewById(R.id.stop) as Button
-        stopButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                threadPaused = true
-            }
-        })
-
+        stopButton.setOnClickListener { pauseTimerThread() }
     }
 
     private fun configureTasksSpinner() {
         val tasksSpinner = mLayout.findViewById<Spinner>(R.id.tasksSpinner)
         tasksSpinner.setBackgroundResource(android.R.drawable.spinner_dropdown_background)
-        ArrayAdapter.createFromResource(this, R.array.tasks, android.R.layout.simple_spinner_item).also {
-                adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            tasksSpinner.adapter = adapter
-            tasksSpinner.onItemSelectedListener = spinnerAcitivity
-        }
+        ArrayAdapter.createFromResource(this, R.array.tasks, android.R.layout.simple_spinner_item)
+            .also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                tasksSpinner.adapter = adapter
+                tasksSpinner.onItemSelectedListener = spinnerActivity
+            }
     }
 
     inner class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            if(parent != null) {
+            if (parent != null) {
                 val text = parent.getItemAtPosition(position)
-                currentRoutine = text.toString()
-                log("Current Routine Now: $currentRoutine")
+                setRoutine(text.toString())
             }
         }
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-            return
-        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
     }
 
 
@@ -201,7 +156,7 @@ class InputService : AccessibilityService() {
     // the next action is extremely obvious
 
     // you can't determine all the state that you need just from a single image.
-    suspend fun iteration() {
+    suspend fun iterate() {
         val screenshot = takeScreenshotSequential()
         val bitmap = Bitmap.wrapHardwareBuffer(screenshot.hardwareBuffer, screenshot.colorSpace)
         val image = InputImage.fromBitmap(bitmap!!, 0)
@@ -420,9 +375,11 @@ class InputService : AccessibilityService() {
                         val height = getBoxHeight(textBlock.cornerPoints as Array<Point>)
                         val area = getBoxArea(textBlock.cornerPoints as Array<Point>)
 
-                        val testCenter = center.x > fbCorner1.x && center.x < fbCorner3.x && center.y > fbCorner1.y && center.y < fbCorner3.y
+                        val testCenter =
+                            center.x > fbCorner1.x && center.x < fbCorner3.x && center.y > fbCorner1.y && center.y < fbCorner3.y
                         val testHeight = height > ctbHeight / 1.8 // deals wtih RISC SKILL
-                        val testText = !textBlock.text.contains("[0-9]{3,}|01|EXP|\\bon\\b|\\bshi[f|t]?t\\b".toRegex()) // deals with on shift + misc text
+                        val testText =
+                            !textBlock.text.contains("[0-9]{3,}|01|EXP|\\bon\\b|\\bshi[f|t]?t\\b".toRegex()) // deals with on shift + misc text
 
                         log(textBlock.text + " $testCenter, $testHeight, $testText")
 
@@ -448,7 +405,7 @@ class InputService : AccessibilityService() {
                         Point(950, 700),
                         Point(1150, 300)
                     )
-                    for(point in hardcodedPoints) {
+                    for (point in hardcodedPoints) {
                         log(point.toString())
                         dispatch(buildClick(point.x.toFloat(), point.y.toFloat(), 100))
                         delay(300)
@@ -505,8 +462,8 @@ class InputService : AccessibilityService() {
                 )
             }
 
-        } else if(currentRoutine == "EXIT_BASE") {
-            if(!textMatchesAll(visionText.text, arrayOf("missions", "base", "depot"))) {
+        } else if (currentRoutine == "EXIT_BASE") {
+            if (!textMatchesAll(visionText.text, arrayOf("missions", "base", "depot"))) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
             } else {
                 log("Base Exited")
@@ -615,17 +572,13 @@ class InputService : AccessibilityService() {
 
         return gestureBuilder.build()
 
-        //        if(type == "SCROLL_DOWN") {
-        //        }
-
     }
 
     // util
 
-    private fun resetInternalState() {
+    fun resetInternalState() {
         backlogChecked = false
         removeToggledOn = false
-
         dormsCleared = 0
 
         log("Internal State Reset")
@@ -714,12 +667,61 @@ class InputService : AccessibilityService() {
         return foundTextBlocks
     }
 
+    // start activities
+    fun launchArknights() {
+        val launchIntent = Intent()
+            .setComponent(ComponentName("com.YoStarEN.Arknights", "com.u8.sdk.U8UnityContext"))
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+
+        try {
+            startActivity(launchIntent)
+            log("Arknights Opened", true)
+        } catch (e: Exception) {
+            log("Arknights Failed to Open", true)
+        }
+    }
+
+
+    fun spawnTimerThread() {
+        timerThread.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() = runBlocking {
+                if (!threadPaused) {
+                    iterate()
+                    iterationCount += 1
+                    log("Timer Thread Iteration Count $iterationCount")
+                }
+            }
+        }, 0, timerThreadPeriod)
+
+        timerThreadSpawned = true
+        log("Timer Thread Spawned")
+    }
+
+    fun pauseTimerThread() {
+        threadPaused = true
+        log("Timer Thread Paused", true)
+    }
+
+    fun unpauseTimerThread() {
+        threadPaused = false
+        log("Timer Thread Unpaused", true)
+    }
+
+    fun getTimerThreadSpawned(): Boolean {
+        return timerThreadSpawned
+    }
+
+    fun setRoutine(newRoutine: String) {
+        currentRoutine = newRoutine
+        log("Routine is Now: $newRoutine", true)
+    }
+
     // lifecycle
     override fun onServiceConnected() {
         super.onServiceConnected()
         configureActionBar()
-
-        log("Service Set-up Complete")
+        log("Service Connected")
     }
 
     override fun onCreate() {
@@ -729,21 +731,23 @@ class InputService : AccessibilityService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        thread.cancel()
-
+        timerThread.cancel()
         log("Service Destroyed")
-    }
-
-    override fun onAccessibilityEvent(e: AccessibilityEvent?) {
-        log("AccessibilityEvent: $e")
     }
 
     override fun onInterrupt() {
         log("Service Interrupted")
     }
 
-    private fun log(message: String) {
-        Log.d(getString(R.string.log_tag), message)
+    override fun onAccessibilityEvent(e: AccessibilityEvent?) {
+        log("AccessibilityEvent: $e")
+    }
+
+    private fun log(message: Any, toast: Boolean = false) {
+        Log.d(getString(R.string.log_tag), message.toString())
+        if (toast) {
+            Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 }
 
