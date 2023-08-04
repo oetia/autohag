@@ -6,4 +6,15 @@
     <string name="channel_id">autohag_notification_channel</string>
     <string name="channel_name">autohag</string>
     <string name="channel_description">status updates</string>
+
+    <string-array name="tasks">
+        <item>HOME</item>
+        <item>0SANITY</item>
+        <!-- Base Related Tasks -->
+        <item>BASE</item>
+        <item>BASE_ENTER</item>
+        <item>BASE_COLLECT</item>
+        <item>BASE_CLEAR_DORMS</item>
+        <item>BASE_OP_SWAP</item>
+    </string-array>
 </resources>
