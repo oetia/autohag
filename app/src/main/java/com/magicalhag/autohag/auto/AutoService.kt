@@ -2,26 +2,15 @@ package com.magicalhag.autohag.auto
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Path
-import android.graphics.PixelFormat
 import android.graphics.Point
 import android.util.Log
 import android.view.Display
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageButton
-import android.widget.Spinner
 import android.widget.Toast
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
@@ -38,16 +27,14 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.roundToInt
 
-// I think that i'm just going to opt for hard coding atm
-
 class AutoService : AccessibilityService() {
 
     private lateinit var mLayout: FrameLayout;
 
+    private lateinit var autoServiceUI: AutoServiceUI
+
     private val screenshotExecutor = ScreenshotExecutor();
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-
-    private val spinnerActivity = SpinnerActivity()
 
     private var currentRoutine = ""
 
@@ -63,88 +50,6 @@ class AutoService : AccessibilityService() {
     // BASE_REMOVE_DORM_OPS
     private var removeToggledOn = false
     private var dormsCleared = 0
-
-    // ui
-
-    private fun configureActionBar() {
-        val wm = getSystemService(WINDOW_SERVICE) as WindowManager
-        mLayout = FrameLayout(this)
-
-        val lp = WindowManager.LayoutParams()
-        lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
-        lp.format = PixelFormat.TRANSLUCENT
-        lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-        // lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.gravity = Gravity.TOP
-
-        val inflater = LayoutInflater.from(this)
-        inflater.inflate(R.layout.action_bar, mLayout)
-        wm.addView(mLayout, lp)
-
-        configurePowerButton()
-        configureIterateButton()
-        configureStartButton()
-        configureStopButton()
-        configureTasksSpinner()
-
-    }
-
-    private fun configurePowerButton() {
-        val powerButton = mLayout.findViewById<ImageButton>(R.id.power)
-        powerButton.setOnClickListener {
-            resetInternalState()
-            launchArknights()
-        }
-    }
-
-    private fun configureIterateButton() {
-        val shotButton = mLayout.findViewById(R.id.iterate) as Button
-        shotButton.setOnClickListener {
-            runBlocking {
-                iterate()
-            }
-        }
-    }
-
-    private fun configureStartButton() {
-        val startButton = mLayout.findViewById(R.id.start) as Button
-        startButton.setOnClickListener {
-            if (timerThreadSpawned) {
-                unpauseTimerThread()
-            } else {
-                spawnTimerThread()
-            }
-        }
-    }
-
-    private fun configureStopButton() {
-        val stopButton = mLayout.findViewById(R.id.stop) as Button
-        stopButton.setOnClickListener { pauseTimerThread() }
-    }
-
-    private fun configureTasksSpinner() {
-        val tasksSpinner = mLayout.findViewById<Spinner>(R.id.tasksSpinner)
-        tasksSpinner.setBackgroundResource(android.R.drawable.spinner_dropdown_background)
-        ArrayAdapter.createFromResource(this, R.array.tasks, android.R.layout.simple_spinner_item)
-            .also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                tasksSpinner.adapter = adapter
-                tasksSpinner.onItemSelectedListener = spinnerActivity
-            }
-    }
-
-    inner class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            if (parent != null) {
-                val text = parent.getItemAtPosition(position)
-                setRoutine(text.toString())
-            }
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>?) {}
-    }
-
 
     // heart of the service
 
@@ -682,7 +587,6 @@ class AutoService : AccessibilityService() {
         }
     }
 
-
     fun spawnTimerThread() {
         timerThread.scheduleAtFixedRate(object : TimerTask() {
             override fun run() = runBlocking {
@@ -720,7 +624,7 @@ class AutoService : AccessibilityService() {
     // lifecycle
     override fun onServiceConnected() {
         super.onServiceConnected()
-        configureActionBar()
+        autoServiceUI = AutoServiceUI(this)
         log("Service Connected")
     }
 

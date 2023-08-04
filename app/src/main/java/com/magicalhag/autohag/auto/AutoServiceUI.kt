@@ -36,7 +36,7 @@ class AutoServiceUI(autoService: AutoService) {
         lp.gravity = Gravity.TOP
 
         val inflater = LayoutInflater.from(autoService)
-        inflater.inflate(R.layout.action_bar, mLayout)
+        inflater.inflate(R.layout.auto_service_layout, mLayout)
         wm.addView(mLayout, lp)
 
         configurePowerButton()
@@ -79,8 +79,8 @@ class AutoServiceUI(autoService: AutoService) {
         stopButton.setOnClickListener { autoService.pauseTimerThread() }
     }
 
-    // https://developer.android.com/develop/ui/views/components/spinner
     inner class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
+        // https://developer.android.com/develop/ui/views/components/spinner
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             if (parent != null) {
                 val text = parent.getItemAtPosition(position)
