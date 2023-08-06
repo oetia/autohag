@@ -7,6 +7,20 @@
     <string name="channel_name">autohag</string>
     <string name="channel_description">status updates</string>
 
+    <string name="SCREEN_STATE_MAIN_MENU">SCREEN_STATE_MAIN_MENU</string>
+    <string name="SCREEN_STATE_TERMINAL">SCREEN_STATE_TERMINAL</string>
+    <string name="SCREEN_STATE_STAGE_SELECTED">SCREEN_STATE_STAGE_SELECTED</string>
+    <string name="SCREEN_STATE_OP_ROSTER_AUTO">SCREEN_STATE_OP_ROSTER_AUTO</string>
+    <string name="SCREEN_STATE_AUTO_DEPLOY">SCREEN_STATE_AUTO_DEPLOY</string>
+    <string name="SCREEN_STATE_MISSION_RESULTS">SCREEN_STATE_MISSION_RESULTS</string>
+    <string name="SCREEN_STATE_RESTORE_SANITY">SCREEN_STATE_RESTORE_SANITY</string>
+
+
+
+
+
+
+
     <string-array name="tasks">
         <item>HOME</item>
         <item>0SANITY</item>
@@ -17,4 +31,5 @@
         <item>BASE_CLEAR_DORMS</item>
         <item>BASE_OP_SWAP</item>
     </string-array>
+
 </resources>

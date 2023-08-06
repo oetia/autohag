@@ -16,17 +16,18 @@ import android.widget.Spinner
 import com.magicalhag.autohag.R
 import kotlinx.coroutines.runBlocking
 
-class AutoServiceUI(autoService: AutoService) {
+//
+// there's a lot of syntax shorthand that can be utilized
+// you can initialize values inside of the constructor
+// Kotlin has a concise syntax for declaring properties and initializing them from the primary constructor:
+// primary constructor doesn't exactly have a body.
+// val is read-only var is not
+class AutoServiceUI constructor(private val autoService: AutoService) {
 
-    private var autoService: AutoService
-    private var mLayout: FrameLayout
-    private var spinnerActivity: SpinnerActivity
+    private var mLayout: FrameLayout = FrameLayout(autoService)
+    private var spinnerActivity: SpinnerActivity = SpinnerActivity()
 
-    init {
-        this.autoService = autoService
-        this.mLayout = FrameLayout(autoService)
-        this.spinnerActivity = SpinnerActivity()
-
+    init { // technically the body of the primary constructor initialization code
         val wm = autoService.getSystemService(AccessibilityService.WINDOW_SERVICE) as WindowManager
         val lp = WindowManager.LayoutParams()
         lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
@@ -66,17 +67,16 @@ class AutoServiceUI(autoService: AutoService) {
     private fun configureStartButton() {
         val startButton = mLayout.findViewById(R.id.start) as Button
         startButton.setOnClickListener {
-            if (autoService.getTimerThreadSpawned()) {
-                autoService.unpauseTimerThread()
-            } else {
-                autoService.spawnTimerThread()
+            autoService.unpause()
+            if(!autoService.getJobInitialized()) {
+                autoService.initializeJob()
             }
         }
     }
 
     private fun configureStopButton() {
         val stopButton = mLayout.findViewById(R.id.stop) as Button
-        stopButton.setOnClickListener { autoService.pauseTimerThread() }
+        stopButton.setOnClickListener { autoService.pause() }
     }
 
     inner class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
