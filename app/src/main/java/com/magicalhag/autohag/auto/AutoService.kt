@@ -10,26 +10,23 @@ import android.graphics.Point
 import android.util.Log
 import android.view.Display
 import android.view.accessibility.AccessibilityEvent
-import android.widget.FrameLayout
-import android.widget.Toast
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
+import com.google.mlkit.vision.text.Text.TextBlock
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.magicalhag.autohag.R
 import com.magicalhag.autohag.ScreenshotExecutor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import java.lang.NullPointerException
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import kotlin.math.roundToInt
 
 class AutoService : AccessibilityService() {
-
-    private lateinit var mLayout: FrameLayout;
 
     private lateinit var autoServiceUI: AutoServiceUI
 
@@ -51,6 +48,10 @@ class AutoService : AccessibilityService() {
     private var removeToggledOn = false
     private var dormsCleared = 0
 
+    private var baseCleared = false
+    private var zeroSanity = false
+    private var recruitsDone = false
+
     // heart of the service
 
     // so we want to have different routines that can be run
@@ -61,318 +62,316 @@ class AutoService : AccessibilityService() {
     // the next action is extremely obvious
 
     // you can't determine all the state that you need just from a single image.
+    private val hardcodedPoints = arrayOf(
+        Point(750, 300),
+        Point(750, 700),
+        Point(950, 300),
+        Point(950, 700),
+        Point(1150, 300)
+    )
+
     suspend fun iterate() {
         val screenshot = takeScreenshotSequential()
         val bitmap = Bitmap.wrapHardwareBuffer(screenshot.hardwareBuffer, screenshot.colorSpace)
         val image = InputImage.fromBitmap(bitmap!!, 0)
         val visionText = recognizerProcessSequential(image)
+        val text = visionText.text
+        val blocks = visionText.textBlocks
 
-        if (currentRoutine == "0SANITY") {
-            for (block in visionText.textBlocks) {
-                val blockText = block.text
-                val blockCornerPoints = block.cornerPoints
-                val blockCenter = getBoxCenter(blockCornerPoints as Array<Point>)
-
-                if (Regex("start\\s+-\\d{1,2}").containsMatchIn(blockText.lowercase()) || Regex("mission\\s+start").containsMatchIn(
-                        blockText.lowercase()
-                    ) || Regex("mission\\s+results").containsMatchIn(blockText.lowercase())
-                ) {
-                    dispatch(
-                        buildClick(
-                            blockCenter.x.toFloat(), blockCenter.y.toFloat(), 500
-                        )
-                    )
-                } else if (Regex("takeover").containsMatchIn(blockText.lowercase())) {
-                    Log.d(getString(R.string.log_tag), "Still In Autodeploy: PAUSING")
-                    threadPaused = true
-                    val unpause = Timer()
-                    unpause.schedule(object : TimerTask() {
-                        override fun run() {
-                            Log.d(getString(R.string.log_tag), "UNPAUSING")
-                            threadPaused = false
-                        }
-                    }, 1000 * 15)
-                } else if (Regex("restore").containsMatchIn(blockText.lowercase())) {
-                    Log.d(getString(R.string.log_tag), "Sanity Gone: PAUSING")
-                    threadPaused = true
-                }
-            }
-        } else if (currentRoutine == "BASE_COLLECT") {
-
-            var targetText: String =
-                if (textMatchesAll(visionText.text, arrayOf("missions", "base", "depot"))) {
-                    "base"
-                } else if (!backlogChecked && textMatchesAll(
-                        visionText.text, arrayOf("overview", "building mode")
-                    )
-                ) {
-                    "not[i|t]?[f|e][i|t]?cat[i|t]?[o|d]n"
-                } else if (textMatchesAll(visionText.text, arrayOf("backlog", "collectable"))) {
-                    "collectable"
-                } else if (textMatchesAll(visionText.text, arrayOf("backlog", "orders acquired"))) {
-                    "orders acquired"
-                } else if (textMatchesAll(visionText.text, arrayOf("backlog", "clues"))) {
-                    backlogChecked = true
-                    "backlog"
-                } else if (backlogChecked && textMatchesAll(
-                        visionText.text, arrayOf("overview", "building mode")
-                    )
-                ) {
-                    log("Resources Collected, Changing Routine to Clearing Dorms")
-                    currentRoutine = "BASE_REMOVE_DORM_OPS"
-                    "overview"
-                } else {
-                    return
-                }
-
-            log(targetText)
-            for (block in visionText.textBlocks) {
-                val blockText = block.text
-                val blockCornerPoints = block.cornerPoints
-                val blockCenter = getBoxCenter(blockCornerPoints as Array<Point>)
-
-                if (textMatchesAll(blockText, arrayOf(targetText))) {
-                    dispatch(buildClick(blockCenter.x.toFloat(), blockCenter.y.toFloat(), 500))
-                }
-            }
-        } else if (currentRoutine == "BASE_REMOVE_DORM_OPS") { // so, the current pattern that i'm seeing
-            // 1) figure out external state from screenshot - couple with internal state from app variables
-            // 2) build & execute an action
-
-            // might also want a function to filter out textBlocks
-            // look for the 5/5 right under dormitory
-            if (dormsCleared == 4) {
-                log("Dorms Cleared, Toggling Off Remove")
-
-                val removeTextBlock =
-                    findTextBlock(visionText.textBlocks, "remove") ?: return
-                val removeTargetTextCenter =
-                    getBoxCenter(removeTextBlock.cornerPoints as Array<Point>)
-
-                dispatch(
-                    buildClick(
-                        removeTargetTextCenter.x.toFloat(),
-                        removeTargetTextCenter.y.toFloat(),
-                        100
-                    )
-                )
-                removeToggledOn = false
-
-                log("Changing Routine to Op Swap")
-                currentRoutine = "BASE_SWAP_OPS"
-                return
-            }
-
-            if (textMatchesAll(visionText.text, arrayOf("current assignment information"))) {
-                if (!textMatchesAll(visionText.text, arrayOf("dormitory"))) {
-                    dispatch(buildScroll("DOWN", 1500))
-                } else {
-                    if (!removeToggledOn) {
-                        val removeTextBlock =
-                            findTextBlock(visionText.textBlocks, "remove") ?: return
-                        val removeTargetTextCenter =
-                            getBoxCenter(removeTextBlock.cornerPoints as Array<Point>)
-                        dispatch(
-                            buildClick(
-                                removeTargetTextCenter.x.toFloat(),
-                                removeTargetTextCenter.y.toFloat(),
-                                100
-                            )
-                        )
-                        removeToggledOn = true
-                    } else {
-                        val dormitoryTextBlocks =
-                            findAllTextBlocks(visionText.textBlocks, "dormitory")
-                        if (dormitoryTextBlocks.size == 0) {
-                            return
-                        }
-
-                        val dormitoryTextBlock = dormitoryTextBlocks[dormitoryTextBlocks.size - 1]
-                        val dormitoryTextCenter =
-                            getBoxCenter(dormitoryTextBlock.cornerPoints as Array<Point>)
-                        val otherPoint = Point(
-                            10000,
-                            dormitoryTextCenter.y + 4 * getBoxHeight(dormitoryTextBlock.cornerPoints as Array<Point>)
-                        )
-
-                        val filteredTextBlocks = filterForTextBlocksInBox(
-                            visionText.textBlocks, dormitoryTextCenter, otherPoint
-                        )
-
-                        if (findTextBlock(filteredTextBlocks, "\\+") == null) {
-                            dispatch(buildClick(2220f, dormitoryTextCenter.y.toFloat(), 100L))
-                            dormsCleared += 1
-                        } else {
-                            dispatch(buildScroll("DOWN", 1500))
-                        }
-                    }
-                }
-            }
-        } else if (currentRoutine == "BASE_SWAP_OPS") {
-
-            for (block in visionText.textBlocks) {
-                val text = block.text
-                val center = getBoxCenter(block.cornerPoints as Array<Point>)
-                val area = getBoxArea(block.cornerPoints as Array<Point>)
-                log("$text: $area $center")
-            }
-
-            if (textMatchesAll(
-                    visionText.text, arrayOf("blueprint overview")
-                )
-            ) { // check that we're on overview page
-                if (textMatchesAll(visionText.text, arrayOf("\\n\\s*\\+\\s*\\n"))) { // check for +
-                    val plusTextBlock = findTextBlock(visionText.textBlocks, "\\+") ?: return
-                    val plusTextCenter = getBoxCenter(plusTextBlock.cornerPoints as Array<Point>)
-                    dispatch(
-                        buildClick(
-                            plusTextCenter.x.toFloat(), plusTextCenter.y.toFloat(), 500
-                        )
-                    )
-                } else if (textMatchesAll(visionText.text, arrayOf("control center"))) {
-                    log("No more ops to swap. Changing Routine to Exit Base")
-                    currentRoutine = "EXIT_BASE"
-                } else (dispatch(buildScroll("UP", 1500)))
-            } else if (textMatchesAll(
-                    visionText.text, arrayOf("trust")
-                )
-            ) { // at operator selection screen
-                log("at operator selection")
-
-                if (textMatchesAll(
-                        visionText.text, arrayOf("tap on an operator")
-                    )
-                ) { // no operators in facility
-                    log("no ops in current facility")
-
-                    // filtering out non-operator names
-                    // create a filter box based upon locations of different UI elements
-
-                    val tapOpTextBlock =
-                        findTextBlock(visionText.textBlocks, "tap on an operator") ?: return
-                    val tapOpTextCenter = getBoxCenter(tapOpTextBlock.cornerPoints as Array<Point>)
-                    val tapOpBoxWidth = getBoxWidth(tapOpTextBlock.cornerPoints as Array<Point>)
-                    val tapOpBoxHeight = getBoxHeight(tapOpTextBlock.cornerPoints as Array<Point>)
-                    // log("TAP OP: $tapOpBoxWidth $tapOpBoxHeight $tapOpTextCenter")
-
-                    val confirmTextBlock = findTextBlock(visionText.textBlocks, "confirm") ?: return
-                    val confirmTextBox = getBoxCenter(confirmTextBlock.cornerPoints as Array<Point>)
-                    val ctbWidth = getBoxWidth(confirmTextBlock.cornerPoints as Array<Point>)
-                    val ctbHeight = getBoxHeight(confirmTextBlock.cornerPoints as Array<Point>)
-                    val ctbArea = getBoxArea(confirmTextBlock.cornerPoints as Array<Point>)
-
-                    val stateTextBlock = findTextBlock(visionText.textBlocks, "state") ?: return
-                    val stateTextBox = getBoxCenter(stateTextBlock.cornerPoints as Array<Point>)
-                    val fbCorner1 = Point(
-                        (tapOpTextCenter.x + 0.75 * tapOpBoxWidth).roundToInt(),
-                        (tapOpTextCenter.y)
-                    )
-                    val fbCorner3 = Point(
-                        confirmTextBox.x + ctbWidth,
-                        (confirmTextBox.y - ctbHeight)
-                    )
-
-                    log("Op Name Filter Box: $fbCorner1, $fbCorner3")
-
-                    val filteredTextBlocks = visionText.textBlocks.filter { textBlock ->
-                        val center = getBoxCenter(textBlock.cornerPoints as Array<Point>)
-                        val width = getBoxWidth(textBlock.cornerPoints as Array<Point>)
-                        val height = getBoxHeight(textBlock.cornerPoints as Array<Point>)
-                        val area = getBoxArea(textBlock.cornerPoints as Array<Point>)
-
-                        val testCenter =
-                            center.x > fbCorner1.x && center.x < fbCorner3.x && center.y > fbCorner1.y && center.y < fbCorner3.y
-                        val testHeight = height > ctbHeight / 1.8 // deals wtih RISC SKILL
-                        val testText =
-                            !textBlock.text.contains("[0-9]{3,}|01|EXP|\\bon\\b|\\bshi[f|t]?t\\b".toRegex()) // deals with on shift + misc text
-
-                        log(textBlock.text + " $testCenter, $testHeight, $testText")
-
-                        testCenter && testHeight && testText
-                    }
-
-                    log("Filtered for Op Names")
-
-                    // for (ftb in filteredTextBlocks.subList(0, 5)) {
-                    //     val text = ftb.text
-                    //     val center = getBoxCenter(ftb.cornerPoints as Array<Point>)
-                    //     val area = getBoxArea(ftb.cornerPoints as Array<Point>)
-                    //     log("$text: $area $center")
-                    //
-                    //     dispatch(buildClick(center.x.toFloat(), center.y.toFloat(), 100))
-                    //     delay(300)
-                    // }
-
-                    val hardcodedPoints = arrayOf(
-                        Point(750, 300),
-                        Point(750, 700),
-                        Point(950, 300),
-                        Point(950, 700),
-                        Point(1150, 300)
-                    )
-                    for (point in hardcodedPoints) {
-                        log(point.toString())
-                        dispatch(buildClick(point.x.toFloat(), point.y.toFloat(), 100))
-                        delay(300)
-                    }
-
-                    log("Ops Selected")
-
-                    val confirmTextCenter =
-                        getBoxCenter(confirmTextBlock.cornerPoints as Array<Point>)
-                    dispatch(
-                        buildClick(
-                            confirmTextCenter.x.toFloat(), confirmTextCenter.y.toFloat(), 100
-                        )
-                    )
-
-                    log("Confirming...")
-
-                } else if (textMatchesAll(visionText.text, arrayOf("current location"))) {
-                    log("some ops in current facility")
-
-                    val deselectTextBlock =
-                        findTextBlock(visionText.textBlocks, "deselect all") ?: return
-                    val deselectTextBox =
-                        getBoxCenter(deselectTextBlock.cornerPoints as Array<Point>)
-                    dispatch(
-                        buildClick(
-                            deselectTextBox.x.toFloat(), deselectTextBox.y.toFloat(), 100
-                        )
-                    )
-                    delay(300)
-
-                    log("deselected ops")
-
-                    val stateTextBlocks = findAllTextBlocks(visionText.textBlocks, "state")
-                    if (stateTextBlocks.size == 0) {
-                        return
-                    }
-                    val stateTextBlock = stateTextBlocks[stateTextBlocks.size - 1]
-                    val stateTextBox = getBoxCenter(stateTextBlock.cornerPoints as Array<Point>)
-                    dispatch(buildClick(stateTextBox.x.toFloat(), stateTextBox.y.toFloat(), 100))
-                    delay(300)
-                    dispatch(buildClick(stateTextBox.x.toFloat(), stateTextBox.y.toFloat(), 100))
-                    delay(300)
-
-                    log("state double toggle")
-                }
-            } else if (textMatchesAll(visionText.text, arrayOf("confirm the shift"))) {
-                val confirmTextBlock = findTextBlock(visionText.textBlocks, "^confirm$") ?: return
-                val confirmTextCenter = getBoxCenter(confirmTextBlock.cornerPoints as Array<Point>)
-                dispatch(
-                    buildClick(
-                        confirmTextCenter.x.toFloat(), confirmTextCenter.y.toFloat(), 500
-                    )
-                )
-            }
-
-        } else if (currentRoutine == "EXIT_BASE") {
-            if (!textMatchesAll(visionText.text, arrayOf("missions", "base", "depot"))) {
+        if (currentRoutine == "HOME") {
+            if (text.excludesAll("friends", "archive", "depot")) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
             } else {
-                log("Base Exited")
-                currentRoutine = ""
+                if (!baseCleared) {
+                    setRoutine("BASE")
+                } else if (!recruitsDone) {
+                    setRoutine("RECR")
+                } else if (!zeroSanity) {
+                    setRoutine("0SANITY")
+                } else {
+                    setRoutine("N/A")
+                    pauseTimerThread()
+                }
+            }
+        } else if (currentRoutine == "0SANITY") {
+            // @formatter:off
+            if (text.containsAll("friends", "archive", "sanity/")) {
+                dispatch(buildClick(blocks.find("sanity/")))
+            } else if (text.containsAll("to the most recent stage")) {
+                dispatch(buildClick(blocks.find("to the most recent stage")))
+            } else if (text.containsAll("auto deploy", "start\\s+-\\d{1,2}")) {
+                dispatch(buildClick(blocks.find("start\\s+-\\d{1,2}")))
+            } else if (text.containsAll("the roster for this operation cannot be changed", "mission\\s+start")) {
+                dispatch(buildClick(blocks.find("mission\\s+start")))
+            } else if (text.containsAll("2x", "takeover", "unit limit")) {
+                Log.d(getString(R.string.log_tag), "Still In Autodeploy: PAUSING")
+                threadPaused = true
+                val unpause = Timer()
+                unpause.schedule(object : TimerTask() {
+                    override fun run() {
+                        Log.d(getString(R.string.log_tag), "UNPAUSING")
+                        threadPaused = false
+                    }
+                }, 1000 * 15)
+            } else if (text.containsAll("mission\\s+results")) {
+                dispatch(buildClick(blocks.find("mission\\s+results")))
+            } else if (text.containsAll("restore", "sanity")) {
+                log("0SANITY: PAUSING")
+                zeroSanity = true
+                setRoutine("HOME")
+            }
+            // @formatter:on
+        } else if (currentRoutine == "BASE") {
+            if (text.containsAll("friends", "archive", "base")) {
+                val baseBlocks = blocks.findAll("base")
+                val baseBlock = baseBlocks[baseBlocks.size - 1]
+                dispatch(buildClick(baseBlock))
+            } else if (text.containsAll("overview", "building mode")) {
+                // "not[i|t]?[f|e][i|t]?cat[i|t]?[o|d]n"
+                setRoutine("BASE_COLLECT")
+            }
+        } else if (currentRoutine == "BASE_COLLECT") {
+            // @formatter:off
+            if (text.containsAll("overview", "building mode")) {
+                // "not[i|t]?[f|e][i|t]?cat[i|t]?[o|d]n"
+                log("@ BASE - MAIN")
+                dispatch(buildClick(Point(2250, 135)))
+            } else if (text.containsAll("backlog")) {
+                log("@BASE - BACKLOG")
+                if (text.containsAll("collectable")) {
+                    dispatch(buildClick(blocks.find("collectable")))
+                } else if (text.containsAll("orders acquired")) {
+                    dispatch(buildClick(blocks.find("orders acquired")))
+                } else if (text.containsAll("clues")) {
+                    dispatch(buildClick(blocks.find("backlog")))
+                    setRoutine("BASE_R_OPS")
+                }
+            }
+            // @formatter:on
+
+        } else if (currentRoutine == "BASE_R_OPS") {
+            // @formatter:off
+            if (text.containsAll("overview", "building mode")) {
+                log("@ BASE - MAIN")
+                dispatch(buildClick(blocks.find("overview")))
+            } else if (text.containsAll("current assignment information", "remove")) {
+                log("@ BASE - OVERVIEW")
+                if (blocks.find("remove").getCenter().x > 2175) { // hardcoded value to determine if toggled
+                    dispatch(buildClick(blocks.find("remove")))
+                } else if(text.excludesAll("dormitory")) {
+                    dispatch(buildScroll("DOWN"))
+                } else { // there's a dormitory in sight
+                    val dormitoryBlocks = blocks.findAll("dormitory")
+                    val dormitoryBOI = dormitoryBlocks[dormitoryBlocks.size - 1]
+                    val blocksFiltered = blocks.filterByLocation(
+                        dormitoryBOI.getCenter(),
+                        Point(Int.MAX_VALUE, dormitoryBOI.getCenter().y + dormitoryBOI.getHeight() * 4)
+                    )
+
+                    val plusCount = blocksFiltered.getText().length - blocksFiltered.getText().replace("+", "").length
+                    log(blocksFiltered.getText())
+                    // log("PLUS COUNT: $plusCount")
+                    // if(plusCount < 3) { // there's an operator in dorms
+                    if(blocksFiltered.getText().excludesAll("\\+")) { // dorm is full
+                        dispatch(buildClick(Point(2220, dormitoryBOI.getCenter().y))) // hardcoded value for remove button
+                    } else { // dorm already cleared
+                        if(text.containsAll("b4")) {
+                            setRoutine("BASE_OP_SWAP_UP")
+                        } else {
+                            dispatch(buildScroll("DOWN"))
+                        }
+                    }
+                }
+            }
+            // @formatter:on
+
+        } else if (currentRoutine == "BASE_OP_SWAP_UP") {
+            // @formatter:off
+            if (text.containsAll("current assignment information", "remove")) {
+                log("@ BASE - OVERVIEW")
+                if (blocks.find("remove").getCenter().x < 2175) { // hardcoded value to determine if toggled
+                    dispatch(buildClick(blocks.find("remove")))
+                } else if (text.containsAll("\\+")) {
+                    dispatch(buildClick(blocks.find("\\+")))
+                } else if (text.excludesAll("control center")){
+                    dispatch(buildScroll("UP"))
+                } else {
+                    log("BASE - OP SWAP UPWARDS PASS DONE")
+                    setRoutine("BASE_OP_SWAP_DOWN")
+                }
+            } else if (text.containsAll("state", "skill", "trust")) {
+                log("@ BASE - OP SELECTION")
+                if (text.containsAll("tap on an operator")) {
+                    for (point in hardcodedPoints) {
+                        dispatch(buildClick(point))
+                        delay(300)
+                    }
+                    dispatch(buildClick(blocks.find("confirm")))
+                } else { // assumes not in dorm
+                    log("OPERATORS IN FACILITY: REMOVING")
+                    if(text.containsAll("deselect all")) {
+                        dispatch(buildClick(blocks.find("deselect all")))
+                        delay(300)
+                        val stateBlocks = blocks.findAll("state")
+                        val stateBlock = stateBlocks[stateBlocks.size - 1]
+                        dispatch(buildClick(stateBlock))
+                        delay(300)
+                        dispatch(buildClick(stateBlock))
+                        delay(300)
+                    } else {
+                        dispatch(buildClick(hardcodedPoints[0]))
+                    }
+                }
+            } else if(text.containsAll("confirm the shift")) {
+                val confirmBlocks = blocks.findAll("confirm")
+                val confirmBlock = confirmBlocks[confirmBlocks.size - 1]
+                dispatch(buildClick(confirmBlock))
+            }
+            // @formatter:on
+        } else if (currentRoutine == "BASE_OP_SWAP_DOWN") {
+            // @formatter:off
+            if (text.containsAll("current assignment information", "remove")) {
+                log("@ BASE - OVERVIEW")
+                if (blocks.find("remove").getCenter().x < 2175) { // hardcoded value to determine if toggled
+                    dispatch(buildClick(blocks.find("remove")))
+                } else if (text.containsAll("\\+")) {
+                    dispatch(buildClick(blocks.find("\\+")))
+                } else if (text.excludesAll("b4")){
+                    dispatch(buildScroll("DOWN"))
+                } else {
+                    log("BASE - OP SWAP DOWNWARDS PASS DONE")
+                    baseCleared = true
+                    setRoutine("HOME")
+                }
+            } else if (text.containsAll("state", "skill", "trust")) {
+                log("@ BASE - OP SELECTION")
+                if (text.containsAll("tap on an operator")) {
+                    for (point in hardcodedPoints) {
+                        dispatch(buildClick(point))
+                        delay(300)
+                    }
+                    dispatch(buildClick(blocks.find("confirm")))
+                } else { // assumes not in dorm
+                    log("OPERATORS IN FACILITY: REMOVING")
+                    if(text.containsAll("deselect all")) {
+                        dispatch(buildClick(blocks.find("deselect all")))
+                        delay(300)
+                        val stateBlocks = blocks.findAll("state")
+                        val stateBlock = stateBlocks[stateBlocks.size - 1]
+                        dispatch(buildClick(stateBlock))
+                        delay(300)
+                        dispatch(buildClick(stateBlock))
+                        delay(300)
+                    } else {
+                        dispatch(buildClick(hardcodedPoints[0]))
+                    }
+                }
+            } else if(text.containsAll("confirm the shift")) {
+                val confirmBlocks = blocks.findAll("confirm")
+                val confirmBlock = confirmBlocks[confirmBlocks.size - 1]
+                dispatch(buildClick(confirmBlock))
+            }
+            // @formatter:on
+
+        } else if (currentRoutine == "RECR") {
+            if (text.containsAll("friends", "archive", "recruit")) {
+                dispatch(buildClick(blocks.find("recruit")))
+            } else if (text.containsAll("contacting")) {
+                if (text.containsAll("recruit now")) {
+                    dispatch(buildClick(blocks.find("recruit now")))
+                } else if (text.containsAll("hire")) {
+                    dispatch(buildClick(blocks.find("hire")))
+                } else if (text.containsAll("job", "tags")) {
+                    if (text.containsAll("top operator")) {
+                        log("TOP OP FOUND")
+                        currentRoutine = "TOP OP FOUND"
+                        pauseTimerThread()
+                        return
+                    }
+
+                    val combinations = arrayOf(
+                        // https://gamepress.gg/arknights/core-gameplay/arknights-operator-recruitment-guide
+
+                        // 5*
+                        arrayOf("senior operator"),
+                        arrayOf("support(?!er)", "vanguard"),
+                        arrayOf("support(?!er)", "dp-recovery"),
+                        arrayOf("crowd-control"),
+                        arrayOf("survival", "defender"),
+                        arrayOf("survival", "defense"),
+                        arrayOf("defender", "dps"),
+                        arrayOf("defense", "dps"),
+                        arrayOf("defense", "(?<!van)guard"),
+                        arrayOf("shift", "defender"),
+                        arrayOf("shift", "defense"),
+                        arrayOf("shift", "slow"),
+                        arrayOf("specialist", "slow"),
+                        arrayOf("shift", "dps"),
+                        arrayOf("supporter", "dps"),
+                        arrayOf("debuff", "supporter"),
+                        arrayOf("debuff", "aoe"),
+                        arrayOf("debuff", "fast-redeploy"),
+                        arrayOf("debuff", "specialist"),
+                        arrayOf("debuff", "melee"),
+                        arrayOf("specialist", "survival"),
+                        arrayOf("specialist", "dps"),
+                        arrayOf("healing", "caster"),
+                        arrayOf("healing", "slow"),
+                        arrayOf("healing", "dps"),
+                        arrayOf("caster", "dps", "slow"),
+
+                        // 4*
+                        arrayOf("healing", "vanguard"),
+                        arrayOf("healing", "dp-recovery"),
+                        arrayOf("slow", "(?<!van)guard"),
+                        arrayOf("slow", "melee"),
+                        arrayOf("slow", "dps"),
+                        arrayOf("slow", "sniper"),
+                        arrayOf("slow", "ranged", "dps"),
+                        arrayOf("slow", "caster"),
+                        arrayOf("slow", "aoe"),
+                        arrayOf("survival", "sniper"),
+                        arrayOf("survival", "ranged"),
+                        arrayOf("specialist"),
+                        arrayOf("shift"),
+                        arrayOf("fast-redeploy"),
+                        arrayOf("debuff"),
+                        arrayOf("support(?!er)"),
+                        arrayOf("nuker")
+                    )
+
+                    for (combination in combinations) {
+                        if (text.containsAll(*combination)) {
+                            log(combination)
+                            for (tag in combination) {
+                                dispatch(buildClick(blocks.find(tag)))
+                                delay(300)
+                            }
+
+                            dispatch(buildClick(Point(900, 450)))
+                            delay(300)
+                            dispatch(buildClick(Point(1675, 875)))
+                            delay(300)
+
+                            log("4+*")
+                            return
+                        }
+                    }
+
+                    log("3*")
+                    dispatch(buildClick(Point(900, 450)))
+                    delay(300)
+                    dispatch(buildClick(Point(1675, 875)))
+                    delay(300)
+                } else {
+                    log("RECRUITS DONE")
+                    recruitsDone = true
+                    setRoutine("HOME")
+                }
+            } else if (text.containsAll("skip")) {
+                dispatch(buildClick(blocks.find("skip")))
+            } else if (text.containsAll("certificate")) {
+                dispatch(buildClick(blocks.find("certificate")))
             }
         }
     }
@@ -419,6 +418,31 @@ class AutoService : AccessibilityService() {
         }, null)
     }
 
+    private fun buildClick(block: TextBlock, duration: Long = 100L): GestureDescription {
+
+        val center = block.getCenter()
+
+        val clickPath = Path()
+        clickPath.moveTo(center.x.toFloat(), center.y.toFloat())
+
+        val gestureBuilder = GestureDescription.Builder()
+        gestureBuilder.addStroke(GestureDescription.StrokeDescription(clickPath, 0, duration))
+
+        log("BUILDING CLICK: $center - ${block.text}")
+
+        return gestureBuilder.build()
+    }
+
+    private fun buildClick(point: Point, duration: Long = 100L): GestureDescription {
+        val clickPath = Path()
+        clickPath.moveTo(point.x.toFloat(), point.y.toFloat())
+
+        val gestureBuilder = GestureDescription.Builder()
+        gestureBuilder.addStroke(GestureDescription.StrokeDescription(clickPath, 0, duration))
+
+        return gestureBuilder.build()
+    }
+
     private fun buildClick(x: Float, y: Float, duration: Long): GestureDescription {
         val clickPath = Path()
         clickPath.moveTo(x, y)
@@ -429,7 +453,7 @@ class AutoService : AccessibilityService() {
         return gestureBuilder.build()
     }
 
-    private fun buildScroll(type: String, duration: Long): GestureDescription {
+    private fun buildScroll(type: String, duration: Long = 1500L): GestureDescription {
 
         Log.d(getString(R.string.log_tag), "scrolling")
 
@@ -481,10 +505,115 @@ class AutoService : AccessibilityService() {
 
     // util
 
+
+    // vararg treats as an array variable length arguments
+    fun String.containsAll(vararg regExs: String): Boolean {
+        for (regEx in regExs) {
+            if (!this.lowercase().contains(regEx.toRegex())) {
+                log("String.containsAll: DSNTCONT '$regEx'")
+                return false
+            } else {
+                log("String.containsAll: CONTAINS '$regEx'")
+            }
+        }
+        return true
+    }
+
+    fun String.excludesAll(vararg regExs: String): Boolean {
+        for (regEx in regExs) {
+            if (this.lowercase().contains(regEx.toRegex())) {
+                log("String.excludesAll: CONTAINS '$regEx'")
+                return false
+            } else {
+                log("String.excludesAll: DSNTCONT '$regEx'")
+            }
+        }
+        return true
+    }
+
+    fun List<Text.TextBlock>.filterByLocation(
+        corner1: Point,
+        corner3: Point
+    ): List<Text.TextBlock> {
+        val filtered = ArrayList<Text.TextBlock>()
+
+        for (block in this) {
+            val center = block.getCenter()
+            if (center.x > corner1.x && center.x < corner3.x && center.y > corner1.y && center.y < corner3.y) {
+                filtered.add(block)
+            }
+        }
+
+        return filtered.toList()
+    }
+
+
+    fun List<Text.TextBlock>.find(text: String): Text.TextBlock {
+        val found = ArrayList<Text.TextBlock>()
+        for (block in this) {
+            if (block.text.lowercase().contains(text.toRegex())) {
+                found.add(block)
+            }
+        }
+        if (found.size > 0) {
+            return found[found.size - 1]
+        } else {
+            throw Exception("Block Not Found")
+        }
+    }
+
+    fun List<Text.TextBlock>.findAll(text: String): List<Text.TextBlock> {
+        val found = ArrayList<Text.TextBlock>()
+        for (block in this) {
+            if (block.text.lowercase().contains(text.toRegex())) {
+                found.add(block)
+            }
+        }
+
+        if (found.size == 0) {
+            throw Exception("Block not Found")
+        } else {
+            return found.toList()
+        }
+    }
+
+    fun List<Text.TextBlock>.getText(): String {
+        var text = ""
+        for (block in this) {
+            text += block.text
+        }
+        return text
+    }
+
+    fun List<Text.TextBlock>.log() {
+        for (block in this) {
+            this@AutoService.log("${block.getCenter()} - ${block.text}")
+        }
+    }
+
+    fun Text.TextBlock.getCenter(): Point {
+        val centerX = (this.cornerPoints!![1].x + this.cornerPoints!![0].x) / 2
+        val centerY = (this.cornerPoints!![2].y + this.cornerPoints!![1].y) / 2
+        return Point(centerX, centerY)
+    }
+
+    fun Text.TextBlock.getWidth(): Int {
+        return this.cornerPoints!![1].x - this.cornerPoints!![0].x
+    }
+
+    fun Text.TextBlock.getHeight(): Int {
+        return this.cornerPoints!![2].y - this.cornerPoints!![1].y
+    }
+
     fun resetInternalState() {
         backlogChecked = false
         removeToggledOn = false
         dormsCleared = 0
+
+        baseCleared = false
+        recruitsDone = false
+        zeroSanity = false
+
 
         log("Internal State Reset")
     }
@@ -650,7 +779,12 @@ class AutoService : AccessibilityService() {
     private fun log(message: Any, toast: Boolean = false) {
         Log.d(getString(R.string.log_tag), message.toString())
         if (toast) {
-            Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show()
+            try {
+                // Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show()
+            } catch (e: NullPointerException) {
+                Log.e(getString(R.string.log_tag), e.stackTraceToString())
+            }
+
         }
     }
 }

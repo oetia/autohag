@@ -2,6 +2,7 @@ package com.magicalhag.autohag.auto
 
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
+import android.content.res.Resources
 import android.graphics.PixelFormat
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -32,8 +33,11 @@ class AutoServiceUI(autoService: AutoService) {
         lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
         lp.format = PixelFormat.TRANSLUCENT
         lp.flags = lp.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        lp.gravity = Gravity.LEFT or Gravity.TOP
+
+        val displayMetrics = Resources.getSystem().displayMetrics
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.gravity = Gravity.TOP
+        lp.width = (Integer.max(displayMetrics.widthPixels, displayMetrics.heightPixels) * 0.70).toInt()
 
         val inflater = LayoutInflater.from(autoService)
         inflater.inflate(R.layout.auto_service_layout, mLayout)
