@@ -9,17 +9,14 @@
 
 
     <string-array name="tasks">
-        <item>RECR</item>
-        <item>BASE_OP_SWAP_DOWN</item>
-        <item>BASE_OP_SWAP_UP</item>
-        <item>BASE_R_OPS</item>
         <item>HOME</item>
         <item>0SANITY</item>
         <!-- Base Related Tasks -->
+        <item>RECR</item>
         <item>BASE</item>
-        <item>BASE_ENTER</item>
         <item>BASE_COLLECT</item>
-        <item>BASE_CLEAR_DORMS</item>
-        <item>BASE_OP_SWAP</item>
+        <item>BASE_OP_SWAP_DOWN</item>
+        <item>BASE_OP_SWAP_UP</item>
+        <item>BASE_R_OPS</item>
     </string-array>
 </resources>

@@ -168,8 +168,8 @@ class AutoService : AccessibilityService() {
                         Point(Int.MAX_VALUE, dormitoryBOI.getCenter().y + dormitoryBOI.getHeight() * 4)
                     )
 
-                    val plusCount = blocksFiltered.getText().length - blocksFiltered.getText().replace("+", "").length
-                    log(blocksFiltered.getText())
+                    // val plusCount = blocksFiltered.getText().length - blocksFiltered.getText().replace("+", "").length
+                    // log(blocksFiltered.getText())
                     // log("PLUS COUNT: $plusCount")
                     // if(plusCount < 3) { // there's an operator in dorms
                     if(blocksFiltered.getText().excludesAll("\\+")) { // dorm is full
@@ -276,98 +276,98 @@ class AutoService : AccessibilityService() {
         } else if (currentRoutine == "RECR") {
             if (text.containsAll("friends", "archive", "recruit")) {
                 dispatch(buildClick(blocks.find("recruit")))
-            } else if (text.containsAll("contacting")) {
+            } else if (text.containsAll("recruit(?!ment)", "1", "2", "3", "4")) {
                 if (text.containsAll("recruit now")) {
                     dispatch(buildClick(blocks.find("recruit now")))
                 } else if (text.containsAll("hire")) {
                     dispatch(buildClick(blocks.find("hire")))
-                } else if (text.containsAll("job", "tags")) {
-                    if (text.containsAll("top operator")) {
-                        log("TOP OP FOUND")
-                        currentRoutine = "TOP OP FOUND"
-                        pauseTimerThread()
-                        return
-                    }
-
-                    val combinations = arrayOf(
-                        // https://gamepress.gg/arknights/core-gameplay/arknights-operator-recruitment-guide
-
-                        // 5*
-                        arrayOf("senior operator"),
-                        arrayOf("support(?!er)", "vanguard"),
-                        arrayOf("support(?!er)", "dp-recovery"),
-                        arrayOf("crowd-control"),
-                        arrayOf("survival", "defender"),
-                        arrayOf("survival", "defense"),
-                        arrayOf("defender", "dps"),
-                        arrayOf("defense", "dps"),
-                        arrayOf("defense", "(?<!van)guard"),
-                        arrayOf("shift", "defender"),
-                        arrayOf("shift", "defense"),
-                        arrayOf("shift", "slow"),
-                        arrayOf("specialist", "slow"),
-                        arrayOf("shift", "dps"),
-                        arrayOf("supporter", "dps"),
-                        arrayOf("debuff", "supporter"),
-                        arrayOf("debuff", "aoe"),
-                        arrayOf("debuff", "fast-redeploy"),
-                        arrayOf("debuff", "specialist"),
-                        arrayOf("debuff", "melee"),
-                        arrayOf("specialist", "survival"),
-                        arrayOf("specialist", "dps"),
-                        arrayOf("healing", "caster"),
-                        arrayOf("healing", "slow"),
-                        arrayOf("healing", "dps"),
-                        arrayOf("caster", "dps", "slow"),
-
-                        // 4*
-                        arrayOf("healing", "vanguard"),
-                        arrayOf("healing", "dp-recovery"),
-                        arrayOf("slow", "(?<!van)guard"),
-                        arrayOf("slow", "melee"),
-                        arrayOf("slow", "dps"),
-                        arrayOf("slow", "sniper"),
-                        arrayOf("slow", "ranged", "dps"),
-                        arrayOf("slow", "caster"),
-                        arrayOf("slow", "aoe"),
-                        arrayOf("survival", "sniper"),
-                        arrayOf("survival", "ranged"),
-                        arrayOf("specialist"),
-                        arrayOf("shift"),
-                        arrayOf("fast-redeploy"),
-                        arrayOf("debuff"),
-                        arrayOf("support(?!er)"),
-                        arrayOf("nuker")
-                    )
-
-                    for (combination in combinations) {
-                        if (text.containsAll(*combination)) {
-                            log(combination)
-                            for (tag in combination) {
-                                dispatch(buildClick(blocks.find(tag)))
-                                delay(300)
-                            }
-
-                            dispatch(buildClick(Point(900, 450)))
-                            delay(300)
-                            dispatch(buildClick(Point(1675, 875)))
-                            delay(300)
-
-                            log("4+*")
-                            return
-                        }
-                    }
-
-                    log("3*")
-                    dispatch(buildClick(Point(900, 450)))
-                    delay(300)
-                    dispatch(buildClick(Point(1675, 875)))
-                    delay(300)
                 } else {
                     log("RECRUITS DONE")
                     recruitsDone = true
                     setRoutine("HOME")
                 }
+            } else if (text.containsAll("job", "tags")) {
+                if (text.containsAll("top operator")) {
+                    log("TOP OP FOUND")
+                    currentRoutine = "TOP OP FOUND"
+                    pauseTimerThread()
+                    return
+                }
+
+                val combinations = arrayOf(
+                    // https://gamepress.gg/arknights/core-gameplay/arknights-operator-recruitment-guide
+
+                    // 5*
+                    arrayOf("senior operator"),
+                    arrayOf("support(?!er)", "vanguard"),
+                    arrayOf("support(?!er)", "dp-recovery"),
+                    arrayOf("crowd-control"),
+                    arrayOf("survival", "defender"),
+                    arrayOf("survival", "defense"),
+                    arrayOf("defender", "dps"),
+                    arrayOf("defense", "dps"),
+                    arrayOf("defense", "(?<!van)guard"),
+                    arrayOf("shift", "defender"),
+                    arrayOf("shift", "defense"),
+                    arrayOf("shift", "slow"),
+                    arrayOf("specialist", "slow"),
+                    arrayOf("shift", "dps"),
+                    arrayOf("supporter", "dps"),
+                    arrayOf("debuff", "supporter"),
+                    arrayOf("debuff", "aoe"),
+                    arrayOf("debuff", "fast-redeploy"),
+                    arrayOf("debuff", "specialist"),
+                    arrayOf("debuff", "melee"),
+                    arrayOf("specialist", "survival"),
+                    arrayOf("specialist", "dps"),
+                    arrayOf("healing", "caster"),
+                    arrayOf("healing", "slow"),
+                    arrayOf("healing", "dps"),
+                    arrayOf("caster", "dps", "slow"),
+
+                    // 4*
+                    arrayOf("healing", "vanguard"),
+                    arrayOf("healing", "dp-recovery"),
+                    arrayOf("slow", "(?<!van)guard"),
+                    arrayOf("slow", "melee"),
+                    arrayOf("slow", "dps"),
+                    arrayOf("slow", "sniper"),
+                    arrayOf("slow", "ranged", "dps"),
+                    arrayOf("slow", "caster"),
+                    arrayOf("slow", "aoe"),
+                    arrayOf("survival", "sniper"),
+                    arrayOf("survival", "ranged"),
+                    arrayOf("specialist"),
+                    arrayOf("shift"),
+                    arrayOf("fast-redeploy"),
+                    arrayOf("debuff"),
+                    arrayOf("support(?!er)"),
+                    arrayOf("nuker")
+                )
+
+                for (combination in combinations) {
+                    if (text.containsAll(*combination)) {
+                        log(combination)
+                        for (tag in combination) {
+                            dispatch(buildClick(blocks.find(tag)))
+                            delay(300)
+                        }
+
+                        dispatch(buildClick(Point(900, 450)))
+                        delay(300)
+                        dispatch(buildClick(Point(1675, 875)))
+                        delay(300)
+
+                        log("4+*")
+                        return
+                    }
+                }
+
+                log("3*")
+                dispatch(buildClick(Point(900, 450)))
+                delay(300)
+                dispatch(buildClick(Point(1675, 875)))
+                delay(300)
             } else if (text.containsAll("skip")) {
                 dispatch(buildClick(blocks.find("skip")))
             } else if (text.containsAll("certificate")) {
@@ -556,7 +556,8 @@ class AutoService : AccessibilityService() {
             }
         }
         if (found.size > 0) {
-            return found[found.size - 1]
+            return found[0]
+            // return found[found.size - 1]
         } else {
             throw Exception("Block Not Found")
         }
