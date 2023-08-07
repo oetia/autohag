@@ -10,8 +10,8 @@
 
     <string-array name="tasks">
         <item>RECR</item>
-
-        <item>BASE_OP_SWAP</item>
+        <item>BASE_OP_SWAP_DOWN</item>
+        <item>BASE_OP_SWAP_UP</item>
         <item>BASE_R_OPS</item>
         <item>HOME</item>
         <item>0SANITY</item>

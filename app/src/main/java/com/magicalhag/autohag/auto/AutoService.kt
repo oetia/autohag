@@ -78,15 +78,15 @@ class AutoService : AccessibilityService() {
         val text = visionText.text
         val blocks = visionText.textBlocks
 
-        if(currentRoutine == "HOME") {
-            if(text.excludesAll("friends", "archive", "depot")) {
+        if (currentRoutine == "HOME") {
+            if (text.excludesAll("friends", "archive", "depot")) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
             } else {
-                if(!baseCleared) {
+                if (!baseCleared) {
                     setRoutine("BASE")
-                } else if(!recruitsDone) {
+                } else if (!recruitsDone) {
                     setRoutine("RECR")
-                } else if(!zeroSanity) {
+                } else if (!zeroSanity) {
                     setRoutine("0SANITY")
                 } else {
                     setRoutine("N/A")
@@ -121,12 +121,12 @@ class AutoService : AccessibilityService() {
                 setRoutine("HOME")
             }
             // @formatter:on
-        } else if(currentRoutine == "BASE") {
-            if(text.containsAll("friends", "archive", "base")) {
+        } else if (currentRoutine == "BASE") {
+            if (text.containsAll("friends", "archive", "base")) {
                 val baseBlocks = blocks.findAll("base")
                 val baseBlock = baseBlocks[baseBlocks.size - 1]
                 dispatch(buildClick(baseBlock))
-            } else if(text.containsAll("overview", "building mode")) {
+            } else if (text.containsAll("overview", "building mode")) {
                 // "not[i|t]?[f|e][i|t]?cat[i|t]?[o|d]n"
                 setRoutine("BASE_COLLECT")
             }
@@ -168,11 +168,15 @@ class AutoService : AccessibilityService() {
                         Point(Int.MAX_VALUE, dormitoryBOI.getCenter().y + dormitoryBOI.getHeight() * 4)
                     )
 
+                    val plusCount = blocksFiltered.getText().length - blocksFiltered.getText().replace("+", "").length
+                    log(blocksFiltered.getText())
+                    // log("PLUS COUNT: $plusCount")
+                    // if(plusCount < 3) { // there's an operator in dorms
                     if(blocksFiltered.getText().excludesAll("\\+")) { // dorm is full
                         dispatch(buildClick(Point(2220, dormitoryBOI.getCenter().y))) // hardcoded value for remove button
                     } else { // dorm already cleared
                         if(text.containsAll("b4")) {
-                            setRoutine("BASE_OP_SWAP")
+                            setRoutine("BASE_OP_SWAP_UP")
                         } else {
                             dispatch(buildScroll("DOWN"))
                         }
@@ -181,7 +185,7 @@ class AutoService : AccessibilityService() {
             }
             // @formatter:on
 
-        } else if (currentRoutine == "BASE_OP_SWAP") {
+        } else if (currentRoutine == "BASE_OP_SWAP_UP") {
             // @formatter:off
             if (text.containsAll("current assignment information", "remove")) {
                 log("@ BASE - OVERVIEW")
@@ -192,7 +196,50 @@ class AutoService : AccessibilityService() {
                 } else if (text.excludesAll("control center")){
                     dispatch(buildScroll("UP"))
                 } else {
-                    log("BASE CLEARED")
+                    log("BASE - OP SWAP UPWARDS PASS DONE")
+                    setRoutine("BASE_OP_SWAP_DOWN")
+                }
+            } else if (text.containsAll("state", "skill", "trust")) {
+                log("@ BASE - OP SELECTION")
+                if (text.containsAll("tap on an operator")) {
+                    for (point in hardcodedPoints) {
+                        dispatch(buildClick(point))
+                        delay(300)
+                    }
+                    dispatch(buildClick(blocks.find("confirm")))
+                } else { // assumes not in dorm
+                    log("OPERATORS IN FACILITY: REMOVING")
+                    if(text.containsAll("deselect all")) {
+                        dispatch(buildClick(blocks.find("deselect all")))
+                        delay(300)
+                        val stateBlocks = blocks.findAll("state")
+                        val stateBlock = stateBlocks[stateBlocks.size - 1]
+                        dispatch(buildClick(stateBlock))
+                        delay(300)
+                        dispatch(buildClick(stateBlock))
+                        delay(300)
+                    } else {
+                        dispatch(buildClick(hardcodedPoints[0]))
+                    }
+                }
+            } else if(text.containsAll("confirm the shift")) {
+                val confirmBlocks = blocks.findAll("confirm")
+                val confirmBlock = confirmBlocks[confirmBlocks.size - 1]
+                dispatch(buildClick(confirmBlock))
+            }
+            // @formatter:on
+        } else if (currentRoutine == "BASE_OP_SWAP_DOWN") {
+            // @formatter:off
+            if (text.containsAll("current assignment information", "remove")) {
+                log("@ BASE - OVERVIEW")
+                if (blocks.find("remove").getCenter().x < 2175) { // hardcoded value to determine if toggled
+                    dispatch(buildClick(blocks.find("remove")))
+                } else if (text.containsAll("\\+")) {
+                    dispatch(buildClick(blocks.find("\\+")))
+                } else if (text.excludesAll("b4")){
+                    dispatch(buildScroll("DOWN"))
+                } else {
+                    log("BASE - OP SWAP DOWNWARDS PASS DONE")
                     baseCleared = true
                     setRoutine("HOME")
                 }
@@ -225,17 +272,17 @@ class AutoService : AccessibilityService() {
                 dispatch(buildClick(confirmBlock))
             }
             // @formatter:on
-        } else if(currentRoutine == "RECR") {
-            if(text.containsAll("friends", "archive", "recruit")) {
+
+        } else if (currentRoutine == "RECR") {
+            if (text.containsAll("friends", "archive", "recruit")) {
                 dispatch(buildClick(blocks.find("recruit")))
-            } else if(text.containsAll("contacting")) {
-                if(text.containsAll("recruit now")) {
+            } else if (text.containsAll("contacting")) {
+                if (text.containsAll("recruit now")) {
                     dispatch(buildClick(blocks.find("recruit now")))
-                }
-                else if(text.containsAll("hire")) {
+                } else if (text.containsAll("hire")) {
                     dispatch(buildClick(blocks.find("hire")))
-                } else if(text.containsAll("job", "tags")) {
-                    if(text.containsAll("top operator")) {
+                } else if (text.containsAll("job", "tags")) {
+                    if (text.containsAll("top operator")) {
                         log("TOP OP FOUND")
                         currentRoutine = "TOP OP FOUND"
                         pauseTimerThread()
@@ -293,10 +340,10 @@ class AutoService : AccessibilityService() {
                         arrayOf("nuker")
                     )
 
-                    for(combination in combinations) {
-                        if(text.containsAll(*combination)) {
+                    for (combination in combinations) {
+                        if (text.containsAll(*combination)) {
                             log(combination)
-                            for(tag in combination) {
+                            for (tag in combination) {
                                 dispatch(buildClick(blocks.find(tag)))
                                 delay(300)
                             }
@@ -321,9 +368,9 @@ class AutoService : AccessibilityService() {
                     recruitsDone = true
                     setRoutine("HOME")
                 }
-            } else if(text.containsAll("skip")) {
+            } else if (text.containsAll("skip")) {
                 dispatch(buildClick(blocks.find("skip")))
-            } else if(text.containsAll("certificate")) {
+            } else if (text.containsAll("certificate")) {
                 dispatch(buildClick(blocks.find("certificate")))
             }
         }
@@ -508,7 +555,7 @@ class AutoService : AccessibilityService() {
                 found.add(block)
             }
         }
-        if(found.size > 0) {
+        if (found.size > 0) {
             return found[found.size - 1]
         } else {
             throw Exception("Block Not Found")
