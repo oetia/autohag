@@ -99,8 +99,10 @@ class AutoService : AccessibilityService() {
                 dispatch(buildClick(blocks.find("sanity/")))
             } else if (text.containsAll("to the most recent stage")) {
                 dispatch(buildClick(blocks.find("to the most recent stage")))
-            } else if (text.containsAll("auto deploy", "start\\s+-\\d{1,2}")) {
-                dispatch(buildClick(blocks.find("start\\s+-\\d{1,2}")))
+            } else if (text.containsAll("auto deploy", "start")) {
+                dispatch(buildClick(blocks.find("start")))
+            // } else if (text.containsAll("auto deploy", "start\\s+-\\d{1,2}")) {
+            //     dispatch(buildClick(blocks.find("start\\s+-\\d{1,2}")))
             } else if (text.containsAll("the roster for this operation cannot be changed", "mission\\s+start")) {
                 dispatch(buildClick(blocks.find("mission\\s+start")))
             } else if (text.containsAll("2x", "takeover", "unit limit")) {
@@ -117,8 +119,9 @@ class AutoService : AccessibilityService() {
                 dispatch(buildClick(blocks.find("mission\\s+results")))
             } else if (text.containsAll("restore", "sanity")) {
                 log("0SANITY: PAUSING")
-                zeroSanity = true
-                setRoutine("HOME")
+                pauseTimerThread()
+                // zeroSanity = true
+                // setRoutine("HOME")
             }
             // @formatter:on
         } else if (currentRoutine == "BASE") {
@@ -284,7 +287,7 @@ class AutoService : AccessibilityService() {
                 } else {
                     log("RECRUITS DONE")
                     recruitsDone = true
-                    setRoutine("HOME")
+                    // setRoutine("HOME")
                 }
             } else if (text.containsAll("job", "tags")) {
                 if (text.containsAll("top operator")) {
@@ -364,10 +367,19 @@ class AutoService : AccessibilityService() {
                 }
 
                 log("3*")
-                dispatch(buildClick(Point(900, 450)))
-                delay(300)
-                dispatch(buildClick(Point(1675, 875)))
-                delay(300)
+
+                // refresh if available
+                if(text.containsAll("tap to refresh")) {
+                    dispatch(buildClick(blocks.find("tap to refresh")))
+                    delay(500)
+                    dispatch(buildClick(Point(1600, 750)))
+                    delay(500)
+                } else {
+                    dispatch(buildClick(Point(900, 450)))
+                    delay(300)
+                    dispatch(buildClick(Point(1675, 875)))
+                    delay(300)
+                }
             } else if (text.containsAll("skip")) {
                 dispatch(buildClick(blocks.find("skip")))
             } else if (text.containsAll("certificate")) {
