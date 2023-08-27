@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.magicalhag.autohag"
-        minSdk = 30
+        minSdk = 31
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -45,6 +45,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/INDEX.LIST"
         }
     }
 }

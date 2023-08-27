@@ -53,16 +53,16 @@ class AutoServiceUI(autoService: AutoService) {
     private fun configurePowerButton() {
         val powerButton = mLayout.findViewById<ImageButton>(R.id.power)
         powerButton.setOnClickListener {
-            autoService.resetInternalState()
-            autoService.launchArknights()
+            // autoService.resetInternalState()
+            // autoService.launchArknights()
         }
     }
 
     private fun configureIterateButton() {
         val shotButton = mLayout.findViewById(R.id.iterate) as Button
         shotButton.setOnClickListener {
-            runBlocking {
-                autoService.iterate()
+            runBlocking { // very much not main safe
+                // autoService.iterate()
             }
         }
     }
@@ -70,17 +70,19 @@ class AutoServiceUI(autoService: AutoService) {
     private fun configureStartButton() {
         val startButton = mLayout.findViewById(R.id.start) as Button
         startButton.setOnClickListener {
-            if (autoService.getTimerThreadSpawned()) {
-                autoService.unpauseTimerThread()
-            } else {
-                autoService.spawnTimerThread()
-            }
+            // if (autoService.getTimerThreadSpawned()) {
+            //     autoService.unpauseTimerThread()
+            // } else {
+            //     autoService.spawnTimerThread()
+            // }
         }
     }
 
     private fun configureStopButton() {
         val stopButton = mLayout.findViewById(R.id.stop) as Button
-        stopButton.setOnClickListener { autoService.pauseTimerThread() }
+        stopButton.setOnClickListener {
+            // autoService.pauseTimerThread()
+        }
     }
 
     inner class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
@@ -88,7 +90,7 @@ class AutoServiceUI(autoService: AutoService) {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             if (parent != null) {
                 val text = parent.getItemAtPosition(position)
-                autoService.setRoutine(text.toString())
+                // autoService.setRoutine(text.toString())
             }
         }
 
