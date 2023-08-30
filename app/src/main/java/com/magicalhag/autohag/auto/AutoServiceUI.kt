@@ -14,7 +14,10 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Spinner
+import com.magicalhag.autohag.AutoService
 import com.magicalhag.autohag.R
+import com.magicalhag.autohag.auto.games.arknightsLaunch
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class AutoServiceUI(autoService: AutoService) {
@@ -54,15 +57,15 @@ class AutoServiceUI(autoService: AutoService) {
         val powerButton = mLayout.findViewById<ImageButton>(R.id.power)
         powerButton.setOnClickListener {
             // autoService.resetInternalState()
-            // autoService.launchArknights()
+            autoService.arknightsLaunch()
         }
     }
 
     private fun configureIterateButton() {
         val shotButton = mLayout.findViewById(R.id.iterate) as Button
         shotButton.setOnClickListener {
-            runBlocking { // very much not main safe
-                // autoService.iterate()
+            autoService.coroutineScope.launch { // not good if unpaused
+                autoService.badump(testing = true)
             }
         }
     }
@@ -70,18 +73,14 @@ class AutoServiceUI(autoService: AutoService) {
     private fun configureStartButton() {
         val startButton = mLayout.findViewById(R.id.start) as Button
         startButton.setOnClickListener {
-            // if (autoService.getTimerThreadSpawned()) {
-            //     autoService.unpauseTimerThread()
-            // } else {
-            //     autoService.spawnTimerThread()
-            // }
+            autoService.BEEPBEEPBEEP()
         }
     }
 
     private fun configureStopButton() {
         val stopButton = mLayout.findViewById(R.id.stop) as Button
         stopButton.setOnClickListener {
-            // autoService.pauseTimerThread()
+            autoService.coma()
         }
     }
 
@@ -90,7 +89,7 @@ class AutoServiceUI(autoService: AutoService) {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             if (parent != null) {
                 val text = parent.getItemAtPosition(position)
-                // autoService.setRoutine(text.toString())
+                autoService.updateState(text.toString())
             }
         }
 

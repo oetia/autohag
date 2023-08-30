@@ -5,6 +5,7 @@ import android.accessibilityservice.AccessibilityService.TakeScreenshotCallback
 import android.graphics.Bitmap
 import android.view.Display
 import com.google.mlkit.vision.common.InputImage
+import com.magicalhag.autohag.AutoService
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
