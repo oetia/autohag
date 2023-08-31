@@ -33,7 +33,6 @@ fun AutoService.arknightsLaunch() {
     }
 }
 
-
 suspend fun AutoService.arknightsLogin(ocrout: Text) {
     if (ocrout.check("clear cache", "start"))
         dispatch(ocrout.find("start").buildClick())
@@ -114,6 +113,8 @@ val arknightsRecruitCombos = arrayOf(
     arrayOf("nuker")
 )
 
+// issues regarding the if statemetn checks not being popped off
+// that's something that i need to consider carefully and get more right
 suspend fun AutoService.arknightsRecruit(ocrout: Text) {
     if (ocrout.check("friends", "archive", "recruit")) {
         dispatch(ocrout.find("recruit").buildClick())
@@ -171,12 +172,4 @@ suspend fun AutoService.arknightsRecruit(ocrout: Text) {
 suspend fun AutoService.arknightsBase() {
 
 }
-
-/*
-look for text
-click on text
-
-works everywhere but base
-
- */
 
