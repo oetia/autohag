@@ -47,14 +47,14 @@ class AutoService : AccessibilityService() {
     suspend fun badump(testing: Boolean = false) {
 
         if (sleeping && !testing) {
-            log("zzzZZZz")
+            // log("zzzZZZz")
             return
         }
 
         val image = getImageScreenshot()
         val ocrout = extractTextFromImage(image)
 
-        log(ocrout.text)
+        // log(ocrout.text)
 
         try {
             arknights(ocrout)
@@ -96,7 +96,7 @@ class AutoService : AccessibilityService() {
         heartbeat = coroutineScope.launch {
             while (true) {
                 badumps += 1
-                log("*~badump~* ($badumps)")
+                // log("*~badump~* ($badumps)")
                 badump()
                 delay(1000L)
             }

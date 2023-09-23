@@ -20,50 +20,50 @@ fun AutoService.toast(message: Any) {
     }
 }
 
-fun Text.find(text: String, roi: Rect? = null, idx: Int = 0): Text.TextBlock {
-    return this.textBlocks.find(text, roi, idx)
+fun Text.find(
+    text: String,
+    roi: Rect = Rect(
+        Int.MIN_VALUE, Int.MIN_VALUE,
+        Int.MAX_VALUE, Int.MAX_VALUE
+    )
+): List<Text.Line> {
+    return this.textBlocks.find1(text, roi)
 }
 
-fun List<Text.TextBlock>.find(text: String, roi: Rect? = null, idx: Int = 0): Text.TextBlock {
-    val found = ArrayList<Text.TextBlock>()
+fun List<Text.TextBlock>.find1(
+    text: String,
+    roi: Rect = Rect(
+        Int.MIN_VALUE, Int.MIN_VALUE,
+        Int.MAX_VALUE, Int.MAX_VALUE
+    )
+): List<Text.Line> {
+    val found = mutableListOf<Text.Line>()
     for (block in this) {
-        block.lines
-        if (block.text.lowercase().contains(text.toRegex())) {
-            if(roi != null) {
-                if(roi.contains(block.boundingBox as Rect)) {
-                    found.add(block)
-                }
-            } else {
-                found.add(block)
-            }
-        }
+        val subFound = block.lines.find2(text, roi)
+        found.addAll(subFound)
     }
-    if(found.size >= idx) {
-        return found[idx]
-    } else {
-        throw Exception("Block Not Found")
-    }
+    return found
 }
 
-fun Text.findAll(text: String, roi: Rect? = null): ArrayList<Text.TextBlock> {
-    return this.textBlocks.findAll(text, roi)
-}
-
-fun List<Text.TextBlock>.findAll(text: String, roi: Rect? = null): ArrayList<Text.TextBlock> {
-    val found = ArrayList<Text.TextBlock>()
-    for (block in this) {
-        if (block.text.lowercase().contains(text.toRegex())) {
-            if(roi != null) {
-                if(roi.contains(block.boundingBox as Rect)) {
-                    found.add(block)
-                }
-            } else {
-                found.add(block)
-            }
+fun List<Text.Line>.find2(
+    text: String,
+    roi: Rect = Rect(
+        Int.MIN_VALUE, Int.MIN_VALUE,
+        Int.MAX_VALUE, Int.MAX_VALUE
+    )
+): List<Text.Line> {
+    val found = mutableListOf<Text.Line>()
+    for (line in this) {
+        if (
+            line.text.lowercase().contains(text.toRegex()) &&
+            roi.contains(line.boundingBox as Rect)
+        ) {
+            found.add(line)
         }
     }
     return found
 }
+
 
 fun Text.check(vararg regExs: String): Boolean {
     return this.text.check(*regExs)
@@ -81,7 +81,7 @@ fun String.check(vararg regExs: String): Boolean {
     return contains.size == regExs.size
 }
 
-fun Text.TextBlock.getCenter(): Point {
+fun Text.Line.getCenter(): Point {
     val centerX = (this.cornerPoints!![1].x + this.cornerPoints!![0].x) / 2
     val centerY = (this.cornerPoints!![2].y + this.cornerPoints!![1].y) / 2
     return Point(centerX, centerY)

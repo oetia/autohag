@@ -9,6 +9,7 @@ import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.AutoService
 import kotlinx.coroutines.launch
 import com.magicalhag.autohag.auto.*
+import kotlinx.coroutines.delay
 
 
 // have some kind of intermediate management function that tracks completion
@@ -20,7 +21,7 @@ suspend fun AutoService.arknights(ocrout: Text) {
         "0SANITY" -> arknightsZeroSanity(ocrout)
         "RECR" -> arknightsRecruit(ocrout)
         "BASE" -> arknightsBase(ocrout)
-        "RESET" -> arknightsBaseResetInternalState(ocrout)
+        "RESET" -> resetBaseTpsState()
     }
 }
 
@@ -39,10 +40,24 @@ fun AutoService.arknightsLaunch() {
 }
 
 suspend fun AutoService.arknightsHomewardBound(ocrout: Text) {
-    if (ocrout.check("clear cache", "start")) {
+
+    // if (
+    //     ocrout.check("oripathy") ||
+    //     ocrout.check("orignium") ||
+    //     ocrout.check("catastrophe") ||
+    //     ocrout.check("nomadic city") ||
+    //     ocrout.check("rhodes island") ||
+    //     ocrout.check("lungmen") ||
+    //     ocrout.check("victorian empire")
+    // ) {
+    //     dispatch(Point(500, 500).buildClick())
+    // } else
+    if (ocrout.check("start", "check preannounce", "account management", "customer service")) {
         dispatch(ocrout.find("start").buildClick())
-    } else if (ocrout.check("start", "check preannounce", "account management", "customer service")) {
-        dispatch(ocrout.find("start").buildClick())
+    } else if (ocrout.check("terra")) {
+
+    } else if(ocrout.check("resource today")) {
+        dispatch(ocrout.find("resource today").buildClick())
     } else if (ocrout.check("daily supply")) {
         dispatch(Point(2075, 90).buildClick())
     } else if (ocrout.check("event", "system")) { // figure out how to get this right
@@ -188,32 +203,52 @@ val baseFactoryOperatorCombos = arrayOf(
     arrayOf("ceobe", "vermeil", "beanstalk"),
 )
 
-var baseCollected = false
-var dormsCleared = false
-var baseCollectionEmergency = false
-var tpsDone = false
-var tpsDoneCount = 0
+
+// STATE
+
+var baseCollectionDone = false
+var baseCollectionHasEmergency = false
+
+var baseTPsDone = false
+var baseTPsNumDone = 0
+var baseTPsOPsChecked = false
+var baseTpsOPsCheckedRTF = false
+var baseTPsNamesFound = mutableListOf<String>()
+var baseTPsChosenCombos = mutableListOf<List<String>>()
+val baseTPsCombos = listOf(
+    listOf("lappland", "texas", "exusiai"),
+    listOf("shamare", "kafka", "tequila"),
+    listOf("gummy", "catapult", "midnight"),
+    listOf("matoimaru", "ambriel", "mousse"),
+    listOf("fang", "yato", "melantha"),
+    listOf("quartz", "pozëmka", "tuye"),
+    listOf("silverash", "jaye", "myrtle")
+)
+fun resetBaseTpsState() {
+    baseTPsDone = false
+    baseTPsNumDone = 0
+    baseTPsOPsChecked = false
+    baseTPsNamesFound = mutableListOf<String>()
+
+}
+
+//
 suspend fun AutoService.arknightsBase(ocrout: Text) {
 
-    baseCollected = true
-    if(!baseCollected) {
+    baseCollectionDone = true
+    if(ocrout.check("friends", "archives")) {
+        dispatch(ocrout.find("base", Rect(1700, 860, 2095, 1045)).buildClick())
+    }
+    else if(!baseCollectionDone) {
         arknightsBaseCollection(ocrout)
-    } else if(!tpsDone) {
+    } else if(!baseTPsDone) {
         arknightsBaseTradingPosts(ocrout)
     }
 }
 
-suspend fun AutoService.arknightsBaseResetInternalState(ocrout: Text) {
-    baseCollected = false
-    baseCollectionEmergency = false
-    dormsCleared = false
-    tpsDone = false
-    tpsDoneCount = 0
-}
-
 suspend fun AutoService.arknightsBaseCollection(ocrout: Text) {
     if(ocrout.check("overview", "building mode")) {
-        if(!baseCollectionEmergency) {
+        if(!baseCollectionHasEmergency) {
             dispatch(Point(2225, 125).buildClick())
         } else {
             dispatch(Point(2225, 225).buildClick())
@@ -226,16 +261,16 @@ suspend fun AutoService.arknightsBaseCollection(ocrout: Text) {
         } else if(ocrout.check("trust")) {
             if(ocrout.check("max trust")) {
                 dispatch(ocrout.find("backlog").buildClick())
-                baseCollected = true
+                baseCollectionDone = true
             } else {
                 dispatch(ocrout.find("trust").buildClick())
             }
         } else if(ocrout.check("clues")) {
             dispatch(ocrout.find("backlog").buildClick())
-            baseCollected = true
+            baseCollectionDone = true
         } else {
             dispatch(ocrout.find("backlog").buildClick())
-            baseCollectionEmergency = true
+            baseCollectionHasEmergency = true
         }
     }
 }
@@ -246,53 +281,98 @@ suspend fun AutoService.arknightsBaseTradingPosts(ocrout: Text) {
     } else if(ocrout.check("facility info", "operator")) {
         dispatch(Point(600, 900).buildClick())
     } else if(ocrout.check("facilities")) {
-        dispatch(Point(125, 325 + tpsDoneCount * 125).buildClick())
+        dispatch(Point(125, 325 + baseTPsNumDone * 125).buildClick())
         dispatch(Point(425, 1000).buildClick())
     } else if(ocrout.check("deselect all")) {
 
-        // arknightsBaseCheckAvailableOps(ocrout)
 
-        // if(arknightsBaseNeedsSwap(ocrout)) {
-        //     dispatch(ocrout.find("deselect all").buildClick())
-        //     dispatch(ocrout.find("state", roi = Rect(1500, 0, 2100, 125)).buildClick())
-        //     dispatch(ocrout.find("state", roi = Rect(1500, 0, 2100, 125)).buildClick())
-        // }
+        if(ocrout.check("time remaining")) { // operators are selected
+            deselectIfNecessary(ocrout)
+        }
+
+    //     if(arknightsBaseNeedsSwap(ocrout)) {
+    //
+    //     } else {
+    //
+    //     }
+    //
+    //     if(!baseTPsOPsChecked) {
+    //         log(baseTPsNamesFound.size)
+    //         arknightsBaseCheckOps(ocrout)
+    //     } else if(!baseTpsOPsCheckedRTF) {
+    //         dispatch(buildSwipe(Point(2140, 535), Point(300, 535), 300L))
+    //     } else if(baseTPsChosenCombos.size == 0) {
+    //         for (baseTPsOPCombo in baseTPsCombos) {
+    //             if (baseTPsNamesFound.containsAll(baseTPsOPCombo)) {
+    //                 log(baseTPsOPCombo)
+    //                 baseTPsChosenCombos.add(baseTPsOPCombo)
+    //                 if(baseTPsChosenCombos.size == 3) { break }
+    //             }
+    //         }
+    //     } else if (baseTPsChosenCombos.size == 3) {
+    //         log("SANITY CHEC")
+    //         val combo = baseTPsChosenCombos[baseTPsNumDone]
+    //         log(combo)
+    //     }
     }
 }
 
-// suspend fun AutoService.arknightsBaseCheckAvailableOps(ocrout: Text) {
-//     ocrout.findAll("[a-zA-Z0-9_]", Rect(595, 470, 2330, ))
-// }
+suspend fun AutoService.arknightsBaseCheckOps(ocrout: Text) {
+    val row1Names = ocrout.find("\\S", Rect(635, 475, 2335, 530))
+    val row2Names = ocrout.find("\\S", Rect(635, 895, 2335, 950))
+    val names = mutableListOf<Text.Line>()
+    names.addAll(row1Names)
+    names.addAll(row2Names)
+
+    for (name in names) {
+        baseTPsNamesFound.add(name.text.lowercase())
+        log(name.text)
+    }
+
+    if("bagpipe" !in baseTPsNamesFound) {
+        dispatch(buildSwipe(Point(2140, 535), Point(780, 535)))
+        delay(10)
+        dispatch(Point(780, 535).buildClick(duration = 500))
+    } else {
+        baseTPsOPsChecked = true
+    }
+}
+
+
+suspend fun AutoService.deselectIfNecessary(ocrout: Text) {
+    var shouldDeselect = false
+    if(ocrout.check("fatigued")) {
+        shouldDeselect = true
+    } else if(ocrout.check("time remaining")) {
+        val timeRemainingBlock = ocrout.find("\\d", Rect(285, 215, 725, 385))
+        val timeRemaining = timeRemainingBlock[0].text.replace(":", "").toInt()
+        log(timeRemaining)
+        shouldDeselect = timeRemaining < 240000
+    }
+
+    if(shouldDeselect) {
+        dispatch(ocrout.find("deselect all").buildClick())
+        dispatch(ocrout.find("state", Rect(1530, 0, 2000, 130)).buildClick())
+        dispatch(ocrout.find("state", Rect(1530, 0, 2000, 130)).buildClick())
+    }
+}
+
+suspend fun AutoService.checkOps(ocrout: Text) {
+
+}
 
 suspend fun AutoService.arknightsBaseNeedsSwap(ocrout: Text): Boolean {
     if(ocrout.check("fatigued")) {
         return true
     } else if(ocrout.check("time remaining")) {
         val timeRemainingBlock = ocrout.find("\\d", Rect(285, 215, 725, 385))
-        val timeRemaining = timeRemainingBlock.text.replace(":", "").replace("Working", "").replace(" ", "").replace("\n", "").toInt()
+        val timeRemaining = timeRemainingBlock[0].text.replace(":", "").toInt()
         log(timeRemaining)
         return timeRemaining < 240000
     }
     return true
 }
+
 suspend fun AutoService.arknightsBaseClearDorms(ocrout: Text) {
 
 }
-/*
-rather confront an ugly reality to make the most of it
-than indulge in fantastical delusions
-
-jiale is really smooth socially.
-i have even more respect for him now.
-
-he has energy and he gets people involved
-he was very good about keeping me in the loop
-and getting me to interact with the other people.
-
-that last part of just driving with that one girl into the night
-was really nice for some reason
-
-i think that this experience has brought clarity to me when it comes to the meaning of life
-
-human alignment
- */
