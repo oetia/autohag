@@ -14,11 +14,9 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Spinner
-import com.magicalhag.autohag.AutoService
 import com.magicalhag.autohag.R
-import com.magicalhag.autohag.auto.games.arknightsLaunch
+import com.magicalhag.autohag.auto.games.arknights.misc.arknightsLaunch
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class AutoServiceUI(autoService: AutoService) {
 

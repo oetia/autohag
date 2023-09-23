@@ -1,11 +1,12 @@
-package com.magicalhag.autohag.auto
+package com.magicalhag.autohag.auto.utils.image
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityService.TakeScreenshotCallback
 import android.graphics.Bitmap
 import android.view.Display
 import com.google.mlkit.vision.common.InputImage
-import com.magicalhag.autohag.AutoService
+import com.magicalhag.autohag.auto.AutoService
+import com.magicalhag.autohag.auto.utils.logging.log
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -14,14 +15,14 @@ suspend fun AutoService.takeScreenshotSequential(): AccessibilityService.Screens
     suspendCoroutine {
         log("taking screenshot")
 
-        takeScreenshot(Display.DEFAULT_DISPLAY, dispatcher.executor, object : TakeScreenshotCallback {
+        takeScreenshot(Display.DEFAULT_DISPLAY, backgroundExecutor, object : TakeScreenshotCallback {
             override fun onSuccess(screenshot: AccessibilityService.ScreenshotResult) {
                 log("screenshot taken")
                 it.resume(screenshot)
             }
 
             override fun onFailure(errorCode: Int) {
-                it.resumeWithException(Exception("Screenshot Failed"))
+                it.resumeWithException(Exception("Screenshot Failed - $errorCode"))
             }
         })
     }

@@ -1,15 +1,16 @@
-package com.magicalhag.autohag
+package com.magicalhag.autohag.auto
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Handler
-import android.os.HandlerThread
 import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
-import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.magicalhag.autohag.auto.*
-import com.magicalhag.autohag.auto.games.arknights
+import com.magicalhag.autohag.auto.games.arknights.arknights
+import com.magicalhag.autohag.auto.utils.image.extractTextFromImage
+import com.magicalhag.autohag.auto.utils.image.getImageScreenshot
+import com.magicalhag.autohag.auto.utils.logging.log
+import com.magicalhag.autohag.auto.utils.logging.toast
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -17,6 +18,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class AutoService : AccessibilityService() {
@@ -25,21 +27,16 @@ class AutoService : AccessibilityService() {
 
     val mainHandler = Handler(Looper.getMainLooper())
 
-    // @formatter:off
-    // feels shit having a separate handler thread just because something won't accept executor
-    // if i'm accepting that i'll run cb's on main, then this doesn't really matter
-    // private val handlerThread = HandlerThread("rori")
-    // init { handlerThread.start() }
-    // val handler = Handler(handlerThread.looper)
+    val backgroundExecutor:ExecutorService = Executors.newSingleThreadExecutor { r -> Thread(r, "background") }
+    val recognizer = TextRecognition.getClient(TextRecognizerOptions.Builder().setExecutor(backgroundExecutor).build())
 
-    val dispatcher = Executors.newSingleThreadExecutor { r -> Thread(r, "rorikon") }.asCoroutineDispatcher()
+    private val dispatcher = backgroundExecutor.asCoroutineDispatcher()
+    val coroutineScope = CoroutineScope(CoroutineName("AutoServiceCoroutineScope") + dispatcher)
 
-    val coroutineScope = CoroutineScope(CoroutineName("AutoServiceScope") + dispatcher)
+
     private var heartbeat: Job? = null
     private var badumps = 0
     private var sleeping = true
-
-    val recognizer = TextRecognition.getClient(TextRecognizerOptions.Builder().setExecutor(dispatcher.executor).build())
 
     var state: String = ""
     // @formatter:on
@@ -47,7 +44,7 @@ class AutoService : AccessibilityService() {
     suspend fun badump(testing: Boolean = false) {
 
         if (sleeping && !testing) {
-            // log("zzzZZZz")
+            log("zzzZZZz")
             return
         }
 
@@ -64,13 +61,11 @@ class AutoService : AccessibilityService() {
     }
 
     fun BEEPBEEPBEEP() {
-        log("BEEPBEEPBEEP")
         toast("BEEPBEEPBEEP")
         sleeping = false
     }
 
     fun coma() {
-        log("coma induced")
         toast("coma induced")
         sleeping = true
     }
@@ -123,9 +118,6 @@ class AutoService : AccessibilityService() {
 
     override fun onAccessibilityEvent(e: AccessibilityEvent) {
         log("AccessibilityEvent: $e")
-        if (e.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            log("the fuck?")
-        }
     }
 }
 

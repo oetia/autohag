@@ -1,33 +1,12 @@
-package com.magicalhag.autohag.auto
+package com.magicalhag.autohag.auto.utils.dispatch
 
-import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.graphics.Point
 import com.google.mlkit.vision.text.Text
-import com.magicalhag.autohag.AutoService
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-
-
-suspend fun AutoService.dispatch(gesture: GestureDescription): Boolean = suspendCoroutine {
-    dispatchGesture(gesture, object : AccessibilityService.GestureResultCallback() {
-        override fun onCompleted(gestureDescription: GestureDescription?) {
-            super.onCompleted(gestureDescription)
-            log("gesture completed")
-            it.resume(true)
-        }
-
-        override fun onCancelled(gestureDescription: GestureDescription?) {
-            super.onCancelled(gestureDescription)
-            log("gesture cancelled")
-            it.resume(false)
-        }
-    }, null)
-}
+import com.magicalhag.autohag.auto.utils.logging.log
 
 fun List<Text.Line>.buildClick(duration: Long = 100L): GestureDescription {
-
     val line = this[0]
     val center = line.getCenter()
 
@@ -66,4 +45,10 @@ fun buildSwipe(startPoint: Point, endPoint: Point, duration: Long = 1000L): Gest
     // gestureBuilder.addStroke(GestureDescription.StrokeDescription(clickPath, 0, 500L))
 
     return gestureBuilder.build()
+}
+
+fun Text.Line.getCenter(): Point {
+    val centerX = (this.cornerPoints!![1].x + this.cornerPoints!![0].x) / 2
+    val centerY = (this.cornerPoints!![2].y + this.cornerPoints!![1].y) / 2
+    return Point(centerX, centerY)
 }
