@@ -9,11 +9,13 @@
 
 
     <string-array name="tasks">
+        <item>BASE</item>
+
         <item>HOME</item>
         <item>0SANITY</item>
         <!-- Base Related Tasks -->
         <item>RECR</item>
-        <item>BASE</item>
+        <item>RESET</item>
         <item>BASE_COLLECT</item>
         <item>BASE_OP_SWAP_DOWN</item>
         <item>BASE_OP_SWAP_UP</item>
