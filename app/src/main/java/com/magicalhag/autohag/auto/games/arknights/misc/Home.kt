@@ -6,9 +6,9 @@ import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.utils.text.check
 
 // perhaps have a callback for onCompletion
-suspend fun AutoService.arknightsHome(ocrout: Text) {
-    if (ocrout.check("friends", "archives", "squads", "operator")) {
-        coma()
+fun AutoService.arknightsHome(text: Text, onCompleted: () -> Unit) {
+    if (text.check("friends", "archives", "squads", "operator")) {
+        onCompleted()
     } else {
         performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
     }

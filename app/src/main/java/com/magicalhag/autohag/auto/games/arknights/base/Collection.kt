@@ -9,34 +9,37 @@ import com.magicalhag.autohag.auto.utils.dispatch.dispatch
 import com.magicalhag.autohag.auto.utils.text.find
 
 
-var baseCollectionDone = false
-var baseCollectionHasEmergency = false
-
-suspend fun AutoService.arknightsBaseCollection(ocrout: Text) {
-    if(ocrout.check("overview", "building mode")) {
-        if(!baseCollectionHasEmergency) {
+suspend fun AutoService.arknightsBaseCollection(
+    text: Text,
+    emergency: Boolean,
+    onCompletion: () -> Unit,
+) {
+    if (text.check("overview", "building mode")) {
+        if (!emergency) {
             dispatch(Point(2225, 125).buildClick())
         } else {
             dispatch(Point(2225, 225).buildClick())
         }
-    } else if(ocrout.check("backlog")) {
-        if(ocrout.check("collectable")) {
-            dispatch(ocrout.find("collectable").buildClick())
-        } else if(ocrout.check("orders acquired")) {
-            dispatch(ocrout.find("orders acquired").buildClick())
-        } else if(ocrout.check("trust")) {
-            if(ocrout.check("max trust")) {
-                dispatch(ocrout.find("backlog").buildClick())
-                baseCollectionDone = true
+    } else if (text.check("backlog")) {
+        if (text.check("collectable")) {
+            dispatch(text.find("collectable").buildClick())
+        } else if (text.check("orders acquired")) {
+            dispatch(text.find("orders acquired").buildClick())
+        } else if (text.check("trust")) {
+            if (text.check("max trust")) {
+                dispatch(text.find("backlog").buildClick())
+                onCompletion()
             } else {
-                dispatch(ocrout.find("trust").buildClick())
+                dispatch(text.find("trust").buildClick())
             }
-        } else if(ocrout.check("clues")) {
-            dispatch(ocrout.find("backlog").buildClick())
-            baseCollectionDone = true
+        } else if (text.check("clues")) {
+            dispatch(text.find("backlog").buildClick())
+            onCompletion()
         } else {
-            dispatch(ocrout.find("backlog").buildClick())
-            baseCollectionHasEmergency = true
+            dispatch(text.find("backlog").buildClick())
+            state = "B4SE_COL_E"
         }
+    } else {
+        arknightsBase(text) {}
     }
 }

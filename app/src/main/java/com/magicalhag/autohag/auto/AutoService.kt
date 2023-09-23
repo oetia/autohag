@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+
 class AutoService : AccessibilityService() {
 
     private var autoServiceUI: AutoServiceUI? = null

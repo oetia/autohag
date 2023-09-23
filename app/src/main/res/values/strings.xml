@@ -9,7 +9,6 @@
 
 
     <string-array name="tasks">
-
         <item>ALL</item>
         <item>STRTUP</item>
         <item>HOME</item>
@@ -17,11 +16,12 @@
         <item>RECR</item>
 
         <item>B4SE</item>
-        <!-- Base Related Tasks -->
-        <item>RESET</item>
-        <item>BASE_COLLECT</item>
-        <item>BASE_OP_SWAP_DOWN</item>
-        <item>BASE_OP_SWAP_UP</item>
-        <item>BASE_R_OPS</item>
+        <item>B4SE_COL</item>
+        <item>B4SE_COL_E</item>
+        <item>B4SE_TP_1</item>
+        <item>B4SE_TP_MC</item>
+
+        <item>B4SE_TP</item>
+        <item>B4SE_FAC</item>
     </string-array>
 </resources>

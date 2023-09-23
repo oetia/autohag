@@ -8,7 +8,69 @@ import com.magicalhag.autohag.auto.utils.text.check
 import com.magicalhag.autohag.auto.utils.dispatch.dispatch
 import com.magicalhag.autohag.auto.utils.text.find
 import com.magicalhag.autohag.auto.utils.logging.log
+import kotlinx.coroutines.delay
 
+
+suspend fun AutoService.arknightsRecruitment(text: Text, onCompletion: () -> Unit) {
+
+    fun findBestTagCombo(): Array<String>? {
+        for (combo in arknightsRecruitCombos) {
+            if (text.check(*combo)) {
+                log(combo)
+                return combo
+            }
+        }
+        return null
+    }
+    suspend fun selectTags(combo: Array<String>) {
+        for (tag in combo) {
+            dispatch(text.find(tag).buildClick())
+        }
+    }
+    suspend fun confirmRecruitment() {
+        dispatch(Point(900, 450).buildClick())
+        dispatch(Point(1675, 875).buildClick())
+        delay(1000) // waiting on server - good practice
+    }
+
+    if (text.check("friends", "archive", "recruit")) {
+        dispatch(text.find("recruit").buildClick())
+    } else if (text.check("recruit(?!ment)", "1", "2", "3", "4")) {
+        if (text.check("recruit now")) {
+            dispatch(text.find("recruit now").buildClick())
+        } else if (text.check("hire")) {
+            dispatch(text.find("hire").buildClick())
+            delay(1000)
+        } else {
+            onCompletion()
+        }
+    } else if (text.check("job", "tags")) {
+        if (text.check("top operator")) {
+            onCompletion()
+            return
+        }
+        val bestTagCombo = findBestTagCombo()
+        if(bestTagCombo != null) {
+            selectTags(bestTagCombo)
+            confirmRecruitment()
+        } else {
+            if(text.check("tap to refresh")) {
+                dispatch(text.find("tap to refresh").buildClick())
+            } else {
+                confirmRecruitment()
+            }
+        }
+    } else if (text.check("skip")) {
+        dispatch(text.find("skip").buildClick())
+    } else if (text.check("certificate")) {
+        dispatch(text.find("certificate").buildClick())
+    } else if (text.check("spend 1 refresh attempt?")) {
+        dispatch(Point(1600, 750).buildClick())
+        delay(1000)
+    } else {
+        arknightsHome(text) {}
+    }
+}
 
 val arknightsRecruitCombos = arrayOf(
     // https://gamepress.gg/arknights/core-gameplay/arknights-operator-recruitment-guide
@@ -60,52 +122,3 @@ val arknightsRecruitCombos = arrayOf(
     arrayOf("support(?!er)"),
     arrayOf("nuker")
 )
-
-suspend fun AutoService.arknightsRecruit(ocrout: Text) {
-    if (ocrout.check("friends", "archive", "recruit")) {
-        dispatch(ocrout.find("recruit").buildClick())
-    } else if (ocrout.check("recruit(?!ment)", "1", "2", "3", "4")) {
-        if (ocrout.check("recruit now")) {
-            dispatch(ocrout.find("recruit now").buildClick())
-        } else if (ocrout.check("hire")) {
-            dispatch(ocrout.find("hire").buildClick())
-        } else {
-            coma()
-        }
-    } else if (ocrout.check("skip")) {
-        dispatch(ocrout.find("skip").buildClick())
-    } else if (ocrout.check("certificate")) {
-        dispatch(ocrout.find("certificate").buildClick())
-    } else if (ocrout.check("job", "tags")) {
-        if (ocrout.check("top operator")) {
-            coma()
-            return
-        } else if (ocrout.check("09")) {
-            dispatch(Point(1675, 875).buildClick())
-            return
-        }
-
-        var foundCombo = false
-        for (combo in arknightsRecruitCombos) {
-            if (ocrout.check(*combo)) {
-                log(combo)
-                for (tag in combo) {
-                    dispatch(ocrout.find(tag).buildClick())
-                }
-
-                foundCombo = true
-                break
-            }
-        }
-
-        if(!foundCombo && ocrout.check("tap to refresh")) {
-            dispatch(ocrout.find("tap to refresh").buildClick())
-        } else {
-            if(!foundCombo) { log("3*") }
-            dispatch(Point(900, 450).buildClick())
-        }
-    } else if (ocrout.check("spend 1 refresh attempt?")) {
-        dispatch(Point(1600, 750).buildClick())
-    }
-}
-
