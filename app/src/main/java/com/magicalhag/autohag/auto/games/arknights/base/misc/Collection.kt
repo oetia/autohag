@@ -1,8 +1,9 @@
-package com.magicalhag.autohag.auto.games.arknights.base
+package com.magicalhag.autohag.auto.games.arknights.base.misc
 
 import android.graphics.Point
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
+import com.magicalhag.autohag.auto.games.arknights.ArknightsState
 import com.magicalhag.autohag.auto.utils.dispatch.buildClick
 import com.magicalhag.autohag.auto.utils.text.check
 import com.magicalhag.autohag.auto.utils.dispatch.dispatch
@@ -12,6 +13,7 @@ import com.magicalhag.autohag.auto.utils.text.find
 suspend fun AutoService.arknightsBaseCollection(
     text: Text,
     emergency: Boolean,
+    onEmergency: () -> Unit,
     onCompletion: () -> Unit,
 ) {
     if (text.check("overview", "building mode")) {
@@ -37,9 +39,9 @@ suspend fun AutoService.arknightsBaseCollection(
             onCompletion()
         } else {
             dispatch(text.find("backlog").buildClick())
-            state = "B4SE_COL_E"
+            onEmergency()
         }
     } else {
-        arknightsBase(text) {}
+        arknightsBaseHome(text) {}
     }
 }

@@ -1,4 +1,4 @@
-package com.magicalhag.autohag.auto.games.arknights.base
+package com.magicalhag.autohag.auto.games.arknights.base.misc
 
 // suspend fun AutoService.arknightsBaseTradingPosts(ocrout: Text) {
 //     if(ocrout.check("overview", "building mode")) {

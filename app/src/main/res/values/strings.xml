@@ -14,14 +14,7 @@
         <item>HOME</item>
         <item>0SANITY</item>
         <item>RECR</item>
-
         <item>B4SE</item>
-        <item>B4SE_COL</item>
-        <item>B4SE_COL_E</item>
-        <item>B4SE_TP_1</item>
-        <item>B4SE_TP_MC</item>
-
-        <item>B4SE_TP</item>
-        <item>B4SE_FAC</item>
+        <item>RESET</item>
     </string-array>
 </resources>

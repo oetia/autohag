@@ -34,13 +34,11 @@ class AutoService : AccessibilityService() {
     private val dispatcher = backgroundExecutor.asCoroutineDispatcher()
     val coroutineScope = CoroutineScope(CoroutineName("AutoServiceCoroutineScope") + dispatcher)
 
-
     private var heartbeat: Job? = null
     private var badumps = 0
     private var sleeping = true
 
-    var state: String = ""
-    // @formatter:on
+    var task: String = ""
 
     suspend fun badump(testing: Boolean = false) {
 
@@ -80,9 +78,9 @@ class AutoService : AccessibilityService() {
     }
 
     fun updateState(newState: String) {
-        state = newState
-        log("STATE: $state")
-        toast("STATE: $state")
+        task = newState
+        log("STATE: $task")
+        toast("STATE: $task")
     }
 
     // lifecycle
