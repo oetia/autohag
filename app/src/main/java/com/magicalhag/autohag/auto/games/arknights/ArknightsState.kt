@@ -5,7 +5,8 @@ class ArknightsState {
 
     var task = "HOME"
 
-    var baseTask = "REALIGN1"
+    // var baseTask = "REALIGN1"
+    var baseTask = "REALIGN11"
     // var baseTask = "TP1"
 
     var realignTask = "HOME"
@@ -15,6 +16,10 @@ class ArknightsState {
 
     var tpTask = "HOME"
     // var tpTask = "CHECK_AVAILABLE_OPERATORS"
+    // var tpTask = "CURRENT_OPERATOR_MORALE_CHECK"
+    // var tpTask = "OPERATOR_CLEAR"
+    // var tpTask = "ADD_NEW_OPS"
+
     var tpAvailableOpNames = mutableListOf<String>()
     var tpBlacklistedOpNames = mutableListOf<String>()
     var tpAlreadySelectedOpNames = mutableListOf<String>()

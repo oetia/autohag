@@ -1,5 +1,10 @@
 package com.magicalhag.autohag.auto.games.arknights.base.misc
 
+import android.graphics.Rect
+import com.google.mlkit.vision.text.Text
+import com.magicalhag.autohag.auto.utils.text.check
+import com.magicalhag.autohag.auto.utils.text.find
+
 // suspend fun AutoService.arknightsBaseTradingPosts(ocrout: Text) {
 //     if(ocrout.check("overview", "building mode")) {
 //         dispatch(ocrout.find("trading post").buildClick())
@@ -112,4 +117,31 @@ package com.magicalhag.autohag.auto.games.arknights.base.misc
 //         dispatch(Point(2140, 535).buildClick())
 //         delay(1000)
 //     }
+// }
+
+
+
+
+// if(text.check("assigned operators")) {
+//     val ops = mutableListOf<Text.Line>()
+//     val row1Ops = text.find("\\S", Rect(635, 475, 1050, 530))
+//     val row2Ops = text.find("\\S", Rect(635, 900, 830, 955))
+//     ops.addAll(row1Ops)
+//     ops.addAll(row2Ops)
+//     val opNames = ops.map { it.text.lowercase() }
+//
+//     if(text.check("fatigued")) {
+//         onLowMorale(opNames)
+//     } else {
+//         val timeRemainingBlock = text.find("\\d", Rect(285, 215, 725, 385))
+//         val timeRemaining = timeRemainingBlock[0].text.replace(":", "").replace(".", "").replace("-", "").toInt()
+//
+//         if(timeRemaining < 240000) {
+//             onLowMorale(opNames)
+//         } else {
+//             onHighMorale(opNames)
+//         }
+//     }
+// } else {
+//     onEmpty()
 // }

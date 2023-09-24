@@ -12,150 +12,220 @@ import com.magicalhag.autohag.auto.utils.text.check
 import com.magicalhag.autohag.auto.utils.text.find
 import kotlinx.coroutines.delay
 
+// i think that most of this code can be re-used for every single facility type
 
-suspend fun AutoService.arknightsBaseTradingPostHome(text: Text, number: Int, onCompletion: () -> Unit) {
+val facilityIdToPoint = hashMapOf<String, Point>(
+    "CC" to Point(1455, 265),
+
+    "TP1" to Point(375, 470),
+    "TP2" to Point(660, 470),
+    "PP1" to Point(955, 470),
+
+    "TP3" to Point(230, 615) ,
+    "FAC1" to Point(515, 615),
+    "PP2" to Point(805, 615),
+
+    "FAC2" to Point(375, 760),
+    "FAC3" to Point(660, 760),
+    "PP3" to Point(955, 760),
+
+    "OFFICE" to Point(2135, 610),
+
+    "DORM1" to Point(1390, 470),
+    "DORM2" to Point(1540, 615),
+    "DORM3" to Point(1390, 760),
+    "DORM4" to Point(1540, 905)
+)
+
+val facilityCombos = hashMapOf<String, List<List<String>>>(
+    "CC" to listOf(
+        listOf("kal'tsit", "amiya", "tachanka", "blitz", "frost"),
+    ),
+    "TP" to listOf(
+        listOf("lappland", "texas", "exusiai"),
+        listOf("shamare", "kafka", "tequila"),
+        listOf("gummy", "catapult", "midnight"),
+        listOf("matoimaru", "ambriel", "mousse"),
+        listOf("fang", "yato", "melantha"),
+        listOf("quartz", "pozëmka", "tuye"),
+        listOf("silverash", "jaye", "myrtle")
+    ),
+    "FAC" to listOf(
+        listOf("purestream", "weedy", "eunectes"),
+        listOf("gravel", "haze", "spot"),
+        listOf("mizuki", "highmore", "ptilopsis"),
+        listOf("ceobe", "vermeil", "beanstalk"),
+        listOf("perfumer", "roberta", "jessica"),
+        listOf("vulcan", "bena", "bubble"),
+        listOf("vanilla", "steward", "asbestos")
+    ),
+    "PP" to listOf(),
+    "OFFICE" to listOf(),
+    "DORM" to listOf(),
+
+)
+
+suspend fun AutoService.arknightsBaseFacilityHome(text: Text, facilityId: String, onCompletion: () -> Unit) {
     if (text.check("overview", "building mode")) {
-        val point = when (number) {
-            1 -> { Point(375, 470) }
-            2 -> { Point(660, 470) }
-            else -> { Point(230, 610) }
-        }
-        dispatch(point.buildClick())
+        val point = facilityIdToPoint[facilityId]
+        dispatch(point!!.buildClick())
         onCompletion()
     } else {
         arknightsBaseHome(text) {}
     }
 }
 
-suspend fun AutoService.arknightsBaseTradingPostOperatorManagement(text: Text, number: Int, onCompletion: () -> Unit) {
+suspend fun AutoService.arknightsBaseFacilityOperatorManagement(text: Text, facilityId: String, onCompletion: () -> Unit) {
     if(text.check("facility info", "operator")) {
-        dispatch(text.find("originium order").buildClick())
-    } else if(text.check("facilities")) {
-        dispatch(Point(480, 960).buildClick())
-        onCompletion()
+        if(text.check("assigned operators")) {
+            onCompletion()
+        } else {
+            dispatch(text.find("operator").buildClick())
+        }
     } else {
-        arknightsBaseTradingPostHome(text, number) {}
+        arknightsBaseFacilityHome(text, facilityId) {}
     }
 }
 
-suspend fun AutoService.arknightsBaseCheckAvailableOperators(
-    text: Text, number: Int, availableOpNames: List<String>,
+suspend fun AutoService.arknightsBaseFacilityCheckAvailableOperators(
+    text: Text, facilityId: String, availableOpNames: List<String>,
     onContinuation: (List<String>) -> Unit,
     onCompletion: () -> Unit
 ) {
-    if(text.check("deselect all")) {
-        if(availableOpNames.size < 40) {
-            val ops = mutableListOf<Text.Line>()
-            val row1Ops = text.find("\\S", Rect(635, 475, 2335, 530))
-            val row2Ops = text.find("\\S", Rect(635, 895, 2335, 950))
-            ops.addAll(row1Ops)
-            ops.addAll(row2Ops)
+    // no need to check available ops if checked prior or no combos
+    val facilityType = facilityId.replace(Regex("\\d+"), "")
+    if(availableOpNames.size >= 40 || facilityType == "PP" || facilityType == "OFFICE" || facilityType == "DORMS") {
+        onCompletion(); return;
+    }
 
-            dispatch(buildSwipe(Point(2140, 535), Point(815, 535), duration = 1500L))
-            dispatch((Point(815, 535).buildClick()))
+    if(text.check("facility info", "operator", "assigned operators")) {
+        dispatch(Point(1800, 235).buildClick())
+    }
+    else if(text.check("deselect all")) {
+        val ops = mutableListOf<Text.Line>()
+        val row1Ops = text.find("\\S", Rect(635, 475, 2335, 530))
+        val row2Ops = text.find("\\S", Rect(635, 895, 2335, 950))
+        ops.addAll(row1Ops)
+        ops.addAll(row2Ops)
 
-            onContinuation(ops.map { it.text.lowercase() })
-        } else {
-            onCompletion()
-        }
+        dispatch(buildSwipe(Point(2140, 535), Point(815, 535), duration = 1500L))
+        dispatch((Point(815, 535).buildClick()))
+
+        onContinuation(ops.map { it.text.lowercase() })
     } else {
-        arknightsBaseTradingPostOperatorManagement(text, number) {}
+        arknightsBaseFacilityOperatorManagement(text, facilityId) {}
     }
 }
 
 
-suspend fun AutoService.arknightsBaseTradingPostMoraleCheck(
-    text: Text,
+suspend fun AutoService.arknightsBaseFacilityMoraleCheck(
+    text: Text, facilityId: String,
     onEmpty: () -> Unit,
     onLowMorale: (List<String>) -> Unit,
     onHighMorale: (List<String>) -> Unit
 ) {
-    if(text.check("time remaining")) {
-        val ops = mutableListOf<Text.Line>()
-        val row1Ops = text.find("\\S", Rect(635, 475, 1050, 530))
-        val row2Ops = text.find("\\S", Rect(635, 900, 830, 955))
-        ops.addAll(row1Ops)
-        ops.addAll(row2Ops)
-        val opNames = ops.map { it.text.lowercase() }
+    if(text.check("facility info", "operator", "assigned operators")) {
+        if(text.check("morale")) {
+            val moraleBlock = text.find("\\d", Rect(2085, 210, 2210, 260))
+            val moraleText = moraleBlock[0].text
+            val moraleRemaining: Int = moraleText.split("/")[0].replace("O", "0").toInt()
 
-        if(text.check("fatigued")) {
-            onLowMorale(opNames)
-        } else {
-            val timeRemainingBlock = text.find("\\d", Rect(285, 215, 725, 385))
-            val timeRemaining = timeRemainingBlock[0].text.replace(":", "").replace(".", "").replace("-", "").toInt()
+            val opNameLines = mutableListOf<Text.Line>()
+            val opNameLine1 = text.find("\\S", Rect(1800, 165, 2210, 215))
+            val opNameLine2 = text.find("\\S", Rect(1800, 375, 2210, 425))
+            val opNameLine3 = text.find("\\S", Rect(1800, 585, 2210, 635))
+            opNameLines.addAll(opNameLine1); opNameLines.addAll(opNameLine2); opNameLines.addAll(opNameLine3);
+            val opNames = opNameLines.map { it.text.lowercase() }
 
-            if(timeRemaining < 240000) {
-                onLowMorale(opNames)
-            } else {
+            if(moraleRemaining > 12) {
                 onHighMorale(opNames)
+            } else {
+                onLowMorale(opNames)
             }
+        } else {
+            onEmpty()
         }
     } else {
-        onEmpty()
+        arknightsBaseFacilityOperatorManagement(text, facilityId) {}
     }
 }
 
 
-suspend fun AutoService.arknightsBaseTradingPostDeselectOperators(text: Text, number: Int, onCompletion: () -> Unit) {
-    if (text.check("deselect all")) {
-        dispatch(text.find("deselect all").buildClick())
-        dispatch(text.find("state", Rect(1530, 0, 2000, 130)).buildClick())
-        dispatch(text.find("state", Rect(1530, 0, 2000, 130)).buildClick())
+suspend fun AutoService.arknightsBaseFacilityOperatorClear(text: Text, facilityId: String, onCompletion: () -> Unit) {
+    if (text.check("facility info", "assigned operators", "clear")) {
+        val operatorLine = text.find("\\d", Rect(2040, 990, 2335, 1060))
+        val operatorLineSplit = operatorLine[0].text.split(" ")
+        val operatorRatio = operatorLineSplit[operatorLineSplit.size - 1]
+        val operatorCount = operatorRatio.split("/")[0].replace("O", "0").toInt()
 
+        if(operatorCount == 0) {
+            onCompletion()
+        } else {
+            dispatch(text.find("clear").buildClick())
+        }
+    } else if (text.check("selected operators will be removed")) {
+        dispatch(Point(1685, 740).buildClick())
         onCompletion()
     } else {
-        arknightsBaseTradingPostOperatorManagement(text, number) {}
+        arknightsBaseFacilityOperatorManagement(text, facilityId) {}
     }
 }
 
-val combos = listOf(
-    listOf("lappland", "texas", "exusiai"),
-    listOf("shamare", "kafka", "tequila"),
-    listOf("gummy", "catapult", "midnight"),
-    listOf("matoimaru", "ambriel", "mousse"),
-    listOf("fang", "yato", "melantha"),
-    listOf("quartz", "pozëmka", "tuye"),
-    listOf("silverash", "jaye", "myrtle")
-)
-
-suspend fun AutoService.arknightsBaseTradingPostAddNewOps(
-    text: Text,
+suspend fun AutoService.arknightsBaseFacilityAddNewOps(
+    text: Text, facilityId: String,
     availableOpNames: List<String>,
     blacklistedOpNames: List<String>,
     alreadySelectedOpNames: MutableList<String>,
     onCompletion: (List<String>) -> Unit
 ) {
-    var targetOpNames = mutableListOf<String>()
-    for(combo in combos) {
-        if(availableOpNames.containsAll(combo) && !blacklistedOpNames.containsAll(combo)) {
-            targetOpNames.addAll(combo)
-            break
-        }
-    }
 
-    if(targetOpNames.isNotEmpty()) {
-        for(opName in targetOpNames) {
-            if(text.check(opName) && !alreadySelectedOpNames.contains(opName)) {
-                dispatch(text.find(opName).buildClick())
-                alreadySelectedOpNames.add(opName)
+    if(text.check("facility info", "assigned operators")) {
+        dispatch(Point(1990, 235).buildClick())
+    } else {
+        val facilityType = facilityId.replace(Regex("\\d+"), "")
+        val targetOpNames = mutableListOf<String>()
+        for(combo in facilityCombos[facilityType]!!) {
+            // if(availableOpNames.containsAll(combo) && !blacklistedOpNames.containsAll(combo)) {
+            if(availableOpNames.containsAll(combo) && !combo.any { blacklistedOpNames.contains(it) }) {
+                targetOpNames.addAll(combo)
+                break
             }
         }
 
-        if(alreadySelectedOpNames.containsAll(targetOpNames)) {
+        if(targetOpNames.isNotEmpty()) {
+            for(opName in targetOpNames) {
+                if(text.check(opName) && !alreadySelectedOpNames.contains(opName)) {
+                    dispatch(text.find(opName).buildClick())
+                    alreadySelectedOpNames.add(opName)
+                }
+            }
+
+            if(alreadySelectedOpNames.containsAll(targetOpNames)) {
+                dispatch(text.find("confirm").buildClick())
+                delay(1000)
+                onCompletion(targetOpNames)
+            } else {
+                dispatch(buildSwipe(Point(2140, 535), Point(815, 535), duration = 1500L))
+                dispatch((Point(815, 535).buildClick()))
+            }
+        } else { // just take the first three
+            if(facilityType == "PP" || facilityType == "OFFICE") {
+                dispatch(Point(730, 500).buildClick())
+            } else if(facilityType == "TP" || facilityType == "FAC") {
+                dispatch(Point(730, 500).buildClick())
+                dispatch(Point(730, 925).buildClick())
+                dispatch(Point(950, 500).buildClick())
+            } else if(facilityType == "DORM" || facilityType == "CC") {
+                dispatch(Point(730, 500).buildClick())
+                dispatch(Point(730, 925).buildClick())
+                dispatch(Point(950, 500).buildClick())
+                dispatch(Point(950, 925).buildClick())
+                dispatch(Point(1160, 500).buildClick())
+            }
+
             dispatch(text.find("confirm").buildClick())
             delay(1000)
-            onCompletion(targetOpNames)
-        } else {
-            dispatch(buildSwipe(Point(2140, 535), Point(815, 535), duration = 1500L))
-            dispatch((Point(815, 535).buildClick()))
+            onCompletion(listOf()) // theoretically no conflict from not blacklisting these
         }
-    } else { // just take the first three
-        dispatch(Point(730, 500).buildClick())
-        dispatch(Point(730, 925).buildClick())
-        dispatch(Point(1025, 500).buildClick())
-
-        dispatch(text.find("confirm").buildClick())
-        delay(1000)
-        onCompletion(listOf()) // theoretically no conflict from not blacklisting these
     }
 }
