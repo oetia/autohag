@@ -1,6 +1,8 @@
 package com.magicalhag.autohag.auto.games.arknights
 
 class ArknightsState {
+    var allState = "HOME"
+
     var task = "HOME"
 
     var baseTask = "REALIGN1"

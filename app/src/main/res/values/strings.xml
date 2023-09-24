@@ -15,6 +15,9 @@
         <item>0SANITY</item>
         <item>RECR</item>
         <item>B4SE</item>
+        <item>CREDITS</item>
+        <item>REWARDS</item>
+
         <item>RESET</item>
     </string-array>
 </resources>

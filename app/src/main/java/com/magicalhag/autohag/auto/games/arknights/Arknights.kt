@@ -4,6 +4,8 @@ import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.games.arknights.base.arknightsBaseRealign
 import com.magicalhag.autohag.auto.games.arknights.base.arknightsBaseTradingPost
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsCredits
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsRewards
 import com.magicalhag.autohag.auto.games.arknights.battle.arknightsZeroSanity
 import com.magicalhag.autohag.auto.games.arknights.misc.arknightsHome
 import com.magicalhag.autohag.auto.games.arknights.misc.arknightsRecruitment
@@ -23,9 +25,11 @@ suspend fun AutoService.arknights(text: Text) {
         "STRTUP" -> arknightsStartup(text)
         "ALL" -> arknightsAll(text)
         "HOME" -> arknightsHome(text) { coma() }
+        "B4SE" -> arknightsBase(text, state) { coma() }
+        "CREDITS" -> arknightsCredits(text) { coma() }
         "RECR" -> arknightsRecruitment(text) { coma() }
         "0SANITY" -> arknightsZeroSanity(text) { coma() }
-        "B4SE" -> arknightsBase(text, state) { coma() }
+        "REWARDS" -> arknightsRewards(text) { coma() }
 
         "RESET" -> state = ArknightsState()
     }
@@ -46,56 +50,17 @@ suspend fun AutoService.arknightsBase(text: Text, state: ArknightsState, onCompl
         "TP2" -> arknightsBaseTradingPost(text, 2, state) { state.baseTask = "REALIGN3" }
         "REALIGN3" -> arknightsBaseRealign(text, state) { state.baseTask = "TP3" }
         "TP3" -> arknightsBaseTradingPost(text, 3, state) { state.baseTask = "ASDF"; coma() }
-
-
-
-
-        // "COLLECT" -> arknightsBaseCollection(text, state) { task = "TP1" }
-        // "COLLECT_E" -> arknightsBaseCollection(text, state) { task = "TP1" }
-        // // "TP1" -> arknightsBaseTradingPost(text, 1, av) { task = "TP1_CHECK_OPS" }
-        // "DONE" -> onCompletion()
-        // "TP_CO_P1" -> arknightsBaseCheckAvailableOps(text, 1) { availableTpOpNames.addAll(it); state = "B4SE_TP_CO_P2"}
-        // "TP_CO_P2" -> arknightsBaseCheckAvailableOps(text, 2) { availableTpOpNames.addAll(it); state = "B4SE_TP_CO_P3"}
-        // "TP_CO_P3" -> arknightsBaseCheckAvailableOps(text, 3) { availableTpOpNames.addAll(it); state = "B4SE_TP_MC"}
-        //
-        // "B4SE_TP_MC" -> arknightsBaseTradingPostMoraleCheck(text, { state = "B4SE_2" }) { blacklistedTpOpNames.addAll(it); state = "B4SE_TP_ANO_P1" }
-        // "B4SE_TP_ANO_P1" -> arknightsBaseAddNewOps(text, 1, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP_ANO_P2" }
-        // "B4SE_TP_ANO_P2" -> arknightsBaseAddNewOps(text, 2, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP_ANO_P3" }
-        // "B4SE_TP_ANO_P3" -> arknightsBaseAddNewOps(text, 3, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP_CONF" }
-        // "B4SE_TP_CONF" -> arknightsBaseConfirmOps(text) { state = "B4SE_TP1A" }
-        // "B4SE_TP1A" -> arknightsBaseTradingPost(text, 3) { state = "B4SE_TP_MC"; alreadyFoundTpOpNames = mutableListOf() }
-        //
-        //
-        // "B4SE_2" -> arknightsBaseHome(text) { state = "B4SE_COL_2" }
-        // "B4SE_COL_2" -> arknightsBaseCollection(text, false) { state = "B4SE_TP2" }
-        // "B4SE_COL_E_2" -> arknightsBaseCollection(text, true) { state = "B4SE_TP2" }
-        // "B4SE_TP2" -> arknightsBaseTradingPost(text, 2) { state = "B4SE_TP2_MC"; alreadyFoundTpOpNames = mutableListOf() }
-        // "B4SE_TP2_MC" -> arknightsBaseTradingPostMoraleCheck(text, { state = "B4SE_3" }) { blacklistedTpOpNames.addAll(it); state = "B4SE_TP2_ANO_P1" }
-        // "B4SE_TP2_ANO_P1" -> arknightsBaseAddNewOps(text, 1, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP2_ANO_P2" }
-        // "B4SE_TP2_ANO_P2" -> arknightsBaseAddNewOps(text, 2, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP2_ANO_P3" }
-        // "B4SE_TP2_ANO_P3" -> arknightsBaseAddNewOps(text, 3, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP2_CONF" }
-        // "B4SE_TP2_CONF" -> arknightsBaseConfirmOps(text) { state = "B4SE_TP1" }
-        //
-        //
-        // "B4SE_3" -> arknightsBaseHome(text) { state = "B4SE_COL_3" }
-        // "B4SE_COL_3" -> arknightsBaseCollection(text, false) { state = "B4SE_TP3" }
-        // "B4SE_COL_E_3" -> arknightsBaseCollection(text, true) { state = "B4SE_TP3" }
-        // "B4SE_TP3" -> arknightsBaseTradingPost(text, 3) { state = "B4SE_TP3_MC"; alreadyFoundTpOpNames = mutableListOf() }
-        // "B4SE_TP3_MC" -> arknightsBaseTradingPostMoraleCheck(text, { state = "B4SE_4" }) { blacklistedTpOpNames.addAll(it); state = "B4SE_TP3_ANO_P1" }
-        // "B4SE_TP3_ANO_P1" -> arknightsBaseAddNewOps(text, 1, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP3_ANO_P3" }
-        // "B4SE_TP3_ANO_P3" -> arknightsBaseAddNewOps(text, 2, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP3_ANO_P3" }
-        // "B4SE_TP3_ANO_P3" -> arknightsBaseAddNewOps(text, 3, availableTpOpNames, blacklistedTpOpNames, alreadyFoundTpOpNames) { alreadyFoundTpOpNames.addAll(it); state = "B4SE_TP3_CONF" }
-        // "B4SE_TP3_CONF" -> arknightsBaseConfirmOps(text) { state = "B4SE_TP1" }
     }
 }
 
 
-var subState = "HOME"
 suspend fun AutoService.arknightsAll(text: Text) {
-    when (subState) {
-        "HOME" -> arknightsHome(text) { subState = "RECR" }
-        "RECR" -> arknightsRecruitment(text) { subState = "0SANITY" }
-        "0SANITY" -> arknightsZeroSanity(text) { coma() }
+    when (state.allState) {
+        "HOME" -> arknightsHome(text) { state.allState = "RECR" }
+        "RECR" -> arknightsRecruitment(text) { state.allState = "CREDITS" }
+        "CREDITS" -> arknightsCredits(text) { state.allState = "0SANITY" }
+        "0SANITY" -> arknightsZeroSanity(text) { state.allState = "REWARDS" }
+        "REWARDS" -> arknightsRewards(text) { coma() }
     }
 }
 

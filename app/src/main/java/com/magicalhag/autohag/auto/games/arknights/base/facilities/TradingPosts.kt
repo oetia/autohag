@@ -8,7 +8,6 @@ import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseHome
 import com.magicalhag.autohag.auto.utils.dispatch.buildClick
 import com.magicalhag.autohag.auto.utils.dispatch.buildSwipe
 import com.magicalhag.autohag.auto.utils.dispatch.dispatch
-import com.magicalhag.autohag.auto.utils.logging.log
 import com.magicalhag.autohag.auto.utils.text.check
 import com.magicalhag.autohag.auto.utils.text.find
 import kotlinx.coroutines.delay
