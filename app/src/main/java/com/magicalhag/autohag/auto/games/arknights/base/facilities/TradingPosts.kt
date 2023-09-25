@@ -8,9 +8,11 @@ import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseHome
 import com.magicalhag.autohag.auto.utils.dispatch.buildClick
 import com.magicalhag.autohag.auto.utils.dispatch.buildSwipe
 import com.magicalhag.autohag.auto.utils.dispatch.dispatch
+import com.magicalhag.autohag.auto.utils.logging.log
 import com.magicalhag.autohag.auto.utils.text.check
 import com.magicalhag.autohag.auto.utils.text.find
 import kotlinx.coroutines.delay
+import java.lang.Math.min
 
 // i think that most of this code can be re-used for every single facility type
 
@@ -94,7 +96,7 @@ suspend fun AutoService.arknightsBaseFacilityCheckAvailableOperators(
 ) {
     // no need to check available ops if checked prior or no combos
     val facilityType = facilityId.replace(Regex("\\d+"), "")
-    if(availableOpNames.size >= 40 || facilityType == "PP" || facilityType == "OFFICE" || facilityType == "DORMS") {
+    if(availableOpNames.size >= 40 || facilityType == "PP" || facilityType == "OFFICE" || facilityType == "DORM") {
         onCompletion(); return;
     }
 
@@ -122,10 +124,14 @@ suspend fun AutoService.arknightsBaseFacilityMoraleCheck(
     text: Text, facilityId: String,
     onEmpty: () -> Unit,
     onLowMorale: (List<String>) -> Unit,
-    onHighMorale: (List<String>) -> Unit
+    onHighMorale: (List<String>) -> Unit,
+    onFullMorale: (List<String>) -> Unit,
 ) {
+
+    // ensure that it's either entirely full or entirely empty
+
     if(text.check("facility info", "operator", "assigned operators")) {
-        if(text.check("morale")) {
+        if(text.check("morale(?!\\s+restored)")) {
             val moraleBlock = text.find("\\d", Rect(2085, 210, 2210, 260))
             val moraleText = moraleBlock[0].text
             val moraleRemaining: Int = moraleText.split("/")[0].replace("O", "0").toInt()
@@ -137,7 +143,9 @@ suspend fun AutoService.arknightsBaseFacilityMoraleCheck(
             opNameLines.addAll(opNameLine1); opNameLines.addAll(opNameLine2); opNameLines.addAll(opNameLine3);
             val opNames = opNameLines.map { it.text.lowercase() }
 
-            if(moraleRemaining > 12) {
+            if(moraleRemaining == 24) {
+                onFullMorale(opNames)
+            } else if(moraleRemaining > 12) {
                 onHighMorale(opNames)
             } else {
                 onLowMorale(opNames)
@@ -229,3 +237,91 @@ suspend fun AutoService.arknightsBaseFacilityAddNewOps(
         }
     }
 }
+
+suspend fun AutoService.arknightsBaseFacilityDormCheckFull(text: Text, onCompletion: () -> Unit) {
+    if (text.check("facility info", "assigned operators", "clear")) {
+        val operatorLine = text.find("\\d", Rect(2040, 990, 2335, 1060))
+        val operatorLineSplit = operatorLine[0].text.split(" ")
+        val operatorRatio = operatorLineSplit[operatorLineSplit.size - 1]
+        val operatorCount = operatorRatio.split("/")[0].replace("O", "0").toInt()
+
+        if(operatorCount != 5) {
+            dispatch(text.find("clear").buildClick())
+            delay(1000)
+        }
+
+        onCompletion()
+    }
+}
+
+suspend fun AutoService.arknightsBaseFacilityDormAddNewOps(
+    text: Text,
+    blacklistedOpNames: MutableList<String>,
+    alreadySelectedOpNames: MutableList<String>,
+    onCompletion: () -> Unit
+) {
+    if(text.check("facility info", "operator", "assigned operators")) {
+        dispatch(Point(1990, 235).buildClick())
+    } else if(text.check("deselect all")) {
+        val ops = mutableListOf<Text.Line>()
+        val row1Ops = text.find("\\S", Rect(635, 475, 2335, 530))
+        val row2Ops = text.find("\\S", Rect(635, 895, 2335, 950))
+        for(i in 0 until kotlin.math.min(row1Ops.size, row2Ops.size)) {
+            val row1OpBB = Rect(row1Ops[i].boundingBox!!.right - 200, row1Ops[i].boundingBox!!.bottom - 300, row1Ops[i].boundingBox!!.right, row1Ops[i].boundingBox!!.bottom - 100)
+            val row2OpBB = Rect(row2Ops[i].boundingBox!!.right - 200, row2Ops[i].boundingBox!!.bottom - 300, row2Ops[i].boundingBox!!.right, row2Ops[i].boundingBox!!.bottom - 100)
+
+            if(text.find("[o0]n", row1OpBB).isEmpty() && text.find("shift", row1OpBB).isEmpty()) {
+                ops.add(row1Ops[i])
+            }
+            if(text.find("[o0]n", row2OpBB).isEmpty() && text.find("shift", row2OpBB).isEmpty()) {
+                ops.add(row2Ops[i])
+            }
+        }
+
+        for(op in ops.take(5)) {
+            dispatch(op.buildClick())
+        }
+        dispatch(text.find("confirm").buildClick())
+        delay(1000)
+        onCompletion()
+    }
+}
+
+// suspend fun AutoService.arknightsBaseFacilityDormAddNewOps(
+//     text: Text,
+//     blacklistedOpNames: MutableList<String>,
+//     alreadySelectedOpNames: MutableList<String>,
+//     onCompletion: () -> Unit
+// ) {
+//     if(alreadySelectedOpNames.size >= 5) {
+//         dispatch(text.find("confirm").buildClick())
+//         onCompletion()
+//     } else if(text.check("facility info", "assigned operators")) {
+//         dispatch(Point(1990, 235).buildClick())
+//     } else if(text.check("deselect all")){
+//         if(text.check("tap on an operator") || text.check("time remaining", "[il]dle")) {
+//             val ops = mutableListOf<Text.Line>()
+//             val row1Ops = text.find("\\S", Rect(635, 475, 2335, 530))
+//             val row2Ops = text.find("\\S", Rect(635, 895, 2335, 950))
+//             for(i in 0 until kotlin.math.min(row1Ops.size, row2Ops.size)) {
+//                 ops.add(row1Ops[i])
+//                 ops.add(row2Ops[i])
+//             }
+//             val opNames = ops.map { it.text.lowercase() }
+//
+//             for(opName in opNames) {
+//                 if(opName !in alreadySelectedOpNames && opName !in blacklistedOpNames) {
+//                     dispatch(text.find(opName).buildClick())
+//                     alreadySelectedOpNames.add(opName)
+//                     return
+//                 }
+//             }
+//             onCompletion()
+//         } else if(text.check("time remaining", "working")) {
+//             val lastSelectedOpName = alreadySelectedOpNames[alreadySelectedOpNames.lastIndex]
+//             alreadySelectedOpNames.remove(lastSelectedOpName)
+//             blacklistedOpNames.add(lastSelectedOpName)
+//             dispatch(text.find(lastSelectedOpName).buildClick())
+//         }
+//     }
+// }

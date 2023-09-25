@@ -9,6 +9,8 @@
 
 
     <string-array name="tasks">
+<!--        <item>B4SE</item>-->
+
         <item>ALL</item>
         <item>STRTUP</item>
         <item>HOME</item>

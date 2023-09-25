@@ -5,9 +5,11 @@ class ArknightsState {
 
     var task = "HOME"
 
-    // var baseTask = "REALIGN1"
-    var baseTask = "REALIGN11"
+    var baseTask = "REALIGN0"
+    // var baseTask = "REALIGN11"
     // var baseTask = "TP1"
+    // var baseTask = "REALIGN11"
+
 
     var realignTask = "HOME"
     fun realignReset() {

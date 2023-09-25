@@ -5,6 +5,8 @@ import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.games.arknights.ArknightsState
 import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityAddNewOps
 import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityCheckAvailableOperators
+import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityDormAddNewOps
+import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityDormCheckFull
 import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityHome
 import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityMoraleCheck
 import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityOperatorClear
@@ -54,6 +56,7 @@ suspend fun AutoService.arknightsBaseFacility(
             text, facilityId,
             { state.tpTask = "ADD_NEW_OPS" },
             { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "OPERATOR_CLEAR" },
+            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" },
             { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" })
         "OPERATOR_CLEAR" -> arknightsBaseFacilityOperatorClear(text, facilityId) { state.tpTask = "ADD_NEW_OPS" }
         "ADD_NEW_OPS" -> arknightsBaseFacilityAddNewOps(
@@ -68,11 +71,36 @@ suspend fun AutoService.arknightsBaseFacility(
             state.tpReset()
             onCompletion()
         }
-        // "CHECK_OPS_P1" -> arknightsBaseCheckAvailableOps(text, )
-        // "TP1" -> arknightsBaseTradingPostEnter(text, 1) { task = "TP1_CHECK_OPS" }
-        // "DONE" -> onCompletion()
-        //
-        // "RESET" -> tradingPostState = "ENTER"
     }
+}
 
+
+suspend fun AutoService.arknightsBaseFacilityDorm(
+    text: Text, facilityId: String,
+    state: ArknightsState,
+    onCompletion: () -> Unit
+) {
+    when (state.tpTask) {
+        "HOME" -> arknightsBaseFacilityHome(text, facilityId) { state.tpTask = "OPERATOR_MANAGEMENT" }
+        "OPERATOR_MANAGEMENT" -> arknightsBaseFacilityOperatorManagement(text, facilityId) { state.tpTask = "DORM_CHECK_FULL" }
+        "DORM_CHECK_FULL" -> arknightsBaseFacilityDormCheckFull(text,) { state.tpTask = "CURRENT_OPERATOR_MORALE_CHECK" }
+        "CURRENT_OPERATOR_MORALE_CHECK" -> arknightsBaseFacilityMoraleCheck(
+            text, facilityId,
+            { state.tpTask = "ADD_NEW_OPS" },
+            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" },
+            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" },
+            { state.tpTask = "OPERATOR_CLEAR" })
+        "OPERATOR_CLEAR" -> arknightsBaseFacilityOperatorClear(text, facilityId) { state.tpTask = "ADD_NEW_OPS" }
+        "ADD_NEW_OPS" -> arknightsBaseFacilityDormAddNewOps(
+            text,
+            state.tpBlacklistedOpNames,
+            state.tpAlreadySelectedOpNames
+        ) { state.tpTask = "DONE"; state.tpBlacklistedOpNames = mutableListOf(); state.tpAlreadySelectedOpNames = mutableListOf() }
+
+
+        "DONE" -> {
+            state.tpReset()
+            onCompletion()
+        }
+    }
 }

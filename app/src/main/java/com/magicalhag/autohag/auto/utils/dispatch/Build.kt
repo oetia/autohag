@@ -21,6 +21,22 @@ fun List<Text.Line>.buildClick(duration: Long = 100L): GestureDescription {
     return gestureBuilder.build()
 }
 
+fun Text.Line.buildClick(duration: Long = 100L): GestureDescription {
+    val line = this
+    val center = line.getCenter()
+
+    val clickPath = Path()
+    clickPath.moveTo(center.x.toFloat(), center.y.toFloat())
+
+    val gestureBuilder = GestureDescription.Builder()
+    gestureBuilder.addStroke(GestureDescription.StrokeDescription(clickPath, 0, duration))
+
+    log("BUILDING CLICK: $center - ${line.text}")
+
+    return gestureBuilder.build()
+}
+
+
 fun Point.buildClick(duration: Long = 100L): GestureDescription {
     val clickPath = Path()
     clickPath.moveTo(this.x.toFloat(), this.y.toFloat())
