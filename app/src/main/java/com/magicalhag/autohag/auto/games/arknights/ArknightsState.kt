@@ -16,18 +16,16 @@ class ArknightsState {
         realignTask = "HOME"
     }
 
-    var tpTask = "HOME"
+    var facilityTask = "HOME"
     // var tpTask = "CHECK_AVAILABLE_OPERATORS"
     // var tpTask = "CURRENT_OPERATOR_MORALE_CHECK"
     // var tpTask = "OPERATOR_CLEAR"
     // var tpTask = "ADD_NEW_OPS"
 
-    var tpAvailableOpNames = mutableListOf<String>()
-    var tpBlacklistedOpNames = mutableListOf<String>()
-    var tpAlreadySelectedOpNames = mutableListOf<String>()
+    var facilityAvailableOpNames = mutableListOf<String>()
+    var facilityBlacklistedOpNames = mutableListOf<String>()
+    var facilityAlreadySelectedOpNames = mutableListOf<String>()
     fun tpReset() {
-        tpTask = "HOME"
+        facilityTask = "HOME"
     }
-
-    var facAvailableOpNames = mutableListOf<String>()
 }

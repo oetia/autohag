@@ -1,4 +1,4 @@
-package com.magicalhag.autohag.auto.games.arknights.base.misc
+package com.magicalhag.autohag.auto.games.arknights.misc
 
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService

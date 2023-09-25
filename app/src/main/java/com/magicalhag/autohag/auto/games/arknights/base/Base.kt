@@ -3,14 +3,14 @@ package com.magicalhag.autohag.auto.games.arknights.base
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.games.arknights.ArknightsState
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityAddNewOps
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityCheckAvailableOperators
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityDormAddNewOps
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityDormCheckFull
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityHome
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityMoraleCheck
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityOperatorClear
-import com.magicalhag.autohag.auto.games.arknights.base.facilities.arknightsBaseFacilityOperatorManagement
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityAddNewOps
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityCheckAvailableOperators
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityDormAddNewOps
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityDormCheckFull
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityHome
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityMoraleCheck
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityOperatorClear
+import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseFacilityOperatorManagement
 import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseCollection
 import com.magicalhag.autohag.auto.games.arknights.base.misc.arknightsBaseHome
 
@@ -44,27 +44,27 @@ suspend fun AutoService.arknightsBaseFacility(
     state: ArknightsState,
     onCompletion: () -> Unit
 ) {
-    when (state.tpTask) {
-        "HOME" -> arknightsBaseFacilityHome(text, facilityId) { state.tpTask = "OPERATOR_MANAGEMENT" }
-        "OPERATOR_MANAGEMENT" -> arknightsBaseFacilityOperatorManagement(text, facilityId) { state.tpTask = "CHECK_AVAILABLE_OPERATORS" }
+    when (state.facilityTask) {
+        "HOME" -> arknightsBaseFacilityHome(text, facilityId) { state.facilityTask = "OPERATOR_MANAGEMENT" }
+        "OPERATOR_MANAGEMENT" -> arknightsBaseFacilityOperatorManagement(text, facilityId) { state.facilityTask = "CHECK_AVAILABLE_OPERATORS" }
         "CHECK_AVAILABLE_OPERATORS" -> arknightsBaseFacilityCheckAvailableOperators(
-            text, facilityId, state.tpAvailableOpNames,
-            { state.tpAvailableOpNames.addAll(it) },
-            { state.tpTask = "RETURN_TO_OPERATOR_MANAGEMENT" })
-        "RETURN_TO_OPERATOR_MANAGEMENT" -> arknightsBaseFacilityOperatorManagement(text, facilityId) { state.tpTask = "CURRENT_OPERATOR_MORALE_CHECK" }
+            text, facilityId, state.facilityAvailableOpNames,
+            { state.facilityAvailableOpNames.addAll(it) },
+            { state.facilityTask = "RETURN_TO_OPERATOR_MANAGEMENT" })
+        "RETURN_TO_OPERATOR_MANAGEMENT" -> arknightsBaseFacilityOperatorManagement(text, facilityId) { state.facilityTask = "CURRENT_OPERATOR_MORALE_CHECK" }
         "CURRENT_OPERATOR_MORALE_CHECK" -> arknightsBaseFacilityMoraleCheck(
             text, facilityId,
-            { state.tpTask = "ADD_NEW_OPS" },
-            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "OPERATOR_CLEAR" },
-            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" },
-            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" })
-        "OPERATOR_CLEAR" -> arknightsBaseFacilityOperatorClear(text, facilityId) { state.tpTask = "ADD_NEW_OPS" }
+            { state.facilityTask = "ADD_NEW_OPS" },
+            { state.facilityBlacklistedOpNames.addAll(it); state.facilityTask = "OPERATOR_CLEAR" },
+            { state.facilityBlacklistedOpNames.addAll(it); state.facilityTask = "DONE" },
+            { state.facilityBlacklistedOpNames.addAll(it); state.facilityTask = "DONE" })
+        "OPERATOR_CLEAR" -> arknightsBaseFacilityOperatorClear(text, facilityId) { state.facilityTask = "ADD_NEW_OPS" }
         "ADD_NEW_OPS" -> arknightsBaseFacilityAddNewOps(
             text, facilityId,
-            state.tpAvailableOpNames,
-            state.tpBlacklistedOpNames,
-            state.tpAlreadySelectedOpNames
-        ) { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "RETURN_TO_OPERATOR_MANAGEMENT" }
+            state.facilityAvailableOpNames,
+            state.facilityBlacklistedOpNames,
+            state.facilityAlreadySelectedOpNames
+        ) { state.facilityBlacklistedOpNames.addAll(it); state.facilityTask = "RETURN_TO_OPERATOR_MANAGEMENT" }
 
 
         "DONE" -> {
@@ -80,22 +80,22 @@ suspend fun AutoService.arknightsBaseFacilityDorm(
     state: ArknightsState,
     onCompletion: () -> Unit
 ) {
-    when (state.tpTask) {
-        "HOME" -> arknightsBaseFacilityHome(text, facilityId) { state.tpTask = "OPERATOR_MANAGEMENT" }
-        "OPERATOR_MANAGEMENT" -> arknightsBaseFacilityOperatorManagement(text, facilityId) { state.tpTask = "DORM_CHECK_FULL" }
-        "DORM_CHECK_FULL" -> arknightsBaseFacilityDormCheckFull(text,) { state.tpTask = "CURRENT_OPERATOR_MORALE_CHECK" }
+    when (state.facilityTask) {
+        "HOME" -> arknightsBaseFacilityHome(text, facilityId) { state.facilityTask = "OPERATOR_MANAGEMENT" }
+        "OPERATOR_MANAGEMENT" -> arknightsBaseFacilityOperatorManagement(text, facilityId) { state.facilityTask = "DORM_CHECK_FULL" }
+        "DORM_CHECK_FULL" -> arknightsBaseFacilityDormCheckFull(text,) { state.facilityTask = "CURRENT_OPERATOR_MORALE_CHECK" }
         "CURRENT_OPERATOR_MORALE_CHECK" -> arknightsBaseFacilityMoraleCheck(
             text, facilityId,
-            { state.tpTask = "ADD_NEW_OPS" },
-            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" },
-            { state.tpBlacklistedOpNames.addAll(it); state.tpTask = "DONE" },
-            { state.tpTask = "OPERATOR_CLEAR" })
-        "OPERATOR_CLEAR" -> arknightsBaseFacilityOperatorClear(text, facilityId) { state.tpTask = "ADD_NEW_OPS" }
+            { state.facilityTask = "ADD_NEW_OPS" },
+            { state.facilityBlacklistedOpNames.addAll(it); state.facilityTask = "DONE" },
+            { state.facilityBlacklistedOpNames.addAll(it); state.facilityTask = "DONE" },
+            { state.facilityTask = "OPERATOR_CLEAR" })
+        "OPERATOR_CLEAR" -> arknightsBaseFacilityOperatorClear(text, facilityId) { state.facilityTask = "ADD_NEW_OPS" }
         "ADD_NEW_OPS" -> arknightsBaseFacilityDormAddNewOps(
             text,
-            state.tpBlacklistedOpNames,
-            state.tpAlreadySelectedOpNames
-        ) { state.tpTask = "DONE"; state.tpBlacklistedOpNames = mutableListOf(); state.tpAlreadySelectedOpNames = mutableListOf() }
+            state.facilityBlacklistedOpNames,
+            state.facilityAlreadySelectedOpNames
+        ) { state.facilityTask = "DONE"; state.facilityBlacklistedOpNames = mutableListOf(); state.facilityAlreadySelectedOpNames = mutableListOf() }
 
 
         "DONE" -> {
