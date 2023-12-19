@@ -3,7 +3,7 @@ package com.magicalhag.autohag.auto
 import android.accessibilityservice.AccessibilityService
 import android.app.AlarmManager
 import android.content.Context
-import android.content.Intent
+import android.graphics.Point
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -12,6 +12,11 @@ import android.view.accessibility.AccessibilityEvent
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.magicalhag.autohag.auto.games.arknights.arknights
+import com.magicalhag.autohag.auto.games.arknights.misc.arknightsLaunch
+import com.magicalhag.autohag.auto.games.arknights.misc.arknightsStartup
+import com.magicalhag.autohag.auto.utils.dispatch.buildClick
+import com.magicalhag.autohag.auto.utils.dispatch.buildSwipe
+import com.magicalhag.autohag.auto.utils.dispatch.dispatch
 import com.magicalhag.autohag.auto.utils.image.extractTextFromImage
 import com.magicalhag.autohag.auto.utils.image.getImageScreenshot
 import com.magicalhag.autohag.auto.utils.logging.log
@@ -23,6 +28,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -88,6 +94,7 @@ class AutoService : AccessibilityService() {
         toast("STATE: $task")
     }
 
+
     // lifecycle
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -103,32 +110,81 @@ class AutoService : AccessibilityService() {
         log("Auto Service Connected")
     }
 
+
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var alarmListener: AlarmManager.OnAlarmListener
     override fun onCreate() {
         super.onCreate()
         log("Auto Service Created")
 
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val asdf = alarmManager?.canScheduleExactAlarms()
-        Log.d("FAGGOT", "$asdf")
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmListener = AlarmManager.OnAlarmListener { coroutineScope.launch { cunny() } }
 
-        alarmManager?.set(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + 3000L,
+        log("CAN SCHEDULE EXACT ALARMS?: $alarmManager?.canScheduleExactAlarms()")
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 4)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
+        // calendar.set(Calendar.HOUR_OF_DAY, 21)
+        // calendar.set(Calendar.MINUTE, 30)
+        // calendar.set(Calendar.SECOND, 25)
+
+        if(calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1)
+        }
+
+        log("${calendar.timeZone}")
+        log("${calendar.timeInMillis}")
+        log(SystemClock.currentNetworkTimeClock().millis())
+
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            // SystemClock.elapsedRealtime() + 3000L,
             "CUNNY",
-            { onAlarm() },
+            alarmListener,
             mainHandler
         )
+
     }
 
-    fun onAlarm() {
+    suspend fun cunny() {
+
         log("CUNNY CUNNY CUNNT uoooooooooooooooooooooooooogh")
+        performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
+        delay(1000L)
+        performGlobalAction(GLOBAL_ACTION_HOME)
+        delay(1000L)
+
+        dispatch(buildSwipe(Point(500, 1800), Point(500, 700), duration=300L))
+        delay(1000L)
+
+        dispatch(Point(300, 1150).buildClick())
+        delay(100L)
+        dispatch(Point(550, 1150).buildClick())
+        delay(100L)
+        dispatch(Point(800, 1150).buildClick())
+        delay(100L)
+        dispatch(Point(300, 1150).buildClick())
+        delay(1000L)
+
+        arknightsLaunch()
+
+        delay(1000L)
+
+        dispatch(Point(750, 75).buildClick())
+
+        // performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
+        // arknightsLaunch()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // handlerThread.quitSafely()
         coroutineScope.cancel()
         dispatcher.close()
+        alarmManager.cancel(alarmListener)
         log("Auto Service Destroyed")
     }
 

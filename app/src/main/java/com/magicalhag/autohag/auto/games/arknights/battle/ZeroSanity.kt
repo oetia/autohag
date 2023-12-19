@@ -24,7 +24,7 @@ suspend fun AutoService.arknightsZeroSanity(text: Text, onCompletion: () -> Unit
         )
     ) {
         dispatch(text.find("start").buildClick())
-    } else if (text.check("2x", "takeover", "unit limit")) {
+    } else if (text.check("2x", "takeover")) { // "unit limit" - can break if volume adjusted
         coroutineScope.launch { nap(15 * 1000) } // sleep & delay halt two different ways - delay provides a minimum
     } else if (text.check("mission", "results")) {
         dispatch(text.find("results").buildClick())

@@ -104,10 +104,10 @@ suspend fun AutoService.arknightsBase(text: Text, state: ArknightsState, onCompl
 
 suspend fun AutoService.arknightsAll(text: Text) {
     when (state.allState) {
-        "HOME" -> arknightsStartup(text) { state.allState = "BASE" }
+        // "HOME" -> arknightsStartup(text) { state.allState = "BASE" }
         // "HOME" -> arknightsHome(text) { state.allState = "BASE" }
-        // "HOME" -> arknightsStartup(text) { state.allState = "CREDITS" }
-        "BASE" -> arknightsBase(text, state) { state.allState = "RECR" }
+        "HOME" -> arknightsStartup(text) { state.allState = "RECR" }
+        // "BASE" -> arknightsBase(text, state) { state.allState = "RECR" }
         "RECR" -> arknightsRecruitment(text) { state.allState = "CREDITS" }
         "CREDITS" -> arknightsCredits(text) { state.allState = "0SANITY" }
         "0SANITY" -> arknightsZeroSanity(text) { state.allState = "REWARDS" }
