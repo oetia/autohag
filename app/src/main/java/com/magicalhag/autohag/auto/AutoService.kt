@@ -1,8 +1,13 @@
 package com.magicalhag.autohag.auto
 
 import android.accessibilityservice.AccessibilityService
+import android.app.AlarmManager
+import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -30,8 +35,8 @@ class AutoService : AccessibilityService() {
 
     val backgroundExecutor:ExecutorService = Executors.newSingleThreadExecutor { r -> Thread(r, "background") }
     val recognizer = TextRecognition.getClient(TextRecognizerOptions.Builder().setExecutor(backgroundExecutor).build())
-
     private val dispatcher = backgroundExecutor.asCoroutineDispatcher()
+
     val coroutineScope = CoroutineScope(CoroutineName("AutoServiceCoroutineScope") + dispatcher)
 
     private var heartbeat: Job? = null
@@ -101,6 +106,22 @@ class AutoService : AccessibilityService() {
     override fun onCreate() {
         super.onCreate()
         log("Auto Service Created")
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        val asdf = alarmManager?.canScheduleExactAlarms()
+        Log.d("FAGGOT", "$asdf")
+
+        alarmManager?.set(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + 3000L,
+            "CUNNY",
+            { onAlarm() },
+            mainHandler
+        )
+    }
+
+    fun onAlarm() {
+        log("CUNNY CUNNY CUNNT uoooooooooooooooooooooooooogh")
     }
 
     override fun onDestroy() {

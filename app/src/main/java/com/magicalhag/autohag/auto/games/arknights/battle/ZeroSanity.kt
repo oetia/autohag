@@ -17,7 +17,12 @@ suspend fun AutoService.arknightsZeroSanity(text: Text, onCompletion: () -> Unit
         dispatch(text.find("to the most recent stage").buildClick())
     } else if (text.check("auto deploy", "start")) {
         dispatch(text.find("start").buildClick())
-    } else if (text.check("the roster for this operation cannot be changed", "mission", "start")) {
+    } else if (
+        text.check("the roster for this operation cannot be changed") && (
+            text.check("mission", "start") ||
+            text.check("operation", "start")
+        )
+    ) {
         dispatch(text.find("start").buildClick())
     } else if (text.check("2x", "takeover", "unit limit")) {
         coroutineScope.launch { nap(15 * 1000) } // sleep & delay halt two different ways - delay provides a minimum
