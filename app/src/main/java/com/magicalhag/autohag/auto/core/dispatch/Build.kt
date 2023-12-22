@@ -36,7 +36,7 @@ fun Text.Line.buildClick(duration: Long = 100L): GestureDescription {
     return gestureBuilder.build()
 }
 
-fun List<Text.Element>.buildClick(duration: Long = 100L): GestureDescription {
+fun List<Text.Element>.buildElementClick(duration: Long = 100L): GestureDescription {
     val element = this[0]
     val center = element.getCenter()
 
@@ -51,7 +51,7 @@ fun List<Text.Element>.buildClick(duration: Long = 100L): GestureDescription {
     return gestureBuilder.build()
 }
 
-fun Text.Element.buildClick(duration: Long = 100L): GestureDescription {
+fun Text.Element.buildElementClick(duration: Long = 100L): GestureDescription {
     val element = this
     val center = element.getCenter()
 

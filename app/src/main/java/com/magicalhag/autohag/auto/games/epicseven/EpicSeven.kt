@@ -7,6 +7,7 @@ import android.graphics.Point
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.core.dispatch.buildClick
+import com.magicalhag.autohag.auto.core.dispatch.buildElementClick
 import com.magicalhag.autohag.auto.core.dispatch.dispatch
 import com.magicalhag.autohag.auto.core.logging.log
 import com.magicalhag.autohag.auto.core.text.check
@@ -71,50 +72,56 @@ suspend fun AutoService.e7Hunt(text: Text, onComplete: () -> Unit) {
     }
 }
 
-suspend fun AutoService.e7Sanctuary(text: Text, onComplete: () -> Unit) {
+suspend fun AutoService.e7Sanctuary(text: Text, onComplete: () -> Unit): Any {
     if (text.check("shop", "hero", "summon", "reputation")) {
-        dispatch(text.findElements("sanctuary").buildClick())
-    } else if (text.check("heart of orbis", "forest of souls")) {
-        when(EpicSevenState.task) {
+        return dispatch(text.findElements("sanctuary").buildElementClick())
+    }
+
+    if (text.check("heart of orbis", "forest of souls")) {
+        return when(EpicSevenState.task) {
             EpicSevenState.Task.SanctuaryHeart ->
                 dispatch(text.find("heart of orbis").buildClick())
+
             in listOf(
                 EpicSevenState.Task.SanctuaryForestPenguin,
                 EpicSevenState.Task.SanctuaryForestSpirit,
                 EpicSevenState.Task.SanctuaryForestMola
             ) ->
                 dispatch(text.find("forest of souls").buildClick())
+
             else -> Unit
         }
     }
 
-    else if (text.check("receive reward(?!s)")) {
-        if(!text.check("time left until receiving")) {
-            dispatch(text.find("receive reward(?!s)").buildClick())
-        } else {
-            onComplete()
+    if(EpicSevenState.task == EpicSevenState.Task.SanctuaryHeart) {
+        if (text.check("receive reward(?!s)")) {
+            return if(!text.check("time left until receiving")) {
+                dispatch(text.find("receive reward(?!s)").buildClick())
+            } else {
+                onComplete()
+            }
+        } else if(text.check("received", "tap to close")) {
+            return dispatch(text.find("tap to close").buildClick())
         }
-    } else if(text.check("received", "tap to close")) {
-        dispatch(text.find("tap to close").buildClick())
     }
 
-    else if(text.check("penguin nest", "spirit well", "molagora farm")) {
-        when(EpicSevenState.task) {
-            EpicSevenState.Task.SanctuaryForestPenguin ->
-                dispatch(text.find("penguin nest").buildClick())
-            EpicSevenState.Task.SanctuaryForestSpirit ->
-                dispatch(text.find("spirit well").buildClick())
-            EpicSevenState.Task.SanctuaryForestMola ->
-                dispatch(text.find("molagora farm").buildClick())
-            else -> Unit
+    if(EpicSevenState.task.name.contains("SanctuaryForest")) {
+        if(text.check("penguin nest", "spirit well", "molagora farm")) {
+            return when(EpicSevenState.task) {
+                EpicSevenState.Task.SanctuaryForestPenguin ->
+                    dispatch(text.find("penguin nest").buildClick())
+                EpicSevenState.Task.SanctuaryForestSpirit ->
+                    dispatch(text.find("spirit well").buildClick())
+                EpicSevenState.Task.SanctuaryForestMola ->
+                    dispatch(text.find("molagora farm").buildClick())
+                else -> Unit
+            }
+        } else if(text.check("time left until harvest")) {
+            return onComplete()
         }
-    } else if(text.check("time left until harvest")) {
-        onComplete()
     }
 
-    else {
-        e7Home(text) {}
-    }
+    return e7Home(text) {}
 }
 suspend fun AutoService.e7Arena(text: Text, onComplete: () -> Unit) {}
 
