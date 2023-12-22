@@ -11,6 +11,7 @@ import com.magicalhag.autohag.auto.core.dispatch.dispatch
 import com.magicalhag.autohag.auto.core.logging.log
 import com.magicalhag.autohag.auto.core.text.check
 import com.magicalhag.autohag.auto.core.text.find
+import com.magicalhag.autohag.auto.core.text.findElements
 import com.magicalhag.autohag.auto.games.arknights.misc.arknightsHome
 import kotlinx.coroutines.launch
 
@@ -72,7 +73,7 @@ suspend fun AutoService.e7Hunt(text: Text, onComplete: () -> Unit) {
 
 suspend fun AutoService.e7Sanctuary(text: Text, onComplete: () -> Unit) {
     if (text.check("shop", "hero", "summon", "reputation")) {
-        dispatch(text.find("sanctuary").buildClick())
+        dispatch(text.findElements("sanctuary").buildClick())
     } else if (text.check("heart of orbis", "forest of souls")) {
         when(EpicSevenState.task) {
             EpicSevenState.Task.SanctuaryHeart ->

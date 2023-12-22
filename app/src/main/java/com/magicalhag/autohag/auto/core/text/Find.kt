@@ -46,3 +46,62 @@ fun List<Text.Line>.find2(
     }
     return found
 }
+
+fun Text.findElements(
+    text: String,
+    roi: Rect = Rect(
+        Int.MIN_VALUE, Int.MIN_VALUE,
+        Int.MAX_VALUE, Int.MAX_VALUE
+    )
+): List<Text.Element> {
+    return this.textBlocks.findElements1(text, roi)
+}
+
+fun List<Text.TextBlock>.findElements1(
+    text: String,
+    roi: Rect = Rect(
+        Int.MIN_VALUE, Int.MIN_VALUE,
+        Int.MAX_VALUE, Int.MAX_VALUE
+    )
+): List<Text.Element> {
+    val found = mutableListOf<Text.Element>()
+    for (block in this) {
+        val subFound = block.lines.findElements2(text, roi)
+        found.addAll(subFound)
+    }
+    return found
+}
+
+fun List<Text.Line>.findElements2(
+    text: String,
+    roi: Rect = Rect(
+        Int.MIN_VALUE, Int.MIN_VALUE,
+        Int.MAX_VALUE, Int.MAX_VALUE
+    )
+): List<Text.Element> {
+    val found = mutableListOf<Text.Element>()
+    for (line in this) {
+        val subFound = line.elements.findElements3(text, roi)
+        found.addAll(subFound)
+    }
+    return found
+}
+
+fun List<Text.Element>.findElements3(
+    text: String,
+    roi: Rect = Rect(
+        Int.MIN_VALUE, Int.MIN_VALUE,
+        Int.MAX_VALUE, Int.MAX_VALUE
+    )
+): List<Text.Element> {
+    val found = mutableListOf<Text.Element>()
+    for (element in this) {
+        if (
+            element.text.lowercase().contains(text.toRegex()) &&
+            roi.contains(element.boundingBox as Rect)
+        ) {
+            found.add(element)
+        }
+    }
+    return found
+}
