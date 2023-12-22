@@ -2,11 +2,10 @@ package com.magicalhag.autohag.auto.games.arknights.misc
 
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
-import com.magicalhag.autohag.auto.games.arknights.misc.arknightsHome
-import com.magicalhag.autohag.auto.utils.dispatch.buildClick
-import com.magicalhag.autohag.auto.utils.dispatch.dispatch
-import com.magicalhag.autohag.auto.utils.text.check
-import com.magicalhag.autohag.auto.utils.text.find
+import com.magicalhag.autohag.auto.core.dispatch.buildClick
+import com.magicalhag.autohag.auto.core.dispatch.dispatch
+import com.magicalhag.autohag.auto.core.text.check
+import com.magicalhag.autohag.auto.core.text.find
 
 suspend fun AutoService.arknightsCredits(text: Text, onComplete: () -> Unit) {
     if (text.check("friends", "archives", "store")) {

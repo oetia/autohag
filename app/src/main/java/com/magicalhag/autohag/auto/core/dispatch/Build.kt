@@ -1,10 +1,10 @@
-package com.magicalhag.autohag.auto.utils.dispatch
+package com.magicalhag.autohag.auto.core.dispatch
 
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.graphics.Point
 import com.google.mlkit.vision.text.Text
-import com.magicalhag.autohag.auto.utils.logging.log
+import com.magicalhag.autohag.auto.core.logging.log
 
 fun List<Text.Line>.buildClick(duration: Long = 100L): GestureDescription {
     val line = this[0]

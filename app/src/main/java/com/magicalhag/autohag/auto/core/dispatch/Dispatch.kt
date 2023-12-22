@@ -1,9 +1,9 @@
-package com.magicalhag.autohag.auto.utils.dispatch
+package com.magicalhag.autohag.auto.core.dispatch
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import com.magicalhag.autohag.auto.AutoService
-import com.magicalhag.autohag.auto.utils.logging.log
+import com.magicalhag.autohag.auto.core.logging.log
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

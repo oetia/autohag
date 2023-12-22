@@ -7,20 +7,19 @@ import android.graphics.Point
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.magicalhag.autohag.auto.games.arknights.arknights
 import com.magicalhag.autohag.auto.games.arknights.misc.arknightsLaunch
-import com.magicalhag.autohag.auto.games.arknights.misc.arknightsStartup
-import com.magicalhag.autohag.auto.utils.dispatch.buildClick
-import com.magicalhag.autohag.auto.utils.dispatch.buildSwipe
-import com.magicalhag.autohag.auto.utils.dispatch.dispatch
-import com.magicalhag.autohag.auto.utils.image.extractTextFromImage
-import com.magicalhag.autohag.auto.utils.image.getImageScreenshot
-import com.magicalhag.autohag.auto.utils.logging.log
-import com.magicalhag.autohag.auto.utils.logging.toast
+import com.magicalhag.autohag.auto.games.decoder
+import com.magicalhag.autohag.auto.core.dispatch.buildClick
+import com.magicalhag.autohag.auto.core.dispatch.buildSwipe
+import com.magicalhag.autohag.auto.core.dispatch.dispatch
+import com.magicalhag.autohag.auto.core.image.extractTextFromImage
+import com.magicalhag.autohag.auto.core.image.getImageScreenshot
+import com.magicalhag.autohag.auto.core.logging.log
+import com.magicalhag.autohag.auto.core.logging.toast
+import com.magicalhag.autohag.auto.games.epicseven.e7Launch
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -61,10 +60,9 @@ class AutoService : AccessibilityService() {
         val image = getImageScreenshot()
         val ocrout = extractTextFromImage(image)
 
-        // log(ocrout.text)
-
         try {
-            arknights(ocrout)
+            decoder(ocrout)
+            // arknights(ocrout)
         } catch (e: Exception) {
             println(e.stackTraceToString())
         }
@@ -148,6 +146,7 @@ class AutoService : AccessibilityService() {
             mainHandler
         )
 
+        e7Launch()
     }
 
     suspend fun cunny() {

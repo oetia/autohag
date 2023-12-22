@@ -1,19 +1,18 @@
-package com.magicalhag.autohag.auto.utils.image
+package com.magicalhag.autohag.auto.core.image
 
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
-import com.magicalhag.autohag.auto.utils.logging.log
+import com.magicalhag.autohag.auto.core.logging.log
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 suspend fun AutoService.extractTextFromImage(image: InputImage): Text {
-    log("extracting text from image")
     val text = suspendCoroutine {
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
-                log("extraction success")
+                log("Extraction Success: \n${visionText.text}")
                 it.resume(visionText)
             }
             .addOnFailureListener { exception ->
@@ -21,7 +20,7 @@ suspend fun AutoService.extractTextFromImage(image: InputImage): Text {
             }
 
     }
-    log("extracted text from image")
+    // log("extracted text from image")
     return text
 }
 

@@ -1,4 +1,4 @@
-package com.magicalhag.autohag.auto.utils.text
+package com.magicalhag.autohag.auto.core.text
 
 import android.graphics.Rect
 import com.google.mlkit.vision.text.Text

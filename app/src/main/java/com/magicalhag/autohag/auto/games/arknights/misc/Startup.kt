@@ -1,13 +1,12 @@
 package com.magicalhag.autohag.auto.games.arknights.misc
 
 import android.graphics.Point
-import android.media.MediaPlayer.OnCompletionListener
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
-import com.magicalhag.autohag.auto.utils.dispatch.buildClick
-import com.magicalhag.autohag.auto.utils.text.check
-import com.magicalhag.autohag.auto.utils.dispatch.dispatch
-import com.magicalhag.autohag.auto.utils.text.find
+import com.magicalhag.autohag.auto.core.dispatch.buildClick
+import com.magicalhag.autohag.auto.core.text.check
+import com.magicalhag.autohag.auto.core.dispatch.dispatch
+import com.magicalhag.autohag.auto.core.text.find
 
 suspend fun AutoService.arknightsStartup(ocrout: Text, onCompletion: () -> Unit) {
     if (ocrout.check("start", "check preannounce", "account management", "customer service")) {

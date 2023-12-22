@@ -1,4 +1,4 @@
-package com.magicalhag.autohag.auto.utils.logging
+package com.magicalhag.autohag.auto.core.logging
 
 import android.util.Log
 import android.widget.Toast
