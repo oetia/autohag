@@ -13,7 +13,7 @@ object State {
     val currentGame: Game = Game.EpicSeven
 }
 
-fun AutoService.decoder(text: Text) {
+suspend fun AutoService.decoder(text: Text) {
 
     if(State.currentGame == State.Game.EpicSeven) {
         e7(text)

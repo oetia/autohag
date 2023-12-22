@@ -5,5 +5,5 @@ object EpicSevenState {
         Startup, Home, Hunt, Sanctuary, Arena
     }
 
-    var task: Task = Task.Startup
+    var task: Task = Task.Hunt
 }
