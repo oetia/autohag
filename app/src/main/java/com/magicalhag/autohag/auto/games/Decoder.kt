@@ -3,7 +3,7 @@ package com.magicalhag.autohag.auto.games
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.core.logging.log
-import com.magicalhag.autohag.auto.games.epicseven.e7
+import com.magicalhag.autohag.auto.games.e7.e7
 
 object State {
     enum class Game {

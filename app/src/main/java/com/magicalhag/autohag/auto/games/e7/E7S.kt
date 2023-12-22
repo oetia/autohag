@@ -1,14 +1,16 @@
-package com.magicalhag.autohag.auto.games.epicseven
+package com.magicalhag.autohag.auto.games.e7
 
-object EpicSevenState {
-    enum class Task {
+object E7S {
+    enum class T {
         Startup,
         Home,
         Hunt,
+        Abyss,
         SanctuaryHeart,
         SanctuaryForestPenguin, SanctuaryForestSpirit, SanctuaryForestMola,
-        Arena
+        Arena,
+        Reputation,
     }
 
-    var task: Task = Task.SanctuaryHeart
+    var t: T = T.Home
 }

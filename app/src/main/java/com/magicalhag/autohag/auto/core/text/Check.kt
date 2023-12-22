@@ -8,7 +8,14 @@ fun Text.check(vararg regExs: String): Boolean {
 }
 
 fun String.check(vararg regExs: String): Boolean {
-    val (contains, excludes) = regExs.partition { this.lowercase().contains(it.toRegex()) }
+
+    // log(this.lowercase().contains(it.toRegex()))
+    // log("SANITY" + this.lowercase().replace(" ", "\\s+"))
+
+    val (contains, excludes) = regExs.partition {
+        this.lowercase().contains(it.toRegex())
+        // this.lowercase().replace(" ", "\\s+").contains(it.toRegex())
+    }
 
     val joinC = contains.joinToString("`, `", "`", "`")
     val joinE = excludes.joinToString("`, `", "`", "`")

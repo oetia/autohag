@@ -19,7 +19,7 @@ import com.magicalhag.autohag.auto.core.image.extractTextFromImage
 import com.magicalhag.autohag.auto.core.image.getImageScreenshot
 import com.magicalhag.autohag.auto.core.logging.log
 import com.magicalhag.autohag.auto.core.logging.toast
-import com.magicalhag.autohag.auto.games.epicseven.e7Launch
+import com.magicalhag.autohag.auto.games.e7.e7Launch
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -102,7 +102,7 @@ class AutoService : AccessibilityService() {
                 badumps += 1
                 // log("*~badump~* ($badumps)")
                 badump()
-                delay(1000L)
+                delay(1250L)
             }
         }
         log("Auto Service Connected")
@@ -151,7 +151,7 @@ class AutoService : AccessibilityService() {
 
     suspend fun cunny() {
 
-        log("CUNNY CUNNY CUNNT uoooooooooooooooooooooooooogh")
+        log("CUNNY CUNNY uoooooooooooooooooooooooooogh")
         performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
         delay(1000L)
         performGlobalAction(GLOBAL_ACTION_HOME)
