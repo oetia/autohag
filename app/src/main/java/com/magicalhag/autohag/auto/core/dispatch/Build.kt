@@ -36,6 +36,21 @@ fun Text.Line.buildClick(duration: Long = 100L): GestureDescription {
     return gestureBuilder.build()
 }
 
+fun Text.Element.buildClick(duration: Long = 100L): GestureDescription {
+    val element = this
+    val center = element.getCenter()
+
+    val clickPath = Path()
+    clickPath.moveTo(center.x.toFloat(), center.y.toFloat())
+
+    val gestureBuilder = GestureDescription.Builder()
+    gestureBuilder.addStroke(GestureDescription.StrokeDescription(clickPath, 0, duration))
+
+    log("BUILDING CLICK: $center - ${element.text}")
+
+    return gestureBuilder.build()
+}
+
 
 fun Point.buildClick(duration: Long = 100L): GestureDescription {
     val clickPath = Path()
@@ -64,6 +79,12 @@ fun buildSwipe(startPoint: Point, endPoint: Point, duration: Long = 1000L): Gest
 }
 
 fun Text.Line.getCenter(): Point {
+    val centerX = (this.cornerPoints!![1].x + this.cornerPoints!![0].x) / 2
+    val centerY = (this.cornerPoints!![2].y + this.cornerPoints!![1].y) / 2
+    return Point(centerX, centerY)
+}
+
+fun Text.Element.getCenter(): Point {
     val centerX = (this.cornerPoints!![1].x + this.cornerPoints!![0].x) / 2
     val centerY = (this.cornerPoints!![2].y + this.cornerPoints!![1].y) / 2
     return Point(centerX, centerY)

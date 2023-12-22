@@ -18,13 +18,19 @@ import kotlinx.coroutines.launch
 // will use the same methods as everyone else
 // if in the future i need to consider using different methods, then so be it
 
+// if there's more than one possible decision on a screen, branch into separate
+// feels so ugly tbh. goes against my abstraction ideas... but i guess it'll work.
+
 suspend fun AutoService.e7(text: Text) {
     when (EpicSevenState.task) {
-
         EpicSevenState.Task.Startup -> e7Startup(text) {}
         EpicSevenState.Task.Home -> e7Home(text) {}
         EpicSevenState.Task.Hunt -> e7Hunt(text) { coma() }
-        EpicSevenState.Task.Sanctuary -> e7Sanctuary(text) {}
+        EpicSevenState.Task.SanctuaryHeart -> e7Sanctuary(text) { EpicSevenState.task = EpicSevenState.Task.SanctuaryForestPenguin }
+        EpicSevenState.Task.SanctuaryForestPenguin -> e7Sanctuary(text) { EpicSevenState.task = EpicSevenState.Task.SanctuaryForestSpirit }
+        EpicSevenState.Task.SanctuaryForestSpirit -> e7Sanctuary(text) { EpicSevenState.task = EpicSevenState.Task.SanctuaryForestMola }
+        EpicSevenState.Task.SanctuaryForestMola -> e7Sanctuary(text) { coma() }
+
         EpicSevenState.Task.Arena -> e7Arena(text) {}
     }
 }
@@ -48,19 +54,67 @@ suspend fun AutoService.e7Hunt(text: Text, onComplete: () -> Unit) {
         dispatch(text.find("select team").buildClick())
     } else if (text.check("hunt stage 13", "boss guide", "start")) {
         dispatch(text.find("start").buildClick())
-    } else if (text.check("insufficient energy")) {
-        onComplete()
-    } else if (text.check("repeat (?:battle|battling)")) {
+    }
+
+    else if (text.check("repeat (?:battle|battling)")) {
         dispatch(Point(1350, 300).buildClick())
-    } else if(text.check("background battling", "cancel", "confirm")) {
+    } else if (text.check("background battling", "cancel", "confirm")) {
         dispatch(text.find("confirm").buildClick())
         onComplete()
-    } else {
+    } else if (text.check("insufficient energy")) {
+        onComplete()
+    }
+
+    else {
         e7Home(text) {}
     }
 }
 
-suspend fun AutoService.e7Sanctuary(text: Text, onComplete: () -> Unit) {}
+suspend fun AutoService.e7Sanctuary(text: Text, onComplete: () -> Unit) {
+    if (text.check("shop", "hero", "summon", "reputation")) {
+        dispatch(text.find("sanctuary").buildClick())
+    } else if (text.check("heart of orbis", "forest of souls")) {
+        when(EpicSevenState.task) {
+            EpicSevenState.Task.SanctuaryHeart ->
+                dispatch(text.find("heart of orbis").buildClick())
+            in listOf(
+                EpicSevenState.Task.SanctuaryForestPenguin,
+                EpicSevenState.Task.SanctuaryForestSpirit,
+                EpicSevenState.Task.SanctuaryForestMola
+            ) ->
+                dispatch(text.find("forest of souls").buildClick())
+            else -> Unit
+        }
+    }
+
+    else if (text.check("receive reward(?!s)")) {
+        if(!text.check("time left until receiving")) {
+            dispatch(text.find("receive reward(?!s)").buildClick())
+        } else {
+            onComplete()
+        }
+    } else if(text.check("received", "tap to close")) {
+        dispatch(text.find("tap to close").buildClick())
+    }
+
+    else if(text.check("penguin nest", "spirit well", "molagora farm")) {
+        when(EpicSevenState.task) {
+            EpicSevenState.Task.SanctuaryForestPenguin ->
+                dispatch(text.find("penguin nest").buildClick())
+            EpicSevenState.Task.SanctuaryForestSpirit ->
+                dispatch(text.find("spirit well").buildClick())
+            EpicSevenState.Task.SanctuaryForestMola ->
+                dispatch(text.find("molagora farm").buildClick())
+            else -> Unit
+        }
+    } else if(text.check("time left until harvest")) {
+        onComplete()
+    }
+
+    else {
+        e7Home(text) {}
+    }
+}
 suspend fun AutoService.e7Arena(text: Text, onComplete: () -> Unit) {}
 
 fun AutoService.e7Launch() {
