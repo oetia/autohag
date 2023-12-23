@@ -1,23 +1,27 @@
 package com.magicalhag.autohag.auto.games
 
+import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
-import com.magicalhag.autohag.auto.core.logging.log
+import com.magicalhag.autohag.auto.games.ark.ark
+import com.magicalhag.autohag.auto.games.arknights.arknights
 import com.magicalhag.autohag.auto.games.e7.e7
+import com.magicalhag.autohag.auto.games.e7.e7Launch
 
 object State {
-    enum class Game {
+    enum class G {
         Arknights, EpicSeven,
     }
 
-    val currentGame: Game = Game.EpicSeven
+    var g: G = G.Arknights
+    // var currentGame: Game = Game.EpicSeven
+
 }
 
 suspend fun AutoService.decoder(text: Text) {
 
-    if(State.currentGame == State.Game.EpicSeven) {
-        e7(text)
-    } else {
-        log("insanity check")
+    when(State.g) {
+        State.G.Arknights -> ark(text) { State.g = State.G.EpicSeven; e7Launch() }
+        State.G.EpicSeven -> e7(text) { State.g = State.G.Arknights; coma(); performGlobalAction(GLOBAL_ACTION_HOME) }
     }
 }

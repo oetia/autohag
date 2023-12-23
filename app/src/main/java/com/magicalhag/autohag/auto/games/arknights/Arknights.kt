@@ -21,9 +21,9 @@ import com.magicalhag.autohag.auto.games.arknights.misc.arknightsStartup
 
 var state = ArknightsState()
 
-suspend fun AutoService.arknights(text: Text) {
+suspend fun AutoService.arknights(text: Text, onComplete: () -> Unit) {
     when (task) {
-        "ALL" -> arknightsAll(text)
+        "ALL" -> arknightsAll(text, onComplete)
         "STRTUP" -> arknightsStartup(text) { coma() }
         "HOME" -> arknightsHome(text) { coma() }
         "B4SE" -> arknightsBase(text, state) { coma() }
@@ -102,7 +102,7 @@ suspend fun AutoService.arknightsBase(text: Text, state: ArknightsState, onCompl
 }
 
 
-suspend fun AutoService.arknightsAll(text: Text) {
+suspend fun AutoService.arknightsAll(text: Text, onComplete: () -> Unit) {
     when (state.allState) {
         // "HOME" -> arknightsStartup(text) { state.allState = "BASE" }
         // "HOME" -> arknightsHome(text) { state.allState = "BASE" }
@@ -112,7 +112,7 @@ suspend fun AutoService.arknightsAll(text: Text) {
         "CREDITS" -> arknightsCredits(text) { state.allState = "0SANITY" }
         "0SANITY" -> arknightsZeroSanity(text) { state.allState = "REWARDS" }
         // "REWARDS" -> arknightsRewards(text) { state.allState = "HOME" }
-        "REWARDS" -> arknightsRewards(text) { state = ArknightsState(); coma() }
+        "REWARDS" -> arknightsRewards(text) { state = ArknightsState(); onComplete() }
         // "HOME" -> arknightsHome(text) {
         //     state = ArknightsState()
         //     coma()

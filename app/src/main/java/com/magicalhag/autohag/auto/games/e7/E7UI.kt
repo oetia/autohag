@@ -12,6 +12,17 @@ object E7UI {
         return result
     }
 
+    fun tapAgainToClose(text: Text): Boolean =
+        wrapper("Tap Again to Close", text, arrayOf("tap again to close the game"))
+    fun startScreen(text: Text): Boolean =
+        wrapper("Start Screen", text, arrayOf("all rights reserved"))
+
+    fun startScreenButtons(text: Text): Boolean =
+        wrapper("Start Screen Buttons", text, arrayOf("log out", "global server"))
+
+    fun mainMenuPartial(text: Text): Boolean =
+        wrapper("Main Menu Partial", text, arrayOf("shop", "hero"))
+
     fun quitPopup(text: Text): Boolean =
         wrapper("Quit Popup", text, arrayOf("quit the game", "cancel", "confirm"))
 

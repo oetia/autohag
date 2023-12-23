@@ -4,10 +4,12 @@ import android.accessibilityservice.AccessibilityService
 import android.app.AlarmManager
 import android.content.Context
 import android.graphics.Point
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
+import androidx.annotation.RequiresApi
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.magicalhag.autohag.auto.games.arknights.misc.arknightsLaunch
@@ -19,6 +21,10 @@ import com.magicalhag.autohag.auto.core.image.extractTextFromImage
 import com.magicalhag.autohag.auto.core.image.getImageScreenshot
 import com.magicalhag.autohag.auto.core.logging.log
 import com.magicalhag.autohag.auto.core.logging.toast
+import com.magicalhag.autohag.auto.games.State
+import com.magicalhag.autohag.auto.games.ark.ArkS
+import com.magicalhag.autohag.auto.games.ark.arkLaunch
+import com.magicalhag.autohag.auto.games.e7.E7S
 import com.magicalhag.autohag.auto.games.e7.e7Launch
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -87,9 +93,25 @@ class AutoService : AccessibilityService() {
     }
 
     fun updateState(newState: String) {
-        task = newState
-        log("STATE: $task")
-        toast("STATE: $task")
+        if(newState.startsWith("ARK")) { State.g = State.G.Arknights; arkLaunch() }
+        else if(newState.startsWith("E7")) { State.g = State.G.EpicSeven; e7Launch() }
+
+        when (newState) {
+            "ARK" -> { ArkS.t = ArkS.T.Home }
+            "ARK-RECR" -> { ArkS.t = ArkS.T.Recruit }
+            "ARK-CRED" -> { ArkS.t = ArkS.T.Credits }
+            "ARK-0" -> { ArkS.t = ArkS.T.ZeroSanity }
+            "ARK-MISS" -> { ArkS.t = ArkS.T.Missions }
+
+            "E7" -> { E7S.t = E7S.T.Home }
+            "E7-HNT" -> { E7S.t = E7S.T.Hunt }
+            "E7-ABY" -> { E7S.t = E7S.T.Abyss }
+            "E7-SANC" -> { E7S.t = E7S.T.SanctuaryHeart }
+            "E7-ARNA" -> { E7S.t = E7S.T.Arena }
+            "E7-REP" -> { E7S.t = E7S.T.Reputation }
+        }
+        log("STATE: ${if (State.g == State.G.Arknights) ArkS.t else E7S.t}")
+        toast("STATE: ${if (State.g == State.G.Arknights) ArkS.t else E7S.t}")
     }
 
 
@@ -111,6 +133,7 @@ class AutoService : AccessibilityService() {
 
     private lateinit var alarmManager: AlarmManager
     private lateinit var alarmListener: AlarmManager.OnAlarmListener
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate() {
         super.onCreate()
         log("Auto Service Created")
@@ -125,9 +148,9 @@ class AutoService : AccessibilityService() {
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
 
-        // calendar.set(Calendar.HOUR_OF_DAY, 21)
-        // calendar.set(Calendar.MINUTE, 30)
-        // calendar.set(Calendar.SECOND, 25)
+        // calendar.set(Calendar.HOUR_OF_DAY, 23)
+        // calendar.set(Calendar.MINUTE, 32)
+        // calendar.set(Calendar.SECOND, 50)
 
         if(calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1)
@@ -145,8 +168,6 @@ class AutoService : AccessibilityService() {
             alarmListener,
             mainHandler
         )
-
-        e7Launch()
     }
 
     suspend fun cunny() {
@@ -169,11 +190,11 @@ class AutoService : AccessibilityService() {
         dispatch(Point(300, 1150).buildClick())
         delay(1000L)
 
-        arknightsLaunch()
+        arkLaunch()
 
-        delay(1000L)
+        delay(3000L)
 
-        dispatch(Point(750, 75).buildClick())
+        dispatch(Point(750, 75).buildClick()) // toggle begin
 
         // performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
         // arknightsLaunch()

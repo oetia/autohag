@@ -9,17 +9,30 @@
 
 
     <string-array name="tasks">
+
+        <item>ARK</item>
+        <item>E7</item>
+
+        <item>ARK-RECR</item>
+        <item>ARK-CRED</item>
+        <item>ARK-0</item>
+        <item>ARK-MISS</item>
+
+        <item>E7-HNT</item>
+        <item>E7-ABY</item>
+        <item>E7-SANC</item>
+        <item>E7-ARNA</item>
+        <item>E7-REP</item>
 <!--        <item>B4SE</item>-->
+<!--        <item>ALL</item>-->
+<!--        <item>STRTUP</item>-->
+<!--        <item>HOME</item>-->
+<!--        <item>0SANITY</item>-->
+<!--        <item>RECR</item>-->
+<!--        <item>B4SE</item>-->
+<!--        <item>CREDITS</item>-->
+<!--        <item>REWARDS</item>-->
 
-        <item>ALL</item>
-        <item>STRTUP</item>
-        <item>HOME</item>
-        <item>0SANITY</item>
-        <item>RECR</item>
-        <item>B4SE</item>
-        <item>CREDITS</item>
-        <item>REWARDS</item>
-
-        <item>RESET</item>
+<!--        <item>RESET</item>-->
     </string-array>
 </resources>
