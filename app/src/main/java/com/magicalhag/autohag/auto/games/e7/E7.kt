@@ -29,6 +29,8 @@ suspend fun AutoService.e7(text: Text, onComplete: () -> Unit) {
         E7S.T.SanctuaryForestMola -> e7SanctuaryForest(text, d) { E7S.t = E7S.T.Arena }
         E7S.T.Arena -> e7Arena(text, d) { E7S.t = E7S.T.Reputation }
         E7S.T.Reputation -> e7Reputation(text, d) { E7S.t = E7S.T.Home; onComplete() }
+
+        E7S.T.InfiniteHunt -> e7InfiniteHunt(text, d) { coma() }
     }
 }
 
@@ -156,6 +158,29 @@ suspend fun AutoService.e7Reputation(
     else if (E7UI.reputation.rewardsPopup(text)) { onComplete() }
     else { e7Home(text) {} }
 }
+
+suspend fun AutoService.e7InfiniteHunt(
+    text: Text,
+    d: DispatchUtils,
+    onComplete: () -> Unit
+) {
+    if (E7UI.quitPopup(text)) { d.t("cancel") }
+    else if (E7UI.mainMenu(text)) {
+        if (!E7UI.backgroundBattlingModal(text)) { d.p(Point(1930, 55)) }
+        else {
+            if (!E7UI.backgroundBattlingDone(text)) { coroutineScope.launch { nap(15 * 1000) } }
+            else { d.p(Point(1400, 820)) } } }
+
+    else if (E7UI.selectTeamMenu(text)) { d.t("start"); delay(500) }
+    else if (E7UI.insufficientEnergyPopup(text)) { d.t("buy") }
+    else if (E7UI.repeatBattlingModal(text)) { d.p(Point(1350, 300)) }
+    else if (E7UI.backgroundBattlingPopup(text)) { d.t("confirm"); delay(3000) }
+    else if (E7UI.stageClear(text)) { d.t("stage") }
+    else if (E7UI.battleResults(text)) { d.t("confirm") }
+    else if (E7UI.unitsIdling(text)) { d.t("try again") }
+    else { e7Home(text) {} }
+}
+
 
 fun AutoService.e7Launch() {
     // adb shell 'dumpsys package | grep -Eo "^[[:space:]]+[0-9a-f]+[[:space:]]+com.stove.epic7.google/[^[:space:]]+" | grep -oE "[^[:space:]]+$"'

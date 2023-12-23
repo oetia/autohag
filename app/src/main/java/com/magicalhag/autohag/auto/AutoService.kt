@@ -109,6 +109,7 @@ class AutoService : AccessibilityService() {
             "E7-SANC" -> { E7S.t = E7S.T.SanctuaryHeart }
             "E7-ARNA" -> { E7S.t = E7S.T.Arena }
             "E7-REP" -> { E7S.t = E7S.T.Reputation }
+            "E7-INF" -> { E7S.t = E7S.T.InfiniteHunt }
         }
         log("STATE: ${if (State.g == State.G.Arknights) ArkS.t else E7S.t}")
         toast("STATE: ${if (State.g == State.G.Arknights) ArkS.t else E7S.t}")

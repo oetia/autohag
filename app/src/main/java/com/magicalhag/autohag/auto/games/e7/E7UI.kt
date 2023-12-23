@@ -134,4 +134,19 @@ object E7UI {
             wrapper("Reputation Rewards Received", text, arrayOf("you have already received all"))
 
     }
+
+    fun backgroundBattlingModal(text: Text): Boolean =
+        wrapper("Background Battling Modal", text, arrayOf("background battling", "hunt stage"))
+
+    fun backgroundBattlingDone(text: Text): Boolean =
+        wrapper("Background Battling Done", text, arrayOf("background battling ended", "repeat battling has ended"))
+
+    fun stageClear(text: Text): Boolean =
+        wrapper("Stage Clear", text, arrayOf("stage", "clear"))
+
+    fun battleResults(text: Text): Boolean =
+        wrapper("Battle Results", text, arrayOf("battle results", "confirm"))
+
+    fun unitsIdling(text: Text): Boolean =
+        wrapper("Units Idling", text, arrayOf("leave", "lobby", "try again"))
 }
