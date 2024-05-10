@@ -175,7 +175,7 @@ suspend fun AutoService.e7InfiniteHunt(
     else if (E7UI.insufficientEnergyPopup(text)) { d.t("buy") }
     else if (E7UI.repeatBattlingModal(text)) { d.p(Point(1350, 300)) }
     else if (E7UI.backgroundBattlingPopup(text)) { d.t("confirm"); delay(3000) }
-    else if (E7UI.stageClear(text)) { d.t("stage") }
+    else if (E7UI.stageClear(text)) { d.p(Point(2100, 995)) }
     else if (E7UI.battleResults(text)) { d.t("confirm") }
     else if (E7UI.unitsIdling(text)) { d.t("try again") }
     else { e7Home(text) {} }

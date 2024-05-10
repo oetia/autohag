@@ -136,7 +136,7 @@ object E7UI {
     }
 
     fun backgroundBattlingModal(text: Text): Boolean =
-        wrapper("Background Battling Modal", text, arrayOf("background battling", "hunt stage"))
+        wrapper("Background Battling Modal", text, arrayOf("background bat", "banshee hunt", "hunt stage"))
 
     fun backgroundBattlingDone(text: Text): Boolean =
         wrapper("Background Battling Done", text, arrayOf("background battling ended", "repeat battling has ended"))

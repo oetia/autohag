@@ -161,14 +161,14 @@ class AutoService : AccessibilityService() {
         log("${calendar.timeInMillis}")
         log(SystemClock.currentNetworkTimeClock().millis())
 
-        alarmManager.set(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            // SystemClock.elapsedRealtime() + 3000L,
-            "CUNNY",
-            alarmListener,
-            mainHandler
-        )
+        // alarmManager.set(
+        //     AlarmManager.RTC_WAKEUP,
+        //     calendar.timeInMillis,
+        //     // SystemClock.elapsedRealtime() + 3000L,
+        //     "CUNNY",
+        //     alarmListener,
+        //     mainHandler
+        // )
     }
 
     suspend fun cunny() {
