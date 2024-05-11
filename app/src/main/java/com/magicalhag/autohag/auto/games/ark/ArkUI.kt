@@ -16,13 +16,16 @@ object ArkUI {
         wrapper("Start Menu", text, arrayOf("start", "check preannounce", "account management", "customer service"))
 
     fun mainMenu(text: Text): Boolean =
-        wrapper("Main Menu", text, arrayOf("friends", "archive", "recruit", "store", "missions", "base", "sanity/"))
+        wrapper("Main Menu", text, arrayOf("friends", "archive", "recruit", "store", "missions", "base", "sanity"))
 
     fun terminal(text: Text): Boolean =
         wrapper("Terminal", text, arrayOf("to the most recent stage"))
 
     fun stageSelect(text: Text): Boolean =
         wrapper("Stage Select", text, arrayOf("auto deploy", "start"))
+
+    fun autoCountSelect(text: Text): Boolean =
+        wrapper("Auto Count Select", text, arrayOf("auto deploy", "start", "1", "2", "3", "4", "5", "6"))
 
     fun battlePrep(text: Text): Boolean =
         wrapper("Battle Prep", text, arrayOf("mission|operation", "start", "the roster for this operation cannot be changed"))

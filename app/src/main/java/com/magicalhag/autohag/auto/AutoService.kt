@@ -54,17 +54,21 @@ class AutoService : AccessibilityService() {
     private var badumps = 0
     private var sleeping = true
 
+    private var actionHistory = mutableListOf<String>();
+
     var task: String = ""
 
     suspend fun badump(testing: Boolean = false) {
 
         if (sleeping && !testing) {
-            log("zzzZZZz")
+            // log("zzzZZZz")
             return
         }
 
         val image = getImageScreenshot()
         val ocrout = extractTextFromImage(image)
+
+        log(ocrout)
 
         try {
             decoder(ocrout)

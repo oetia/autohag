@@ -14,7 +14,6 @@ interface DispatchUtils {
     suspend fun s(p1: Point, p2: Point): Boolean
 
 }
-
 fun AutoService.generateDispatchUtils(text: Text): DispatchUtils {
     return object : DispatchUtils {
         override suspend fun t(t: String): Boolean = dispatch(text.find(t).last().buildClick())

@@ -8,11 +8,17 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 
-suspend fun AutoService.dispatch(gesture: GestureDescription): Boolean = suspendCoroutine {
+suspend fun AutoService.dispatch(
+    gesture: GestureDescription,
+    actionDescription: String = "no action description"
+): Boolean = suspendCoroutine {
     dispatchGesture(gesture, object : AccessibilityService.GestureResultCallback() {
         override fun onCompleted(gestureDescription: GestureDescription?) {
             super.onCompleted(gestureDescription)
-            log("gesture completed")
+            log("(ACTION*): $actionDescription")
+            // it's possible that a gesture completes, but ui bugs out and it ends up stuck.
+            //
+            // log("gesture completed")
             it.resume(true)
         }
 

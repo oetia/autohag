@@ -7,6 +7,7 @@ import android.view.Display
 import com.google.mlkit.vision.common.InputImage
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.core.logging.log
+import java.io.FileOutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -30,7 +31,14 @@ suspend fun AutoService.getBitmapScreenshot(): Bitmap {
     val screenshot = takeScreenshotSequential()
     val bitmap = Bitmap.wrapHardwareBuffer(screenshot.hardwareBuffer, screenshot.colorSpace)
 
+
     if(bitmap != null) {
+
+        // val out = FileOutputStream("/storage/self/primary/Documents/testing.png")
+        // val scaledDown = Bitmap.createScaledBitmap(bitmap, bitmap.width / 2, bitmap.height / 2, true)
+        // scaledDown.compress(Bitmap.CompressFormat.PNG, 10, out)
+        // bitmap.compress(Bitmap.CompressFormat.PNG, 10, out)
+
         return bitmap
     } else {
         throw Exception("Failed to extract Bitmap")

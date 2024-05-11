@@ -110,13 +110,15 @@ suspend fun AutoService.arkCredits(
     else { arkHome(text) {} }
 }
 
+
 suspend fun AutoService.arkZeroSanity(
     text: Text,
     d: DispatchUtils,
     onComplete: () -> Unit
 ) {
-    if (ArkUI.mainMenu(text)) { d.t("sanity/") }
+    if (ArkUI.mainMenu(text)) { d.t("sanity") }
     else if (ArkUI.terminal(text)) { d.t("to the most recent stage") }
+    else if (ArkUI.autoCountSelect(text)) { d.t("1") }
     else if (ArkUI.stageSelect(text)) { d.t("start") }
     else if (ArkUI.battlePrep(text)) { d.t("start") }
     else if (ArkUI.battlePending(text)) { coroutineScope.launch { nap(15 * 1000) } }
@@ -124,6 +126,21 @@ suspend fun AutoService.arkZeroSanity(
     else if (ArkUI.zeroSanity(text)) { onComplete() }
     else { arkHome(text) {} }
 }
+
+// suspend fun AutoService.arkZeroSanity(
+//     text: Text,
+//     d: DispatchUtils,
+//     onComplete: () -> Unit
+// ) {
+//     if (ArkUI.mainMenu(text)) { d.t("sanity") }
+//     else if (ArkUI.terminal(text)) { d.t("to the most recent stage") }
+//     else if (ArkUI.stageSelect(text)) { d.t("start") }
+//     else if (ArkUI.battlePrep(text)) { d.t("start") }
+//     else if (ArkUI.battlePending(text)) { coroutineScope.launch { nap(15 * 1000) } }
+//     else if (ArkUI.battleFinished(text)) { d.t("results") }
+//     else if (ArkUI.zeroSanity(text)) { onComplete() }
+//     else { arkHome(text) {} }
+// }
 
 suspend fun AutoService.arkMissions(
     text: Text,
