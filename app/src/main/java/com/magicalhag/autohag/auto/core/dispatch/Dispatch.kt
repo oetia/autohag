@@ -16,7 +16,7 @@ suspend fun AutoService.dispatch(
     dispatchGesture(gesture, object : AccessibilityService.GestureResultCallback() {
         override fun onCompleted(gestureDescription: GestureDescription?) {
             super.onCompleted(gestureDescription)
-            addDispatchHistoryEntry(location, action)
+            // addDispatchHistoryEntry(location, action)
             it.resume(true)
         }
 

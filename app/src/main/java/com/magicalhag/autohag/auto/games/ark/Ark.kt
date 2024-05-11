@@ -3,21 +3,26 @@ package com.magicalhag.autohag.auto.games.ark
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.content.ComponentName
 import android.content.Intent
-import android.graphics.Point
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.core.dispatch.DispatchUtils
 import com.magicalhag.autohag.auto.core.dispatch.generateDispatchUtils
-import com.magicalhag.autohag.auto.games.ark.misc.findBestTagCombo
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.magicalhag.autohag.auto.core.logging.log
+import com.magicalhag.autohag.auto.core.text.StateCheckUtils
+import com.magicalhag.autohag.auto.core.text.generateStateCheckUtils
+
 
 // @formatter:off
-suspend fun AutoService.ark(text: Text, onComplete: () -> Unit) {
+suspend fun AutoService.ark(text: Text, onComplete: () -> Boolean) {
+    val s = generateStateCheckUtils(text, arknightsStateCheckDictionary)
     val d = generateDispatchUtils(text)
+
+    log("*" + ArkS.t)
+
     when (ArkS.t) {
         ArkS.T.Startup -> arkStartup(text, d) { ArkS.t = ArkS.T.Home }
-        ArkS.T.Home -> arkHome(text) { ArkS.t = ArkS.T.Recruit }
+        ArkS.T.Home -> arkHome(text, s, d) { true }
+        // ArkS.T.Home -> arkHome(text, s, d) { ArkS.t = ArkS.T.Recruit; true }
         ArkS.T.Recruit -> arkRecruit(text, d) { ArkS.t = ArkS.T.Credits }
         ArkS.T.Credits -> arkCredits(text, d) { ArkS.t = ArkS.T.ZeroSanity }
         ArkS.T.ZeroSanity -> arkZeroSanity(text, d) { ArkS.t = ArkS.T.Missions }
@@ -34,10 +39,13 @@ suspend fun AutoService.arkStartup(
 
 suspend fun AutoService.arkHome(
     text: Text,
-    onComplete: () -> Unit
+    s: StateCheckUtils,
+    d: DispatchUtils,
+    onComplete: () -> Boolean
 ) {
-    // if (ArkUI.mainMenu(text)) { onComplete() }
-    // else { performGlobalAction(GLOBAL_ACTION_BACK) }
+    log("***")
+    if (s.sca("main menu") { onComplete() } ) {}
+    else { performGlobalAction(GLOBAL_ACTION_BACK) }
 }
 
 suspend fun AutoService.arkRecruit(
@@ -124,8 +132,8 @@ suspend fun AutoService.arkZeroSanity(
     // i think that it's cheap enough that i can just create a search object and check every possible combination
 
 
-    if(ArkUI.stateCheckAction(text, "main menu") {d.t("sanity")}) {}
-    else if (ArkUI.stateCheckAction(text, "terminal") {d.t("to the most recent stage")}) {}
+    // if(ArkUI.stateCheckAction(text, "main menu") {d.t("sanity")}) {}
+    // else if (ArkUI.stateCheckAction(text, "terminal") {d.t("to the most recent stage")}) {}
     // val mainMenuSearch = ArkUI.mainMenu(text)
     // if (mainMenuSearch.found) { d.t("sanity") }
 

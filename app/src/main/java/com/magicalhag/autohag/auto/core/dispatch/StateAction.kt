@@ -15,7 +15,7 @@ data class StateAction (
     val notes: String, // extra remarks. shouldn't need this, but could be useful.
 )
 
-fun AutoService.addDispatchHistoryEntry(state: String, action: String) {
-    actionHistory.add(StateAction(state, action, ""))
-    log("(ACTION*): $state -> $action")
-}
+// fun AutoService.addDispatchHistoryEntry(state: String, action: String) {
+//     actionHistory.add(StateAction(state, action, ""))
+//     log("(ACTION*): $state -> $action")
+// }

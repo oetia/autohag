@@ -8,5 +8,5 @@ object ArkS {
         Missions
     }
 
-    var t: T = T.Startup
+    var t: T = T.Home
 }

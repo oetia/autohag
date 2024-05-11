@@ -12,9 +12,6 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.annotation.RequiresApi
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.magicalhag.autohag.auto.core.dispatch.DispatchHistoryEntry
-import com.magicalhag.autohag.auto.games.arknights.misc.arknightsLaunch
-import com.magicalhag.autohag.auto.games.decoder
 import com.magicalhag.autohag.auto.core.dispatch.buildClick
 import com.magicalhag.autohag.auto.core.dispatch.buildSwipe
 import com.magicalhag.autohag.auto.core.dispatch.dispatch
@@ -25,6 +22,7 @@ import com.magicalhag.autohag.auto.core.logging.toast
 import com.magicalhag.autohag.auto.games.State
 import com.magicalhag.autohag.auto.games.ark.ArkS
 import com.magicalhag.autohag.auto.games.ark.arkLaunch
+import com.magicalhag.autohag.auto.games.decoder
 import com.magicalhag.autohag.auto.games.e7.E7S
 import com.magicalhag.autohag.auto.games.e7.e7Launch
 import kotlinx.coroutines.CoroutineName
@@ -55,7 +53,7 @@ class AutoService : AccessibilityService() {
     private var badumps = 0
     private var sleeping = true
 
-    var actionHistory = mutableListOf<DispatchHistoryEntry>();
+    // var actionHistory = mutableListOf<DispatchHistoryEntry>();
 
     var task: String = ""
 
@@ -99,7 +97,7 @@ class AutoService : AccessibilityService() {
 
     fun updateState(newState: String) {
         if(newState.startsWith("ARK")) { State.g = State.G.Arknights; arkLaunch() }
-        else if(newState.startsWith("E7")) { State.g = State.G.EpicSeven; e7Launch() }
+        // else if(newState.startsWith("E7")) { State.g = State.G.EpicSeven; e7Launch() }
 
         when (newState) {
             "ARK" -> { ArkS.t = ArkS.T.Home }
