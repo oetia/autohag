@@ -10,13 +10,12 @@ import kotlin.coroutines.suspendCoroutine
 
 suspend fun AutoService.dispatch(
     gesture: GestureDescription,
-    location: String = "no location provided",
-    action: String = "no action provided"
+    sap: StateActionPair = StateActionPair("NA", "NA")
 ): Boolean = suspendCoroutine {
     dispatchGesture(gesture, object : AccessibilityService.GestureResultCallback() {
         override fun onCompleted(gestureDescription: GestureDescription?) {
             super.onCompleted(gestureDescription)
-            // addDispatchHistoryEntry(location, action)
+            addActionHistoryEntry(sap)
             it.resume(true)
         }
 

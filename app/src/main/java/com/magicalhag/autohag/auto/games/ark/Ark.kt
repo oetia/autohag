@@ -17,8 +17,6 @@ suspend fun AutoService.ark(text: Text, onComplete: () -> Boolean) {
     val s = generateStateCheckUtils(text, arknightsStateCheckDictionary)
     val d = generateDispatchUtils(text)
 
-    log("*" + ArkS.t)
-
     when (ArkS.t) {
         ArkS.T.Startup -> arkStartup(text, d) { ArkS.t = ArkS.T.Home }
         ArkS.T.Home -> arkHome(text, s, d) { true }
@@ -43,7 +41,6 @@ suspend fun AutoService.arkHome(
     d: DispatchUtils,
     onComplete: () -> Boolean
 ) {
-    log("***")
     if (s.sca("main menu") { onComplete() } ) {}
     else { performGlobalAction(GLOBAL_ACTION_BACK) }
 }

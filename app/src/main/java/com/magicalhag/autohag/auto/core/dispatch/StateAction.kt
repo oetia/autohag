@@ -9,13 +9,12 @@ import com.magicalhag.autohag.auto.core.logging.log
 
 // i think a more appropriate description is metadata.
 
-data class StateAction (
+data class StateActionPair (
     val state: String, // where was the action performed
-    val action: String, // what was the action
-    val notes: String, // extra remarks. shouldn't need this, but could be useful.
+    val action: String // what was the action
 )
 
-// fun AutoService.addDispatchHistoryEntry(state: String, action: String) {
-//     actionHistory.add(StateAction(state, action, ""))
-//     log("(ACTION*): $state -> $action")
-// }
+fun AutoService.addActionHistoryEntry(sap: StateActionPair) {
+    actionHistory.add(sap)
+    log("(ACTION*): ${sap.state} -> ${sap.action}")
+}

@@ -12,6 +12,7 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.annotation.RequiresApi
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.magicalhag.autohag.auto.core.dispatch.StateActionPair
 import com.magicalhag.autohag.auto.core.dispatch.buildClick
 import com.magicalhag.autohag.auto.core.dispatch.buildSwipe
 import com.magicalhag.autohag.auto.core.dispatch.dispatch
@@ -53,7 +54,7 @@ class AutoService : AccessibilityService() {
     private var badumps = 0
     private var sleeping = true
 
-    // var actionHistory = mutableListOf<DispatchHistoryEntry>();
+    var actionHistory = mutableListOf<StateActionPair>();
 
     var task: String = ""
 
