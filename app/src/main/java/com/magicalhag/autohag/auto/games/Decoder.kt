@@ -22,7 +22,7 @@ object State {
 suspend fun AutoService.decoder(text: Text) {
 
     when(State.g) {
-        State.G.Arknights -> ark(text) { true }
+        State.G.Arknights -> ark(text) { coma(); true }
         // State.G.Arknights -> ark(text) { State.g = State.G.EpicSeven; e7Launch() }
         // State.G.EpicSeven -> e7(text) { State.g = State.G.Arknights; coma(); performGlobalAction(GLOBAL_ACTION_HOME) }
     }

@@ -27,9 +27,9 @@ fun AutoService.generateDispatchUtils(text: Text): DispatchUtils {
         override suspend fun p(p: Point): Boolean = dispatch(p.buildClick())
         override suspend fun s(p1: Point, p2: Point): Boolean = dispatch(buildSwipe(p1, p2))
 
-        override suspend fun tm(t: String, state: String): Boolean = dispatch(text.find(t).last().buildClick(), StateActionPair(state, "click $t"))
-        override suspend fun tem(t: String, state: String): Boolean = dispatch(text.findElements(t).buildElementClick(), StateActionPair(state, "click $t"))
-        override suspend fun pm(p: Point, state: String): Boolean = dispatch(p.buildClick(), StateActionPair(state, "click (${p.x}, ${p.y})"))
-        override suspend fun sm(p1: Point, p2: Point, state: String): Boolean = dispatch(buildSwipe(p1, p2), StateActionPair(state, "swipe (${p1.x}, ${p1.y}) -> (${p2.x}, ${p2.y})"))
+        override suspend fun tm(t: String, state: String): Boolean = dispatch(text.find(t).last().buildClick(), StateActionPair(state, "click '$t'"))
+        override suspend fun tem(t: String, state: String): Boolean = dispatch(text.findElements(t).buildElementClick(), StateActionPair(state, "click '$t'"))
+        override suspend fun pm(p: Point, state: String): Boolean = dispatch(p.buildClick(), StateActionPair(state, "click '(${p.x}, ${p.y})'"))
+        override suspend fun sm(p1: Point, p2: Point, state: String): Boolean = dispatch(buildSwipe(p1, p2), StateActionPair(state, "swipe '(${p1.x}, ${p1.y}) -> (${p2.x}, ${p2.y})'"))
     }
 }

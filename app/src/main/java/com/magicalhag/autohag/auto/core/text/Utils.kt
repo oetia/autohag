@@ -2,6 +2,7 @@ package com.magicalhag.autohag.auto.core.text
 
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
+import com.magicalhag.autohag.auto.core.logging.log
 
 interface StateCheckUtils {
     val stateCheckDictionary: HashMap<String, Array<String>>
@@ -24,6 +25,7 @@ fun AutoService.generateStateCheckUtils(
         override fun sc(name: String): Boolean {
             val checks = stateCheckDictionary[name] as Array<String>
             val result = text.check(*checks);
+            log("STATE CHECK: $name :-: $result")
             return result
         }
 

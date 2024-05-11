@@ -3,13 +3,16 @@ package com.magicalhag.autohag.auto.games.ark
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.content.ComponentName
 import android.content.Intent
+import android.graphics.Point
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.core.dispatch.DispatchUtils
 import com.magicalhag.autohag.auto.core.dispatch.generateDispatchUtils
-import com.magicalhag.autohag.auto.core.logging.log
 import com.magicalhag.autohag.auto.core.text.StateCheckUtils
 import com.magicalhag.autohag.auto.core.text.generateStateCheckUtils
+import com.magicalhag.autohag.auto.games.ark.misc.findBestTagCombo
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 // @formatter:off
@@ -18,13 +21,13 @@ suspend fun AutoService.ark(text: Text, onComplete: () -> Boolean) {
     val d = generateDispatchUtils(text)
 
     when (ArkS.t) {
-        ArkS.T.Startup -> arkStartup(text, d) { ArkS.t = ArkS.T.Home }
-        ArkS.T.Home -> arkHome(text, s, d) { true }
-        // ArkS.T.Home -> arkHome(text, s, d) { ArkS.t = ArkS.T.Recruit; true }
-        ArkS.T.Recruit -> arkRecruit(text, d) { ArkS.t = ArkS.T.Credits }
-        ArkS.T.Credits -> arkCredits(text, d) { ArkS.t = ArkS.T.ZeroSanity }
-        ArkS.T.ZeroSanity -> arkZeroSanity(text, d) { ArkS.t = ArkS.T.Missions }
-        ArkS.T.Missions -> arkMissions(text, d) { ArkS.t = ArkS.T.Home; onComplete() }
+        ArkS.T.Startup -> arkStartup(text, d) { ArkS.t = ArkS.T.Home; true }
+        ArkS.T.Home -> arkHome(s, d) { true }
+        ArkS.T.Home -> arkHome(s, d) { ArkS.t = ArkS.T.Recruit; true }
+        ArkS.T.Recruit -> arkRecruit(text, s, d) { ArkS.t = ArkS.T.Credits; true }
+        ArkS.T.Credits -> arkCredits(text, s, d) { ArkS.t = ArkS.T.ZeroSanity; true }
+        ArkS.T.ZeroSanity -> arkZeroSanity(text, s, d) { ArkS.t = ArkS.T.Missions; true }
+        ArkS.T.Missions -> arkMissions(text, s, d) { ArkS.t = ArkS.T.Home; onComplete() }
     }
 }
 
@@ -36,7 +39,6 @@ suspend fun AutoService.arkStartup(
 }
 
 suspend fun AutoService.arkHome(
-    text: Text,
     s: StateCheckUtils,
     d: DispatchUtils,
     onComplete: () -> Boolean
@@ -47,72 +49,51 @@ suspend fun AutoService.arkHome(
 
 suspend fun AutoService.arkRecruit(
     text: Text,
+    s: StateCheckUtils,
     d: DispatchUtils,
-    onComplete: () -> Unit
+    onComplete: () -> Boolean
 ) {
-    // if (ArkUI.mainMenu(text)) { d.t("recruit") }
-    // else if (ArkUI.recruit.menu(text)) {
-    //     if (ArkUI.recruit.slotOpen(text)) { d.t("recruit now") }
-    //     else if (ArkUI.recruit.slotHire(text)) { d.t("hire"); delay(1000) }
-    //     else { onComplete() } }
-    // else if (ArkUI.recruit.tagMenu(text)) {
-    //     if (ArkUI.recruit.tagMenuTopOperator(text)) { onComplete(); return }
-    //     else {
-    //         val bestCombo = findBestTagCombo(text)
-    //         if (bestCombo != null) {
-    //             for (tag in bestCombo) { d.t(tag) } // select tags
-    //             d.p(Point(900, 450)) // 9 hours
-    //             d.p(Point(1675, 875)) // confirm
-    //             delay(1000) }
-    //         else {
-    //             if (ArkUI.recruit.refreshAvailable(text)) {
-    //                 d.t("tap to refresh"); delay(500);
-    //                 d.p(Point(1600, 750)) // confirm refresh
-    //                 delay(1000)}
-    //             else {
-    //                 d.p(Point(900, 450)) // 9 hours
-    //                 d.p(Point(1675, 875)) // confirm
-    //                 delay(1000) } } } }
-    // else if (ArkUI.recruit.bagAnimation(text)) { d.t("skip") }
-    // else if (ArkUI.recruit.operatorDetails(text)) { d.t("certificate") }
-    // else { arkHome(text) {} }
-
-    // } else if (text.check("job", "tags")) {
-    //     val bestTagCombo = findBestTagCombo()
-    //     if(bestTagCombo != null) {
-    //         selectTags(bestTagCombo)
-    //         confirmRecruitment()
-    //     } else {
-    //         if(text.check("tap to refresh")) {
-    //             dispatch(text.find("tap to refresh").buildClick())
-    //         } else {
-    //             confirmRecruitment()
-    //         }
-    //     }
-    // } else if (text.check("skip")) {
-    //     dispatch(text.find("skip").buildClick())
-    // } else if (text.check("certificate")) {
-    //     dispatch(text.find("certificate").buildClick())
-    // } else if (text.check("spend 1 refresh attempt?")) {
-    //     dispatch(Point(1600, 750).buildClick())
-    //     delay(1000)
-    // } else {
-    //     arknightsHome(text) {}
-    // }
+    if (s.sca("main menu") { d.tm("recruit", it) } ) {}
+    else if (s.sc("recruit menu")) {
+        if (s.sca("recruit slot open") { d.tm("recruit now", it) } ) {}
+        else if (s.sca("recruit slot hire") { d.tm("hire", it); delay(1000); true }) {}
+        else { onComplete() } }
+    else if (s.sca("bag animation") { d.tm("skip", it) } ) {}
+    else if (s.sca("operator details") { d.tm("certificate", it) } ) {}
+    else if (s.sc("tag menu")) {
+        if (s.sca("tag menu top operator") { onComplete() } ) { return }
+        else {
+            val bestCombo = findBestTagCombo(text)
+            if (bestCombo != null) {
+                for (tag in bestCombo) { d.t(tag) } // select tags
+                d.p(Point(900, 450)) // 9 hours
+                d.p(Point(1675, 875)) // confirm
+                delay(1000) }
+            else {
+                if (s.sc("refresh available")) {
+                    d.t("tap to refresh"); delay(500);
+                    d.p(Point(1600, 750)) // confirm refresh
+                    delay(1000)}
+                else {
+                    d.p(Point(900, 450)) // 9 hours
+                    d.p(Point(1675, 875)) // confirm
+                    delay(1000) } } } }
+    else { arkHome(s, d) { true } }
 }
 
 suspend fun AutoService.arkCredits(
     text: Text,
+    s: StateCheckUtils,
     d: DispatchUtils,
     onComplete: () -> Unit
 ) {
-    // if (ArkUI.mainMenu(text)) { d.t("store") }
-    // else if (ArkUI.storeBar(text)) {
-    //     if (!ArkUI.creditMenu(text)) { d.t("credit store") }
-    //     else {
-    //         if (ArkUI.creditAvailable(text)) { d.t("claim") }
-    //         else { onComplete() } } }
-    // else { arkHome(text) {} }
+    if (s.sca("main menu") { d.tm("store", it) } ) {}
+    else if (s.sc("store bar")) {
+        if (!s.sc("credit menu")) { d.tm("credit store", "credit menu") }
+        else {
+            if (s.sca("credit available") { d.tm("claim", it) } ) {}
+            else { onComplete() } } }
+    else { arkHome(s, d) {true} }
 }
 
 // location checks
@@ -120,56 +101,31 @@ suspend fun AutoService.arkCredits(
 
 suspend fun AutoService.arkZeroSanity(
     text: Text,
+    s: StateCheckUtils,
     d: DispatchUtils,
     onComplete: () -> Unit
 ) {
-
-    // i need to find some way to pass the name into the function.
-    // i want to keep the code looking clean. that's the issue right here.
-    // i think that it's cheap enough that i can just create a search object and check every possible combination
-
-
-    // if(ArkUI.stateCheckAction(text, "main menu") {d.t("sanity")}) {}
-    // else if (ArkUI.stateCheckAction(text, "terminal") {d.t("to the most recent stage")}) {}
-    // val mainMenuSearch = ArkUI.mainMenu(text)
-    // if (mainMenuSearch.found) { d.t("sanity") }
-
-    // if (ArkUI.mainMenu(text)) { d.t("sanity") }
-    // else if (ArkUI.terminal(text)) { d.t("to the most recent stage") }
-    // else if (ArkUI.autoCountSelect(text)) { d.t("1") }
-    // else if (ArkUI.stageSelect(text)) { d.t("start") }
-    // else if (ArkUI.battlePrep(text)) { d.t("start") }
-    // else if (ArkUI.battlePending(text)) { coroutineScope.launch { nap(15 * 1000) } }
-    // else if (ArkUI.battleFinished(text)) { d.t("results") }
-    // else if (ArkUI.zeroSanity(text)) { onComplete() }
-    // else { arkHome(text) {} }
+    if (s.sca("main menu") { d.tm("sanity", it) } ) {}
+    else if (s.sca("terminal") { d.tm("to the most recent stage", it) } ) {}
+    else if (s.sca("stage select") { d.tm("start", it) } ) {}
+    else if (s.sca("battle prep") { d.tm("start", it) } ) {}
+    else if (s.sc("battle pending")) { coroutineScope.launch { nap(15 * 1000) } }
+    else if (s.sca("battle finished") { d.tm("results", it) } ) {}
+    else if (s.sc("zero sanity")) { onComplete() }
+    else { arkHome(s, d) { true } }
 }
-
-// suspend fun AutoService.arkZeroSanity(
-//     text: Text,
-//     d: DispatchUtils,
-//     onComplete: () -> Unit
-// ) {
-//     if (ArkUI.mainMenu(text)) { d.t("sanity") }
-//     else if (ArkUI.terminal(text)) { d.t("to the most recent stage") }
-//     else if (ArkUI.stageSelect(text)) { d.t("start") }
-//     else if (ArkUI.battlePrep(text)) { d.t("start") }
-//     else if (ArkUI.battlePending(text)) { coroutineScope.launch { nap(15 * 1000) } }
-//     else if (ArkUI.battleFinished(text)) { d.t("results") }
-//     else if (ArkUI.zeroSanity(text)) { onComplete() }
-//     else { arkHome(text) {} }
-// }
 
 suspend fun AutoService.arkMissions(
     text: Text,
+    s: StateCheckUtils,
     d: DispatchUtils,
     onComplete: () -> Unit
 ) {
-    // if (ArkUI.mainMenu(text)) { d.t("missions") }
-    // else if (ArkUI.missionsMenu(text)) {
-    //     d.p(Point(1900, 200)); delay(2000)
-    //     onComplete() }
-    // else { arkHome(text) {} }
+    if (s.sca("main menu") { d.tm("missions", it) } ) {}
+    else if (s.sc("missions menu")) {
+        d.pm(Point(1900, 200), "missions menu"); delay(2000)
+        onComplete() }
+    else { arkHome(s, d) { true } }
 }
 
 fun AutoService.arkLaunch() {

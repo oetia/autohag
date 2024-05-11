@@ -61,7 +61,7 @@ class AutoService : AccessibilityService() {
     suspend fun badump(testing: Boolean = false) {
 
         if (sleeping && !testing) {
-            // log("zzzZZZz")
+            log("zzzZZZz")
             return
         }
 

@@ -39,7 +39,6 @@ val recruitCombos = arrayOf(
     arrayOf("senior operator"),
     arrayOf("support(?!er)", "vanguard"),
     arrayOf("support(?!er)", "dp-recovery"),
-    arrayOf("crowd-control"),
     arrayOf("survival", "defender"),
     arrayOf("survival", "defense"),
     arrayOf("defender", "dps"),
@@ -80,5 +79,6 @@ val recruitCombos = arrayOf(
     arrayOf("fast-redeploy"),
     arrayOf("debuff"),
     arrayOf("support(?!er)"),
-    arrayOf("nuker")
+    arrayOf("nuker"),
+    arrayOf("crowd-control"),
 )
