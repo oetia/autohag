@@ -1,6 +1,5 @@
 package com.magicalhag.autohag.auto.core.dispatch
 
-import android.accessibilityservice.GestureDescription
 import android.graphics.Point
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService

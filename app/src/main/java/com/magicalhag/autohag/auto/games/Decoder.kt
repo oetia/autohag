@@ -10,7 +10,8 @@ import com.magicalhag.autohag.auto.games.e7.e7Launch
 
 object State {
     enum class G {
-        Arknights, EpicSeven,
+        Arknights,
+        // EpicSeven,
     }
 
     var g: G = G.Arknights
@@ -21,7 +22,8 @@ object State {
 suspend fun AutoService.decoder(text: Text) {
 
     when(State.g) {
-        State.G.Arknights -> ark(text) { State.g = State.G.EpicSeven; e7Launch() }
-        State.G.EpicSeven -> e7(text) { State.g = State.G.Arknights; coma(); performGlobalAction(GLOBAL_ACTION_HOME) }
+        State.G.Arknights -> ark(text) {}
+        // State.G.Arknights -> ark(text) { State.g = State.G.EpicSeven; e7Launch() }
+        // State.G.EpicSeven -> e7(text) { State.g = State.G.Arknights; coma(); performGlobalAction(GLOBAL_ACTION_HOME) }
     }
 }
