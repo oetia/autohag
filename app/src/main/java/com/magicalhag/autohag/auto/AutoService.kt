@@ -33,6 +33,12 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.Calendar
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -68,8 +74,10 @@ class AutoService : AccessibilityService() {
         val image = getImageScreenshot()
         val ocrout = extractTextFromImage(image)
 
-        // log(ocrout.textBlocks.joinToString("\n") { it.text })
+        log(ocrout.textBlocks.joinToString("\n") { it.text })
         log(actionHistory.joinToString("\n") { it.toString() });
+
+        // testRequest() - tests the openai api. blocks background thread until response received.
 
         try {
             decoder(ocrout)
