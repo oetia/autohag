@@ -68,7 +68,8 @@ class AutoService : AccessibilityService() {
         val image = getImageScreenshot()
         val ocrout = extractTextFromImage(image)
 
-        log(ocrout)
+        // log(ocrout.textBlocks.joinToString("\n") { it.text })
+        log(actionHistory.joinToString("\n") { it.toString() });
 
         try {
             decoder(ocrout)
@@ -177,7 +178,7 @@ class AutoService : AccessibilityService() {
 
     suspend fun cunny() {
 
-        log("CUNNY CUNNY uoooooooooooooooooooooooooogh")
+        log("uoooooooooooooooooooooooooogh")
         performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
         delay(1000L)
         performGlobalAction(GLOBAL_ACTION_HOME)

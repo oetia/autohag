@@ -7,6 +7,8 @@ import android.graphics.Point
 import com.google.mlkit.vision.text.Text
 import com.magicalhag.autohag.auto.AutoService
 import com.magicalhag.autohag.auto.core.dispatch.DispatchUtils
+import com.magicalhag.autohag.auto.core.dispatch.StateActionPair
+import com.magicalhag.autohag.auto.core.dispatch.addActionHistoryEntry
 import com.magicalhag.autohag.auto.core.dispatch.generateDispatchUtils
 import com.magicalhag.autohag.auto.core.text.StateCheckUtils
 import com.magicalhag.autohag.auto.core.text.generateStateCheckUtils
@@ -22,7 +24,6 @@ suspend fun AutoService.ark(text: Text, onComplete: () -> Boolean) {
 
     when (ArkS.t) {
         ArkS.T.Startup -> arkStartup(text, d) { ArkS.t = ArkS.T.Home; true }
-        ArkS.T.Home -> arkHome(s, d) { true }
         ArkS.T.Home -> arkHome(s, d) { ArkS.t = ArkS.T.Recruit; true }
         ArkS.T.Recruit -> arkRecruit(text, s, d) { ArkS.t = ArkS.T.Credits; true }
         ArkS.T.Credits -> arkCredits(text, s, d) { ArkS.t = ArkS.T.ZeroSanity; true }
@@ -44,7 +45,10 @@ suspend fun AutoService.arkHome(
     onComplete: () -> Boolean
 ) {
     if (s.sca("main menu") { onComplete() } ) {}
-    else { performGlobalAction(GLOBAL_ACTION_BACK) }
+    else {
+        performGlobalAction(GLOBAL_ACTION_BACK)
+        addActionHistoryEntry(StateActionPair("arkHome", "back"))
+    }
 }
 
 suspend fun AutoService.arkRecruit(
@@ -107,10 +111,15 @@ suspend fun AutoService.arkZeroSanity(
 ) {
     if (s.sca("main menu") { d.tm("sanity", it) } ) {}
     else if (s.sca("terminal") { d.tm("to the most recent stage", it) } ) {}
-    else if (s.sca("stage select") { d.tm("start", it) } ) {}
+    else if (s.sc("stage select")) {
+        if(actionHistory.size > 0 &&  actionHistory.last().action == "back") {
+            // if on zero sanity task and it backs out to stage select, auto deploy probably not enabled.
+            d.tm("auto deploy", "stage select")
+        } else { d.tm("start", "stage select") }
+    }
     else if (s.sca("battle prep") { d.tm("start", it) } ) {}
     else if (s.sc("battle pending")) { coroutineScope.launch { nap(15 * 1000) } }
-    else if (s.sca("battle finished") { d.tm("results", it) } ) {}
+    else if (s.sca("battle finished") { d.tm("complete", it) } ) {}
     else if (s.sc("zero sanity")) { onComplete() }
     else { arkHome(s, d) { true } }
 }

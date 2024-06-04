@@ -15,6 +15,7 @@ suspend fun AutoService.dispatch(
     dispatchGesture(gesture, object : AccessibilityService.GestureResultCallback() {
         override fun onCompleted(gestureDescription: GestureDescription?) {
             super.onCompleted(gestureDescription)
+            log("sap: (${sap.state}, ${sap.action})")
             addActionHistoryEntry(sap)
             it.resume(true)
         }

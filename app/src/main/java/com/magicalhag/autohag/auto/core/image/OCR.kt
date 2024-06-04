@@ -12,7 +12,7 @@ suspend fun AutoService.extractTextFromImage(image: InputImage): Text {
     val text = suspendCoroutine {
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
-                log("Extraction Success: \n${visionText.text}")
+                // log("Extraction Success: \n${visionText.text}")
                 it.resume(visionText)
             }
             .addOnFailureListener { exception ->

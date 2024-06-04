@@ -12,7 +12,7 @@ val arknightsStateCheckDictionary = hashMapOf<String, Array<String>>(
     "auto count select" to arrayOf("auto deploy", "start", "1", "2", "3", "4", "5", "6"),
     "battle prep" to arrayOf("mission|operation", "start", "the roster for this operation cannot be changed"),
     "battle pending" to arrayOf("2x", "takeover"),
-    "battle finished" to arrayOf("mission", "results"),
+    "battle finished" to arrayOf("operation", "complete"),
     "zero sanity" to arrayOf("restore"),
     "recruit menu" to arrayOf("recruit(?!ment)", "1", "2", "3", "4"),
     "recruit slot open" to arrayOf("recruit now"),

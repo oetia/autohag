@@ -8,7 +8,7 @@ fun log(message: Any, sandwich: Boolean = false) {
     val threadName = Thread.currentThread().name
     val wrapper = "=".repeat(50)
     val value = if (sandwich) "$wrapper\n[$threadName] - $message\n$wrapper" else "[$threadName] - $message"
-    Log.d("Kal's Panties", value)
+    Log.d("Kal's Embrace", value)
 }
 
 fun AutoService.toast(message: Any) {
