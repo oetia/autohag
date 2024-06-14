@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkGn8fM1hnUIkPpLPHToZyaoFSFe",
+  "object": "chat.completion",
+  "created": 1718306369,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It appears that you are at a screen to restore sanity using a potion. We'll go ahead and confirm the restoration to continue with autobattling.\n\nI will tap the confirm button to restore 120 Sanity.\n\ntap(1075, 450)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 50,
+    "total_tokens": 1296
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

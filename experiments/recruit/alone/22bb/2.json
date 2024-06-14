@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZHgOmb2Thki7BLdhMqj5qYF1Ih",
+  "object": "chat.completion",
+  "created": 1718307515,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "First, I need to handle the current recruitment shown on screen by performing the hiring. This will involve selecting the optimal tags and initiating recruitment.\n\nReasoning: This is the tag screen where we can hire a new operator.\n\nAction: hire()"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 48,
+    "total_tokens": 1320
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

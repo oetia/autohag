@@ -1,0 +1,36 @@
+0 global_back
+1 no_op
+2 complete
+3 rhodes island.
+4 tap on an operator
+5 ) b304
+6 texas
+7 exusiai
+8 b4401
+9 deselect all
+10 )b401
+11 mousse
+12 1)
+13 i) b104
+14 ralc
+15 snowsant
+16 gd b104
+17 rallc
+18 t b204
+19 rilc skill
+20 s vanilla
+21 state
+22 matterhorn
+23 firewhistle
+24 skill
+25 2
+26 morale
+27 april
+28 ss plume
+29 trust
+30 noir corne
+31 terra research commission
+32 b104
+33 ) b104
+34 confirm
+35 tuye

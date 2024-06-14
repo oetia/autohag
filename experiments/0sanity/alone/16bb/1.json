@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkGV7SIV556KPvNufevUPxnPzTH4",
+  "object": "chat.completion",
+  "created": 1718306351,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To begin autobattling the most recent stage, JT8-3, I will tap the \"Auto Deploy\" button.\n\nReasoning: This is the primary way to start autobattles in Arknights.\n\nAction: `tap(915, 504)`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 53,
+    "total_tokens": 1299
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

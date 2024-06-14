@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlXstCtAdQqusVWKOdMUeUMV9ddU",
+  "object": "chat.completion",
+  "created": 1718311272,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It appears that the screen is currently on the base map loading screen, so no actions can be performed yet.\n\nAction:\n```wait()```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 28,
+    "total_tokens": 1249
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

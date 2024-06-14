@@ -1,0 +1,11 @@
+0 global_back
+1 no_op
+2 complete
+3 takeover
+4 anuo
+5 rhodes
+6 leploy functioning normally
+7 3
+8 auto deploy functioning normaly
+9 2x
+10 unit limit: 4

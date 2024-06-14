@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrusMZu3xFNzvR2ALjRKrLsHhNTC",
+  "object": "chat.completion",
+  "created": 1718335762,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To start managing the base, the first step is to tap on an operator. This will allow you to assign them to various base facilities.\n\nReasoning: We need to select an operator to proceed with managing the base.\n\nAction: click_box(4)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1386,
+    "completion_tokens": 51,
+    "total_tokens": 1437
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

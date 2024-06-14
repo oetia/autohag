@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrqRszEUvh3Wq7mqQ7PpCMPYILoN",
+  "object": "chat.completion",
+  "created": 1718335487,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's start by hiring the first recruit.\n\nclick_box(9)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1402,
+    "completion_tokens": 13,
+    "total_tokens": 1415
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

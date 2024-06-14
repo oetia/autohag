@@ -1,0 +1,24 @@
+0 global_back
+1 no_op
+2 complete
+3 facility info
+4 operator
+5 precious metal order originium 0rder
+6 din
+7 tras
+8 acquiring
+9 200
+10 assigned operators
+11 fatigued
+12 lappland
+13 fatigued
+14 fatigued
+15 shamare
+16 fatigued fatigued
+17 ambriel
+18 fatigued
+19 clear
+20 0/24
+21 24
+22 o/24
+23 operator 3/3

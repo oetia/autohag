@@ -1,0 +1,15 @@
+0 global_back
+1 no_op
+2 complete
+3 takeover
+4 anuo
+5 a,
+6 2hodes
+7 auto deploy functioning nomaly
+8 auto deploy funct
+9 2x
+10 t 65
+11 19
+12 33.9
+13 ale 25
+14 23.8

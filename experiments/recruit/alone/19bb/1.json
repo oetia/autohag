@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkYZIZj7ilsUx4rqOF31ezPkJC7F",
+  "object": "chat.completion",
+  "created": 1718307471,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "We are currently in a cutscene or display screen where a new character is being revealed. Let's proceed to the next screen to review our options.\n\nAction: \n\n```wait()```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 36,
+    "total_tokens": 1308
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

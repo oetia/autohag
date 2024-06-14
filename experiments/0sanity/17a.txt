@@ -1,0 +1,9 @@
+0 global_back
+1 no_op
+2 complete
+3 150
+4 restore with potions
+5 9 11 days
+6 restore with originite prime
+7 clear selection
+8 do you want to consume these potions for a total of 120 sanity?

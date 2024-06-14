@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlZr1ceI0MxfhZ9Wndnev5GMzu6s",
+  "object": "chat.completion",
+  "created": 1718311395,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To manage the base in Arknights, I will first select an operator to assign to a facility. Let's start by selecting Texas for deployment.\n\nAction:\n```plaintext\ntap(100, 100)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 42,
+    "total_tokens": 1263
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

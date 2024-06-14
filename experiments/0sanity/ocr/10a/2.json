@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrmiRrt4mEhxeMC2BnucDRazjeJI",
+  "object": "chat.completion",
+  "created": 1718335256,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Currently, the game is on a loading screen.\n\nReasoning: No action can be performed during loading.\n\nAction: click_box(1) (no_op)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1303,
+    "completion_tokens": 32,
+    "total_tokens": 1335
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

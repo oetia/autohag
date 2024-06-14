@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlZSs2ap3mlp4lU9k6UGz2g4GlLS",
+  "object": "chat.completion",
+  "created": 1718311370,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Your current task is to manage the base, and you have operators in the Trading Post who are fatigued. We need to swap them out with operators that have full morale to maintain efficiency.\n\nFirst, let's remove the fatigued operators from the Trading Post.\n\nAction: Tap the (X) button next to Lappland to remove her from the Trading Post.\n\n```action\ntap(1050, 280)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 83,
+    "total_tokens": 1304
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZbLT9JjDK5quPHiJTajmZ897xm",
+  "object": "chat.completion",
+  "created": 1718307535,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "We are currently at the recruitment results screen. To proceed, we need to dismiss this window and return to the recruitment interface.\n\nLet's tap around the center of the screen to confirm and close this result screen.\n\ntap(585, 270)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 48,
+    "total_tokens": 1320
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

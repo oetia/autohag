@@ -1,0 +1,55 @@
+3 acquiring b
+4 trading post |00
+5 backlog
+6 trading post0
+7 acquiring
+8 a3
+9 factory 0
+10 producing b
+11 10
+12 a13/
+13 fatigued
+14 operators
+15 factory 00
+16 producing b
+17 ai3
+18 trading post 000
+19 acquiring
+20 coneidential
+21 a133
+22 factory 0
+23 producing
+24 clues
+25 ai3a
+26 working ►
+27 power plant 000
+28 working
+29 power plant 00
+30 power plant (00
+31 working
+32 control center
+33 level of control
+34 interface
+35 (5.0
+36 dormitoryl|00
+37 dormitoryl000)
+38 dormitoryl|000
+39 dormitory000
+40 i5/5
+41 i5/5
+42 200/200
+43 i5/5
+44 5/5
+45 810/810
+46 hosting
+47 reception room 0
+48 assistants' trust improved
+49 workshop 00
+50 office 00
+51 4113004
+52 contacting
+53 12/2
+54 i1/1
+55 training room008
+56 12
+57 23

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrlEU4UChmOWPKVkiahz9weh1wJ6",
+  "object": "chat.completion",
+  "created": 1718335164,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's head to the stage selection screen by clicking on the terminal to enter the campaign mode.\n\nclick_box(12)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1367,
+    "completion_tokens": 23,
+    "total_tokens": 1390
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

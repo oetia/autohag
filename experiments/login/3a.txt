@@ -1,0 +1,11 @@
+0 global_back
+1 no_op
+2 complete
+3 21
+4 congmen
+5 lungmen
+6 segon
+7 lungmen
+8 build larger and larger vehicles. the concept of nomadic cities was realized after vehicles became large enough to move entire cities.
+9 start,
+10 22

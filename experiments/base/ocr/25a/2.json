@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrsPVEbnoTP2Qmg5wN5ozev8iyv4",
+  "object": "chat.completion",
+  "created": 1718335609,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To start managing the base, you need to enter the Rhodes Island Infrastructure Complex.\n\nLet's click the \"Rhodes Island Infrastructure Complex\".\n\nclick_box(4)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1274,
+    "completion_tokens": 31,
+    "total_tokens": 1305
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

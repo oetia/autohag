@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrllY9Y2jQDzfzbRk7FqKDudnjx4",
+  "object": "chat.completion",
+  "created": 1718335197,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To spend all your sanity on the most recent stage JT8-3, you need to access your terminal.\n\nclick_box(16)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1367,
+    "completion_tokens": 27,
+    "total_tokens": 1394
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

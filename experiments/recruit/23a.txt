@@ -1,0 +1,21 @@
+0 global_back
+1 no_op
+2 complete
+3 1
+4 3
+5 recruit
+6 class tag
+7 08:58:12
+8 cancel
+9 hire
+10 expedite
+11 'a candidate that fits part of the tags has been found
+12 2
+13 4
+14 he 4094504
+15 hire
+16 a candidate that fits part of the tags has been found
+17 refresh 0.
+18 hire
+19 a candidate that fits part of the tags has been found
+20 0044:49 contacting

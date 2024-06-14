@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZjCLh6U18DFRaPqotkXmhomlNj5o",
+  "object": "chat.completion",
+  "created": 1718302249,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It appears you are on a loading screen with a \"Start\" button that will likely take you to the main screen or next game sequence. \n\nI will tap the \"Start\" button to proceed.\n\ntap(585, 490)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 47,
+    "total_tokens": 1270
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

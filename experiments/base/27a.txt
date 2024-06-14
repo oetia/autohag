@@ -1,0 +1,36 @@
+0 global_back
+1 no_op
+2 complete
+3 backlog
+4 trading posti
+5 trading posti
+6 factory 00
+7 factory 00
+8 3 tap to collect all
+9 trading posti
+10 factory 000
+11 power plant 000
+12 orders acquired
+13 power plant 00
+14 power plant 000
+15 5 tap to colect all
+16 operators
+17 dormitoryo
+18 dormitoryi0
+19 dormitory0
+20 50
+21 dormitorywo
+22 clues
+23 i5/5
+24 i5/5
+25 200/200
+26 i5/5
+27 55
+28 810/810 4094504
+29 reception room 0
+30 workshop 00
+31 office 00
+32 notifcation
+33 12/2
+34 i1/1
+35 training room008

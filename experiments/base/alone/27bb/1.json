@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlYEFAFA2anL5VXWcmvW6cNDJxnH",
+  "object": "chat.completion",
+  "created": 1718311294,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The base has several production facilities that have alerts on them (yellow and red warning signs), likely indicating that they need attention, such as collecting materials or replenishing manpower. The best first step would be to address these alerts.\n\nI'll start by collecting materials from the facilities.\n\nAction: `tap(181, 732)` (this will tap on the \"Tap to collect all\" button under \"Collectable\")"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 82,
+    "total_tokens": 1303
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

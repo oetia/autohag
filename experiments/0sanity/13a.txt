@@ -1,0 +1,13 @@
+0 global_back
+1 no_op
+2 complete
+3 takeover
+4 anuo
+5 a
+6 rhodes
+7 auto deploy functioning normally
+8 t
+9 rhodes 1island
+10 auto de
+11 mission
+12 unit limit:2

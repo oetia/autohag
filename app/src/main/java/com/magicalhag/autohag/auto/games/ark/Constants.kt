@@ -6,7 +6,8 @@ package com.magicalhag.autohag.auto.games.ark
 
 val arknightsStateCheckDictionary = hashMapOf<String, Array<String>>(
     "start menu" to arrayOf("start", "check preannounce", "account management", "customer service"),
-    "main menu" to arrayOf("friends", "archive", "recruit", "store", "missions", "base", "sanity"),
+    // "main menu" to arrayOf("friends", "archive", "recruit", "store", "missions", "base", "sanity"),
+    "main menu" to arrayOf("recruit", "store", "missions", "base", "sanity"),
     "terminal" to arrayOf("to the most recent stage"),
     "stage select" to arrayOf("auto deploy", "start"),
     "auto count select" to arrayOf("auto deploy", "start", "1", "2", "3", "4", "5", "6"),

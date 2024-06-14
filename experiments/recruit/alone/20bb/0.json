@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkYlHm445z4O50HiMWTXKTiQSGjj",
+  "object": "chat.completion",
+  "created": 1718307483,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "We are currently at the recruitment result screen where we have hired an operator. The next step will be to return to the recruitment menu screen.\n\nWe need to tap the screen to proceed.\n\nReasoning: To move forward, we need to exit this screen and continue with other recruitments or set up new hires.\n\nAction: \n```plaintext\ntap(600, 400)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 76,
+    "total_tokens": 1348
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

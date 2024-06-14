@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlYaJyZFvnpoOrdjLHg3PNsH8fkY",
+  "object": "chat.completion",
+  "created": 1718311316,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "First, it would be best to collect the finished production from the Factory, as it indicates \"Pure Gold's production finished.\" This will free up space for continued operations and generate resources.\n\nAction: tap(1120, 180)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 47,
+    "total_tokens": 1268
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

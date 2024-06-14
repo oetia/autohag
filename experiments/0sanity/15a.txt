@@ -1,0 +1,14 @@
+0 global_back
+1 no_op
+2 complete
+3 island
+4 arise, treading through flames
+5 operation
+6 mission results
+7 continuous auto operation succeeded 6 times
+8 all member's trust increased
+9 o/100o00
+10 reputation & lmd
+11 regular drops
+12 extra drops
+13 flawless victory! i was pretty good,

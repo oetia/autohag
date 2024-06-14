@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkCQTMKarNb8DKJzGz82WlnRns8Q",
+  "object": "chat.completion",
+  "created": 1718306098,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To proceed with autobattling the stage, I need to tap on the \"MISSION START\" button.\n\nGiven that the \"MISSION START\" button is located on the screen, I will tap on it.\n\ntap(800, 450)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 48,
+    "total_tokens": 1294
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

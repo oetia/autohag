@@ -30,8 +30,6 @@ suspend fun AutoService.takeScreenshotSequential(): AccessibilityService.Screens
 suspend fun AutoService.getBitmapScreenshot(): Bitmap {
     val screenshot = takeScreenshotSequential()
     val bitmap = Bitmap.wrapHardwareBuffer(screenshot.hardwareBuffer, screenshot.colorSpace)
-
-
     if(bitmap != null) {
 
         // val out = FileOutputStream("/storage/self/primary/Documents/testing.png")

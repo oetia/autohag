@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZk35MJiF0yj29pja4kPSNHLRVl",
+  "object": "chat.completion",
+  "created": 1718307544,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It seems like this screen confirms that a new operator has been recruited. We need to proceed to hire the next recruit or set up a new hire. Let's tap on the screen to continue to the next step.\n\n**Tapping the screen to continue:**\n\n```action\ntap(300, 400)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 62,
+    "total_tokens": 1334
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

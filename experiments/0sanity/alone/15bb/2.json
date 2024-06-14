@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkGKQtmYBUVz3tHNTt9K16jy8tgN",
+  "object": "chat.completion",
+  "created": 1718306340,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "You are at the mission results screen after completing JT8-3. You need to start another autobattle to spend your remaining sanity.\n\nI will tap on the \"Continue\" button to start the next battle.\n\nAction: \n```tap(600, 480)```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 54,
+    "total_tokens": 1300
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

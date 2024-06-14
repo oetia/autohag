@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZriVHU06LkUiNYMjzWgCTZJn1vPt",
+  "object": "chat.completion",
+  "created": 1718334995,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "This is a loading screen. Currently, no action is needed.\n\nclick_box(1)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1255,
+    "completion_tokens": 18,
+    "total_tokens": 1273
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

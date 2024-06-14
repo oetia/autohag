@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkYvbnisyyr8fL0LCzJoSx72BMGp",
+  "object": "chat.completion",
+  "created": 1718307493,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "You have completed a recruitment and received a character. Now you need to either confirm and move to the next recruit, or proceed to set up new recruits.\n\nI will tap on the screen to confirm.\n\ntap(540, 270)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 47,
+    "total_tokens": 1319
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

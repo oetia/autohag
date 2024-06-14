@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkF3N1OOePSncm6w11CO3NWPIytK",
+  "object": "chat.completion",
+  "created": 1718306261,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "This is a loading screen for JT8-3, so we must wait for it to finish.\n\nAction: `wait()`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 25,
+    "total_tokens": 1271
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

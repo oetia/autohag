@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZjCPWcwEw7gmj9RdXiEtngzaIwRZ",
+  "object": "chat.completion",
+  "created": 1718302253,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It looks like you are currently at a loading screen with the \"Start\" button at the bottom center. To proceed to the main screen, we need to tap on the \"Start\" button.\n\nAction:\n```tap(585, 495)```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 50,
+    "total_tokens": 1273
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

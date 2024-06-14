@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZEdz98IosPQKvBTZ1loXjwBl86",
+  "object": "chat.completion",
+  "created": 1718307512,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To proceed with managing recruitments, I will initiate the automatic selection system by calling the hire() function.\n\nAction: \n```plaintext\nhire()\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 30,
+    "total_tokens": 1302
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

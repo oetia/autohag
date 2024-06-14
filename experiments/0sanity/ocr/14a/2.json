@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrnYZVTLLkRylgjjXd3W6qPMKRm9",
+  "object": "chat.completion",
+  "created": 1718335308,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It appears that you are in the middle of a battle on JT8-3. Since you're currently in the battle screen, I'll take control of the deployment to move forward with spending sanity.\n\nclick_box(6)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1358,
+    "completion_tokens": 43,
+    "total_tokens": 1401
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

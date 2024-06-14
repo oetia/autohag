@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zj8KPAsG2rwjMcmsNNzdno7rqnO4",
+  "object": "chat.completion",
+  "created": 1718302000,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It seems we are in a loading screen or the initial splash screen of the game. We need to wait until this finishes loading or for the prompt to proceed.\n\nI will call `wait()` to perform no action at this moment.\n\nAction: \n```wait()```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 53,
+    "total_tokens": 1276
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

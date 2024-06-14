@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlY0pCtxFMDg6vPBmwFlKpzsHGUN",
+  "object": "chat.completion",
+  "created": 1718311280,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To manage the base, we should check the status of the various rooms. Currently, we can see that the Trading Posts have an alert, which typically means they are full and need to be collected. Let's start by collecting the output from the Trading Post.\n\nI'll tap on the first Trading Post (top left).\n\nReason: This should help clear the alert and continue generating income/resources.\n\nAction: `tap(220, 150)`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 86,
+    "total_tokens": 1307
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

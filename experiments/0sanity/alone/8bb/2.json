@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkBE1NtilpvU1OuLO7xbFcQLJhmZ",
+  "object": "chat.completion",
+  "created": 1718306024,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To start autobattling the most recent stage JT8-3, you need to press the \"Auto Deploy\" button located at the bottom right.\n\nAction: \ntap(900, 500)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 40,
+    "total_tokens": 1286
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

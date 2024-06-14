@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zrn9yIgj1EmoFVOdHJx6DAwNCDSM",
+  "object": "chat.completion",
+  "created": 1718335283,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I will click `Takeover` to stop the auto deploy.\n\nclick_box(3)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1325,
+    "completion_tokens": 18,
+    "total_tokens": 1343
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

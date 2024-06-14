@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlZXB3gGjfDp3VupDGrQ08bGIACL",
+  "object": "chat.completion",
+  "created": 1718311375,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "You are currently in the Trade Post facility, and you need to assign operators to the facility.\n\nFirst, let's assign an operator to the first available slot.\n\n```action\ntap(635, 300)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 42,
+    "total_tokens": 1263
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,65 @@
+3 acquiring ►
+4 backlog
+5 trading posti
+6 trading posti
+7 acquiring ►>
+8 a3
+9 factory 00
+10 producing b>
+11 a3/
+12 factory 00
+13 producing
+14 a13
+15 3 tap to collect all
+16 collectable
+17 trading posti
+18 acquiring ►
+19 a135
+20 factory 000
+21 producing
+22 ai3
+23 power plant 000
+24 working
+25 a135
+26 3 exchange all
+27 orders acquired
+28 power plant 00
+29 working
+30 power plant 000
+31 working b
+32 5 tap to colect all
+33 trust
+34 10
+35 fatigued
+36 operators
+37 ldle
+38 dormitoryo
+39 control center
+40 ldle
+41 level of control
+42 interface
+43 coneidential
+44 dormitoryi0
+45 dormitory0
+46 idle
+47 50
+48 dormitorywo
+49 ldle
+50 clues
+51 i5/5
+52 i5/5
+53 200/200
+54 i5/5
+55 55
+56 810/810 4094504
+57 reception room 0
+58 hosting
+59 workshop 00
+60 office 00
+61 contacting
+62 a 44
+63 notifcation
+64 12/2
+65 i1/1
+66 training room008
+67 12

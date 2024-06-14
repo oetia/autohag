@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zj7a9wRS0j7X3A2CfzEwjSa4Z3hx",
+  "object": "chat.completion",
+  "created": 1718301954,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "This is a loading screen. I will wait for it to complete before taking any further actions.\n\n```plaintext\nwait()\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 25,
+    "total_tokens": 1248
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

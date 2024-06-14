@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrlALirPeXXlJM24nkUQJYZOjbtp",
+  "object": "chat.completion",
+  "created": 1718335160,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To spend your sanity on the most recent stage JT8-3, you need to navigate to the stage selection screen. Based on the current image, the most relevant option would be \"13-1 Across the battle nowopen +\".\n\nclick_box(16)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1367,
+    "completion_tokens": 52,
+    "total_tokens": 1419
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

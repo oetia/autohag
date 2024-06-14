@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZriPiBr4YG8QEKlGbkKPkPuar8zI",
+  "object": "chat.completion",
+  "created": 1718334989,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The game appears to be in a loading screen state. Let's wait until the game has loaded.\n\nclick_box(1)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1255,
+    "completion_tokens": 24,
+    "total_tokens": 1279
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

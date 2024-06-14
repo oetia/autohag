@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZNmqAge5ILOTHPaXBGFnICrUdF",
+  "object": "chat.completion",
+  "created": 1718307521,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To manage the recruitments, I'll start by hiring the available recruits. I'll begin with the first slot and continue hiring until all the slots are filled.\n\nLet's start with the first slot by tapping the \"Hire\" button.\n\ntap(200, 350)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 51,
+    "total_tokens": 1323
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

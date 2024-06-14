@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZRWsMWxulSGemEHVfbMG0xR6oj",
+  "object": "chat.completion",
+  "created": 1718307525,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's start by hiring the candidate in slot 1.\n\nReasoning: To clear off each of the recruit slots, we need to hire each recruit in turn.\n\nAction: \n```python\ntap(170, 320)  # Location of the \"Hire\" button for slot 1.\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 60,
+    "total_tokens": 1332
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

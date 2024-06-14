@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrmUf5U8SIs3GIlcGRNPceyEqwrY",
+  "object": "chat.completion",
+  "created": 1718335242,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To spend all your sanity on the most recent stage JT8-3, I need to start the mission. I will click the \"Mission Start\" button.\n\nAction: click_box(25)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1369,
+    "completion_tokens": 39,
+    "total_tokens": 1408
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

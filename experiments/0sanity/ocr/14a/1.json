@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrnUwBMKizZLhxLDZzSYrqmY9qNq",
+  "object": "chat.completion",
+  "created": 1718335304,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It looks like there is an active notification on the screen, which is blocking part of the UI. The best course of action is to click the \"Reply\" button to dismiss the notification first.\n\nclick_box(10)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1358,
+    "completion_tokens": 44,
+    "total_tokens": 1402
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

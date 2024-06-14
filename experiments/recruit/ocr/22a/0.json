@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrpyFagzpCYLi2QHF05MiOp88tkI",
+  "object": "chat.completion",
+  "created": 1718335458,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Based on the task given, I will automatically set up new hires.\n\nAction: click_box(5)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1378,
+    "completion_tokens": 21,
+    "total_tokens": 1399
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

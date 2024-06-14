@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlZPC3FrgBxBMqTqndYkhW1ybwZR",
+  "object": "chat.completion",
+  "created": 1718311367,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The assigned operators (Lappland, Shamare, and Ambriel) are all fatigued. They need to be swapped out and sent to the dormitory to rest. First, let's clear their assignments by clicking the \"Clear\" button.\n\nAction: \ntap(1050, 120)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 59,
+    "total_tokens": 1280
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

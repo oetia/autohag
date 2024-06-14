@@ -1,0 +1,24 @@
+3 instructions
+4 recruitment
+5 time
+6 job tags
+7 (max: 3)
+8 cost
+9 01 :
+10 sniper
+11 caster
+12 117/1
+13 00 :
+14 medic
+15 starter
+16 he 4094504
+17 * possible rarity
+18 supporter
+19 117
+20 00 1t 2t 3
+21 4%
+22 refresh 0
+23 contacting hr
+24 59040
+25 29850
+26 2046:42 contacting

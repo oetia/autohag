@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZjGWRf9JFNhqCQ3Ya5bUyVWayH3t",
+  "object": "chat.completion",
+  "created": 1718302508,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "First, we need to tap the \"START\" button to proceed to the main screen.\n\nLet's tap on the \"START\" button.\n\ntap(575, 380)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 34,
+    "total_tokens": 1257
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

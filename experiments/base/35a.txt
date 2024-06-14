@@ -1,0 +1,23 @@
+0 global_back
+1 no_op
+2 complete
+3 facility info
+4 operator
+5 precious metal order originium 0rder
+6 din
+7 acquiring
+8 trad
+9 200
+10 assigned operators
+11 texas
+12 working working
+13 exusiai
+14 xworking working
+15 gummy
+16 workíng working
+17 clear
+18 39:58.54
+19 26:38:54
+20 36:54:17
+21 operator
+22 3/3

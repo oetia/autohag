@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZjGQukG55xCmdJxQ4PN1Ze1tAMvZ",
+  "object": "chat.completion",
+  "created": 1718302502,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To proceed to the main screen, the \"START\" button needs to be tapped.\n\nAction: tap(590, 420)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 26,
+    "total_tokens": 1249
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

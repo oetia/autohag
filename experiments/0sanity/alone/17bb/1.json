@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkGizRhamB9oWySDXkYbobuwH1FI",
+  "object": "chat.completion",
+  "created": 1718306364,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "You are being prompted to confirm the use of sanity potions. To proceed with restoring your sanity, tap the checkmark button.\n\ntap(1080, 885)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 34,
+    "total_tokens": 1280
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,25 @@
+3 facility info
+4 operator
+5 precious metal order originium 0rder
+6 din
+7 tras
+8 acquiring
+9 0/10
+10 200
+11 assigned operators
+12 fatigued
+13 lappland
+14 fatigued
+15 morale
+16 fatigued
+17 shamare
+18 morale
+19 fatigued fatigued
+20 ambriel
+21 morale
+22 fatigued
+23 clear
+24 0/24
+25 24
+26 o/24
+27 operator 3/3

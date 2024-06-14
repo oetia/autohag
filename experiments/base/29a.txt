@@ -1,0 +1,36 @@
+0 global_back
+1 no_op
+2 complete
+3 backlog
+4 trading post000
+5 trading post 90
+6 factory 00
+7 factory
+8 5 tap to collect all
+9 trading post 000
+10 a133
+11 factory 000
+12 operators
+13 power plant 00
+14 power plant 00
+15 power plant 000
+16 clues
+17 dormitoryo
+18 dormitory0
+19 dormitoryi0
+20 50
+21 dormitory00
+22 i5/5
+23 i5/5
+24 200/200
+25 i5/5
+26 55
+27 810/810
+28 reception room 0
+29 lmd has already been
+30 workshop 00
+31 office 00
+32 4113004
+33 12/2
+34 i1/1
+35 training room008

@@ -1,0 +1,19 @@
+3 1
+4 3
+5 recrúit
+6 recruit now
+7 a candidate that fits part of the tags has been found
+8 healing dp-recovery
+9 hire
+10 2
+11 4
+12 he 4094504
+13 hire
+14 117
+15 a candidate that fits part of the tags has been found
+16 refresh 0
+17 hire
+18 a candidate that fits part of the tags has been found
+19 59040
+20 29850
+21 2046:47 contacting

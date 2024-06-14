@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlYkPKwQH2w3we6gp5DxrgJBEjbD",
+  "object": "chat.completion",
+  "created": 1718311326,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To manage the base, we should first begin by collecting any resources that are ready. The Trading Post, Factory, and Power Plant show important information that may need attention.\n\nLet's start by collecting all the resources.\n\nAction:\n```plaintext\ntap(125, 540)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 55,
+    "total_tokens": 1276
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

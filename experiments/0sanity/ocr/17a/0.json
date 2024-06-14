@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZroDv7LfUOBk248N6creYVvjBwoU",
+  "object": "chat.completion",
+  "created": 1718335349,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "We need to restore sanity to continue playing. The option to consume potions is the most appropriate action to take.\n\nclick_box(8)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1311,
+    "completion_tokens": 28,
+    "total_tokens": 1339
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

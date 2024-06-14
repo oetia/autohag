@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrqAioBUmUx9rSq27TtAyPMy5StQ",
+  "object": "chat.completion",
+  "created": 1718335470,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's start by setting up new hires.\n\nclick_box(5)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1378,
+    "completion_tokens": 13,
+    "total_tokens": 1391
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

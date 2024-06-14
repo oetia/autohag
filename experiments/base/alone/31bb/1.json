@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlZBRvMR9LGMPusIwrTZ0yWG5TAI",
+  "object": "chat.completion",
+  "created": 1718311353,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To manage the base effectively, it is important to monitor and assign operators to different facilities, collect resources, and complete tasks using facility-specific actions. \n\nCurrently, you are in the Trading Post, and the facility shows \"Acquiring\" at the bottom of the screen. The first step is often to check the status of the facility and verify if any adjustments or collections are necessary.\n\nI will start by tapping on the \"Precious Metal Order\" to view its status and possibly initiate production or collection.\n\nAction: `tap(30, 510)`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 110,
+    "total_tokens": 1331
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkA5IY0oEQqEPln6gC37l0eLzV8k",
+  "object": "chat.completion",
+  "created": 1718305953,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's start by tapping on the stage JT8-3 to initiate the autobattle.\n\nAction: `tap(1000, 500)`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 28,
+    "total_tokens": 1274
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrlwkW3HvBoxKdNfosrW5OTAR6OY",
+  "object": "chat.completion",
+  "created": 1718335208,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's navigate to the most recent stage JT8-3 to spend the sanity. Click on the last stage navigation link.\n\nclick_box(16)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1367,
+    "completion_tokens": 29,
+    "total_tokens": 1396
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkFLqMvRBXmm5WBKfQZwoa4TgXh9",
+  "object": "chat.completion",
+  "created": 1718306279,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Currently, the stage is running in auto mode. To proceed without interruption until your sanity is depleted, let's wait for the battle to conclude.\n\nI'll wait for the current stage to finish.\n\n```action\nwait()\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 43,
+    "total_tokens": 1289
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

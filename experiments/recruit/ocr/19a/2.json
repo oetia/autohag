@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrpQJp11DYrADR27Fo2RO0ysqZ7W",
+  "object": "chat.completion",
+  "created": 1718335424,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'll click the \"Human Resource Department\" to proceed with managing the recruitments.\n\nclick_box(3)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1305,
+    "completion_tokens": 21,
+    "total_tokens": 1326
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

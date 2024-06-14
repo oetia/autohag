@@ -1,0 +1,18 @@
+0 global_back
+1 no_op
+2 complete
+3 facility info
+4 operator
+5 precious metal order
+6 assign operators to acquire orders
+7 din
+8 tradl
+9 7
+10 0/10
+11 200
+12 assigned operators
+13 assign
+14 assign
+15 assign
+16 clear
+17 operator 0/3

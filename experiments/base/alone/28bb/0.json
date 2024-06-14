@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlYSnz4HHULT1SUQtxV0QEgX7UpS",
+  "object": "chat.completion",
+  "created": 1718311308,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "First, we should collect the Pure Gold that has finished production. This ensures that new production can start and resources aren't wasted.\n\nLet's start by tapping the notification for Pure Gold production.\n\nMy action is:\n```plaintext\ntap(980, 140)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 51,
+    "total_tokens": 1272
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

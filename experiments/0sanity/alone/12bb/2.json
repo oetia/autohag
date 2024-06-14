@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkFcD11SpHvwn0MjLj9YURn8emhs",
+  "object": "chat.completion",
+  "created": 1718306296,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The battle is currently ongoing, and I should wait for it to conclude.\n\nAction: `wait()`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 20,
+    "total_tokens": 1266
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,35 @@
+3 operation
+4 jt8-1
+5 operation
+6 jt8-2
+7 operation
+8 jt8-3
+9 eg-4
+10 challk mode
+11 plan
+12 30
+13 jt8-3
+14 operation'
+15 arise, treading through
+16 flames
+17 story
+18 rhones isidtt
+19 recormmend operator lv. elite 2 lv. 40
+20 rewards
+21 06:26:33 split flame with sword, defeat the
+22 past with the present, and confront the chaotic
+23 lon with one's self. rage, and know no
+24 compromise. rage, and keep no silence.
+25 <energy aggregate>releases fireballs in the
+26 four cardinal directions, dealing arts damage
+27 and inflicting [burning breath] (deals
+28 increasing true damage each second, but can
+29 be resisted)
+30 enemy info
+31 135/135
+32 x6
+33 ractice
+34 map
+35 auto deploy
+36 start
+37 raddes irin (-108

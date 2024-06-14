@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zjw1ejmC32vfCJycYsEX8q9mYbrY",
+  "object": "chat.completion",
+  "created": 1718305081,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "First, let's navigate to the Terminal where the stages are located.\n\ntap(225, 160)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 20,
+    "total_tokens": 1266
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

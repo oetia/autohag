@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrimgZ0PFJ0jzHqaaIonQFYIuejw",
+  "object": "chat.completion",
+  "created": 1718335012,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To proceed to the main screen, let's click the \"global_back\" button.\n\nclick_box(0)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1306,
+    "completion_tokens": 21,
+    "total_tokens": 1327
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

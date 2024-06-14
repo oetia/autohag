@@ -1,0 +1,40 @@
+0 global_back
+1 no_op
+2 complete
+3 overview
+4 building mode
+5 trading post
+6 trading post
+7 off
+8 factory 000
+9 inerao7
+10 factory 000
+11 x
+12 trading post i0
+13 factory 00
+14 infraot
+15 x0
+16 power plant 0
+17 power plant 000
+18 14
+19 power plant )00
+20 14
+21 dormitory
+22 50)
+23 dormitory00
+24 dormitory0
+25 200/200
+26 dormitory00
+27 i5/5
+28 i5/5
+29 i5/5
+30 810/810o 4094504
+31 reception room 00
+32 workshop
+33 notificatidn
+34 office 0
+35 tneraot
+36 i2/2
+37 i171
+38 training room0
+39 i1/4

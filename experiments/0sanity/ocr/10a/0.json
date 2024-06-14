@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zrmcv8oSVkWbykqiwCVYGRMFaPM1",
+  "object": "chat.completion",
+  "created": 1718335250,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The game is currently in a loading state, so I'll avoid any action this time.\n\nclick_box(1)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1303,
+    "completion_tokens": 22,
+    "total_tokens": 1325
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrnLeRbZBvkwe74U6RbSKzR9jdHK",
+  "object": "chat.completion",
+  "created": 1718335295,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Click on box 6 to proceed. \n\nclick_box(6)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1310,
+    "completion_tokens": 14,
+    "total_tokens": 1324
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

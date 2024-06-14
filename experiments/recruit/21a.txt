@@ -1,0 +1,19 @@
+0 global_back
+1 no_op
+2 complete
+3 1
+4 3
+5 recrúit
+6 recruit now
+7 a candidate that fits part of the tags has been found
+8 hire
+9 2
+10 4
+11 he 4094504
+12 hire
+13 117
+14 a candidate that fits part of the tags has been found
+15 refresh 0
+16 hire
+17 a candidate that fits part of the tags has been found
+18 2046:47 contacting

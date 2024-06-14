@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrmEs3fw5rZTDvZKeGlc52UOvm8T",
+  "object": "chat.completion",
+  "created": 1718335226,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's begin by selecting the most recent stage, JT8-3, to spend your sanity.\n\nclick_box(5)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1380,
+    "completion_tokens": 24,
+    "total_tokens": 1404
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

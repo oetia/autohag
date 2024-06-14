@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZ2rBQ6HpbicZC4r2setXnVCEUj",
+  "object": "chat.completion",
+  "created": 1718307500,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's start by hiring the available candidates. I will begin by hiring the candidate in slot 2.\n\nNext action:\n```\nhire()\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 28,
+    "total_tokens": 1300
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

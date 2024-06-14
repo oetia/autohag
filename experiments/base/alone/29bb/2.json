@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlYny9ExbhKvNOzowV1WPqVXYgbD",
+  "object": "chat.completion",
+  "created": 1718311329,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It looks like the most pressing task is to collect resources from the Trading Post.\n\nI will tap to collect all resources from the Trading Post.\n\ntap(300, 680)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 35,
+    "total_tokens": 1256
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

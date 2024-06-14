@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkYO9ttBHw4BcSsb5uLUireyp2oU",
+  "object": "chat.completion",
+  "created": 1718307460,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's hire the available recruits.\n\nhire()"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 8,
+    "total_tokens": 1280
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

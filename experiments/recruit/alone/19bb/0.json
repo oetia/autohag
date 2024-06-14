@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkYVojaf2dzyoU3FrOJsjpIqdh9c",
+  "object": "chat.completion",
+  "created": 1718307467,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "We are currently on the recruitment drawing screen. Let's wait until the screen changes to proceed with the next steps. \n\n```wait()```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 27,
+    "total_tokens": 1299
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

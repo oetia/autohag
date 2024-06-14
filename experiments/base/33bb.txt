@@ -1,0 +1,17 @@
+3 e
+4 facility info
+5 operator
+6 precious metal order
+7 originium 0rder
+8 assign operators to acquire orders
+9 din
+10 tradl
+11 7
+12 0/10
+13 200
+14 assigned operators
+15 assign
+16 assign
+17 assign
+18 clear
+19 operator 0/3

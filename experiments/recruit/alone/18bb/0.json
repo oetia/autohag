@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkYHCFZYAvY7eYtHWSoRa6HQr2tD",
+  "object": "chat.completion",
+  "created": 1718307453,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "All four recruitment slots are ready to hire. I will begin by hiring one candidate to start the process.\n\nReasoning: By hiring one candidate first, I can ensure the orderly recruitment and replacement of all slots.\n\nAction:\n```plaintext\nhire()\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 50,
+    "total_tokens": 1322
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlYfNcdqU1UXZnvTR0UFZYPaUuzQ",
+  "object": "chat.completion",
+  "created": 1718311321,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It looks like there are some resources ready to be collected as indicated by the \"Tap to collect all\" button. This will gather all produced resources from the various facilities.\n\nMy action will be to tap the \"Tap to collect all\" button.\n\ntap(53, 526)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 56,
+    "total_tokens": 1277
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

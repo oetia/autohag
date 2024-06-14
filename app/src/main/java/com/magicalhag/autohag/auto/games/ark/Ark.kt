@@ -10,7 +10,9 @@ import com.magicalhag.autohag.auto.core.dispatch.DispatchUtils
 import com.magicalhag.autohag.auto.core.dispatch.StateActionPair
 import com.magicalhag.autohag.auto.core.dispatch.addActionHistoryEntry
 import com.magicalhag.autohag.auto.core.dispatch.generateDispatchUtils
+import com.magicalhag.autohag.auto.core.logging.log
 import com.magicalhag.autohag.auto.core.text.StateCheckUtils
+import com.magicalhag.autohag.auto.core.text.check
 import com.magicalhag.autohag.auto.core.text.generateStateCheckUtils
 import com.magicalhag.autohag.auto.games.ark.misc.findBestTagCombo
 import kotlinx.coroutines.delay
@@ -96,6 +98,11 @@ suspend fun AutoService.arkCredits(
         if (!s.sc("credit menu")) { d.tm("credit store", "credit menu") }
         else {
             if (s.sca("credit available") { d.tm("claim", it) } ) {}
+            else if (s.sc("credit collected") && !text.check("sold out")) {
+                d.p(Point(200, 400))
+                delay(750)
+                d.p(Point(1600, 870))
+            }
             else { onComplete() } } }
     else { arkHome(s, d) {true} }
 }

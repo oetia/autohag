@@ -1,0 +1,64 @@
+3 overview
+4 building mode off
+5 acquiring
+6 trading post 000
+7 ( acquiring
+8 trading post 00
+9 a13/3
+10 factory 00
+11 producing
+12 neradt
+13 factory 0
+14 producing ►
+15 a3s
+16 x
+17 trading post 000
+18 acquiring
+19 a13s
+20 factory 0i
+21 producing
+22 infraot
+23 ai33
+24 working
+25 a13s
+26 x
+27 power plant 000
+28 power plant 000
+29 working
+30 11
+31 power plant )00
+32 working
+33 14
+34 control center
+35 ldle
+36 level of control
+37 interface
+38 dormitory00
+39 50)
+40 dormitory000
+41 ldle
+42 dormitory|000
+43 dormitory00
+44 200/200
+45 ldle
+46 i55
+47 13/5
+48 i5/5
+49 i̇45
+50 nfral
+51 810/81o
+52 hosting
+53 reception room 00
+54 4113004
+55 workshop 0
+56 contacting
+57 notiecation
+58 office 00
+59 ldie
+60 tneraot
+61 21
+62 i2/2
+63 i1/1
+64 training room0
+65 112
+66 i1/4

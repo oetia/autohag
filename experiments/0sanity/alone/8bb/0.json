@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkB4IUxG9xxuML8ms8kOBU9VqY3K",
+  "object": "chat.completion",
+  "created": 1718306014,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To start an auto battle for the JT8-3 stage, tap the \"Auto Deploy\" button.\n\nLet's proceed with that action.\n\ntap(1040, 475)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 35,
+    "total_tokens": 1281
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

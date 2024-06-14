@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zrt0ye2FZsaCMfHvrSwY6n6MuUbN",
+  "object": "chat.completion",
+  "created": 1718335646,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'll start by clicking the Collect all button to gather resources from all available facilities.\n\nclick_box(8)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1419,
+    "completion_tokens": 21,
+    "total_tokens": 1440
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

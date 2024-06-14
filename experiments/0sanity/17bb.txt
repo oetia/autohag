@@ -1,0 +1,11 @@
+3 ani iy
+4 1 sanity will be restored in: 0:36,
+5 30
+6 /435
+7 150
+8 restore with potions
+9 2
+10 9 11 days
+11 restore with originite prime
+12 clear selection
+13 do you want to consume these potions for a total of 120 sanity?

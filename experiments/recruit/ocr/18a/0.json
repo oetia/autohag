@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zrp935beshn9qJ21TjS8nzI3kD5p",
+  "object": "chat.completion",
+  "created": 1718335407,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's start hiring the candidates. I will begin by clicking the \"Hire\" button on the first slot.\n\nclick_box(7)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1404,
+    "completion_tokens": 26,
+    "total_tokens": 1430
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkGeyXIY8mYAaUeLOnhW9kHFw5r8",
+  "object": "chat.completion",
+  "created": 1718306360,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To proceed with autobattling, we need to recover our Sanity first. Let's use the potions shown in the screenshot to restore 120 Sanity.\n\nAction: tap(860, 500) (assuming that the checkmark is located there to confirm the Sanity potion usage)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 58,
+    "total_tokens": 1304
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

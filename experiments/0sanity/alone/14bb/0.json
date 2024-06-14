@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkFxZ2pR66sItaFPANmPOkTXyl86",
+  "object": "chat.completion",
+  "created": 1718306317,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The game appears to be in the middle of an auto-battle for stage JT8-3. Since the battle is ongoing, we need to wait until it finishes.\n\nLet's wait for the battle to conclude before taking any further actions.\n\nAction: wait()"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 51,
+    "total_tokens": 1297
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

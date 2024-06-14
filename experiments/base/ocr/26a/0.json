@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrsaYv0xeauCJSA09YOW4mg2fPg8",
+  "object": "chat.completion",
+  "created": 1718335620,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's start by switching to building mode to better manage and optimize the base layout.\n\nclick_box(4)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1430,
+    "completion_tokens": 21,
+    "total_tokens": 1451
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

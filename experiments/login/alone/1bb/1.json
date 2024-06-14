@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZjCvP9jBv3EJWxhh4LD4NoZpn3fB",
+  "object": "chat.completion",
+  "created": 1718302285,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It appears that the game is currently on the loading screen. I will wait for the game to finish loading before performing any actions to go to the main screen.\n\nAction: `wait()`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 37,
+    "total_tokens": 1260
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

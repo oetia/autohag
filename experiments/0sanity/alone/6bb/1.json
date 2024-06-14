@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZjwBHs145HBHkNmlFFt4Sw6TDAzl",
+  "object": "chat.completion",
+  "created": 1718305091,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To spend all sanity autobattling the most recent stage, JT8-3, we will first need to navigate to the terminal to select the stage. \n\nAction: Tap on the \"Terminal\" button.\n\n```plaintext\ntap(897, 132)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 53,
+    "total_tokens": 1299
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

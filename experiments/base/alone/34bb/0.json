@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlZilbYxAutsJKnpwrzCIq8oBmm1",
+  "object": "chat.completion",
+  "created": 1718311386,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To manage the base, I need to assign operators to different rooms based on their skills and current morale. First, I need to see the detailed status of the operators to understand their morale and skill levels.\n\nI'll start by selecting Texas to check her details.\n\nAction: `tap(60, 160)`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 61,
+    "total_tokens": 1282
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

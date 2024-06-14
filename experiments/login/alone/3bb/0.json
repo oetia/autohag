@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZjGqD6aF8oxIBHiFcnwLllQwxdvz",
+  "object": "chat.completion",
+  "created": 1718302528,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It appears that we are currently on a loading screen, possibly transitioning to a mission area. To proceed to the main screen, we need to click the \"START\" button located at the bottom center of the screen.\n\nAction: tap(585, 465)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 52,
+    "total_tokens": 1275
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

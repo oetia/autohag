@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zjeq0nN69hcwuVkY4YvytCKlW0sh",
+  "object": "chat.completion",
+  "created": 1718304016,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The game is currently in the loading screen and is at 46%. I will wait for it to finish loading.\n\nAction: `wait()`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 28,
+    "total_tokens": 1251
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

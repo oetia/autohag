@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkFrYuTmXRWJvHVRQdbq6xUPduu5",
+  "object": "chat.completion",
+  "created": 1718306311,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\"Mission Accomplished\" indicates the stage has been completed. You need to continue the auto-battle for the stage you specified, JT8-3, to use up all your sanity.\n\nNext, let's tap on the central section to continue.\n\nReasoning: To exit from current mission accomplished screen and proceed to the next steps.\n\nAction:\n```plaintext\ntap(600, 300)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 80,
+    "total_tokens": 1326
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

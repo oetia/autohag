@@ -1,0 +1,64 @@
+3 acquiring
+4 backlog
+5 trading post
+6 trading postt
+7 acquiring
+8 ai3/
+9 factory 000
+10 producing b
+11 a13/
+12 factory 0
+13 producing b
+14 a13
+15 3 exchange all
+16 orders acquired
+17 trading post
+18 acquiring
+19 a3a
+20 factory 0
+21 producing
+22 a3
+23 trust
+24 5 tap to collect all
+25 power plant 00
+26 working
+27 a13
+28 10
+29 power plant 000
+30 working
+31 power plant 000
+32 working
+33 fatigued
+34 operators
+35 confidential
+36 clues
+37 ldle
+38 control center
+39 dormitoryo
+40 level of control interface
+41 ldle
+42 dormitory0
+43 idle
+44 dormitoryi0
+45 50
+46 dormitory00
+47 idle
+48 i5/5
+49 i5/5
+50 200/200
+51 i5/5
+52 55
+53 810/81o 4094504
+54 pure gold's production
+55 finished
+56 room
+57 factory has been
+58 automatically refilled
+59 workshop 0
+60 office 00
+61 contacting
+62 i14
+63 i1/1
+64 training room008
+65 12
+66 41

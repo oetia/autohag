@@ -1,0 +1,4 @@
+0 global_back
+1 no_op
+2 complete
+3 selected operators will be removed even if they are working. proceed?

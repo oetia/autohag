@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkGBfmJxC7a3lXhZ3UWRPhCBek5J",
+  "object": "chat.completion",
+  "created": 1718306331,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "It appears that the mission JT8-3 has been successfully completed. To continue using auto battle to spend all remaining Sanity, the mission must be restarted.\n\nLet's tap the location to run the stage again.\n\n- Tap the area where you can start the auto-deploy again.\n\nHere is the tap:\n\n```action\ntap(675, 460)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 72,
+    "total_tokens": 1318
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

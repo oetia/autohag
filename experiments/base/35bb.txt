@@ -1,0 +1,27 @@
+3 facility info
+4 operator
+5 precious metal order originium 0rder
+6 din
+7 acquiring
+8 trad
+9 0/10
+10 200
+11 assigned operators
+12 texas
+13 morale
+14 working working
+15 exusiai
+16 morale
+17 xworking working
+18 gummy
+19 morale
+20 workíng working
+21 clear
+22 23/24
+23 39:58.54
+24 23/24
+25 26:38:54
+26 23/24
+27 36:54:17
+28 operator
+29 3/3

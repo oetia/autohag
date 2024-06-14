@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkYynYcM6O43HrghUsuQJ3OVXHDd",
+  "object": "chat.completion",
+  "created": 1718307496,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I need to start by hiring candidates in slots 2, 3, and 4. Let's first hire a candidate from slot 2 and then proceed with the rest.\n\nAction:\n```action\ntap(507, 250)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 48,
+    "total_tokens": 1320
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

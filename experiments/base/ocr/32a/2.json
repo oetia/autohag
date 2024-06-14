@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZruORUIIvvPlpjyFp6sI1WeGgvZ1",
+  "object": "chat.completion",
+  "created": 1718335732,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The assigned operators (Lappland, Shamare, and Ambriel) are all fatigued and need to be replaced or rested. Let's start by clearing the fatigued operators.\n\nclick_box(19)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1339,
+    "completion_tokens": 40,
+    "total_tokens": 1379
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

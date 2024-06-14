@@ -1,0 +1,10 @@
+0 global_back
+1 no_op
+2 complete
+3 amontagne
+4 46%
+5 yostar
+6 terra
+7 connecting to the neural network of rhodes island.
+8 46%
+9 id:43250384

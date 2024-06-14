@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkAFYkhA4zlaKElwiNJzzkAKre65",
+  "object": "chat.completion",
+  "created": 1718305963,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To proceed with autobattling JT8-3, we need to tap on the \"JT8-3\" button located towards the lower-right corner of the screen.\n\nLet's do this.\n\ntap(1050, 490)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 46,
+    "total_tokens": 1292
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

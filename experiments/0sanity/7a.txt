@@ -1,0 +1,23 @@
+0 global_back
+1 no_op
+2 complete
+3 13 days
+4 terminal
+5 kcotrag
+6 contingency contract <battleplan
+7 n/a
+8 activiy
+9 main theme
+10 progress
+11 concluded
+12 il sirno
+13 that is passion
+14 londinium
+15 to-do list
+16 10 days
+17 orundum
+18 o 180o
+19 fortified pass
+20 to the most recent stage
+21 data supplement instrument/24
+22 arise, treading through filames

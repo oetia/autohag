@@ -1,0 +1,23 @@
+3 1
+4 3
+5 recruit
+6 class tag
+7 time remaining
+8 08:58:12
+9 cancel
+10 hire
+11 expedite
+12 'a candidate that fits part of the tags has been found
+13 healing dp-recovery
+14 2
+15 4
+16 he 4094504
+17 hire
+18 116
+19 a candidate that fits part of the tags has been found
+20 refresh 0.
+21 hire
+22 a candidate that fits part of the tags has been found
+23 59040
+24 29850
+25 0044:49 contacting

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrnDtvYTHC75NPOKPeuOH08UPBot",
+  "object": "chat.completion",
+  "created": 1718335287,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "You are currently viewing the end screen of a mission. Your goal is to continue spending sanity on the most recent stage, JT8-3.\n\nLet's take the \"Takeover\" option to get back to the main menu or stage selection.\n\nclick_box(3)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1310,
+    "completion_tokens": 53,
+    "total_tokens": 1363
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

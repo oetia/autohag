@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZrpJ0apZ8Aq80TwqTxl7gMlDO8rm",
+  "object": "chat.completion",
+  "created": 1718335417,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Click on box 3 to proceed to the recruitment management section.\n\nclick_box(3)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1305,
+    "completion_tokens": 18,
+    "total_tokens": 1323
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

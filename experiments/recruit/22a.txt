@@ -1,0 +1,21 @@
+0 global_back
+1 no_op
+2 complete
+3 instructions
+4 recruitment
+5 job tags
+6 cost
+7 01 :
+8 sniper
+9 caster
+10 117/1
+11 00 :
+12 medic
+13 starter
+14 he 4094504
+15 supporter
+16 117
+17 00 1t 2t 3
+18 refresh 0
+19 contacting hr
+20 2046:42 contacting

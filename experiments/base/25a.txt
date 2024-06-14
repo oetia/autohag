@@ -1,0 +1,6 @@
+0 global_back
+1 no_op
+2 complete
+3 horizon
+4 rhodes island infrastructure complex
+5 distracted operators can continue to work, but they cannot provide basic bonus or base skill bonus

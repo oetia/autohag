@@ -1,0 +1,12 @@
+0 global_back
+1 no_op
+2 complete
+3 facility info
+4 operator
+5 precious metal order originium order
+6 din
+7 acquiring
+8 trat
+9 200/200
+10 810/810
+11 4113004

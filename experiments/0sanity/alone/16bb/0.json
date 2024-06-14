@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkGQ0w4XlfTvnOIqFLI8Dzngrcjj",
+  "object": "chat.completion",
+  "created": 1718306346,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To start the autobattle on JT8-3, I will tap the \"Start\" button.\n\nReasoning: The objective is to spend sanity, and the \"Start\" button initiates the battle, using 30 sanity points.\n\nAction:\n```plaintext\ntap(970, 475)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 60,
+    "total_tokens": 1306
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

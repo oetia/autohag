@@ -3,6 +3,7 @@ package com.magicalhag.autohag.auto
 import android.accessibilityservice.AccessibilityService
 import android.app.AlarmManager
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Build
 import android.os.Handler
@@ -10,6 +11,8 @@ import android.os.Looper
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import androidx.annotation.RequiresApi
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.magicalhag.autohag.auto.core.dispatch.StateActionPair
@@ -17,6 +20,7 @@ import com.magicalhag.autohag.auto.core.dispatch.buildClick
 import com.magicalhag.autohag.auto.core.dispatch.buildSwipe
 import com.magicalhag.autohag.auto.core.dispatch.dispatch
 import com.magicalhag.autohag.auto.core.image.extractTextFromImage
+import com.magicalhag.autohag.auto.core.image.getBitmapScreenshot
 import com.magicalhag.autohag.auto.core.image.getImageScreenshot
 import com.magicalhag.autohag.auto.core.logging.log
 import com.magicalhag.autohag.auto.core.logging.toast
@@ -39,6 +43,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.FileOutputStream
 import java.util.Calendar
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -64,6 +69,8 @@ class AutoService : AccessibilityService() {
 
     var task: String = ""
 
+    var iterate_counter = 0
+
     suspend fun badump(testing: Boolean = false) {
 
         if (sleeping && !testing) {
@@ -71,16 +78,35 @@ class AutoService : AccessibilityService() {
             return
         }
 
-        val image = getImageScreenshot()
+        val bitmap = getBitmapScreenshot()
+        val image = InputImage.fromBitmap(bitmap, 0)
         val ocrout = extractTextFromImage(image)
 
-        log(ocrout.textBlocks.joinToString("\n") { it.text })
+        // save bitmap to disk
+        val bitmapOutPath = "/storage/self/primary/Documents/autohag_bm/$iterate_counter.png"
+        val out = FileOutputStream(bitmapOutPath)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 10, out)
+        bitmap.hardwareBuffer.close()
+
+        val lines: MutableList<Text.Line> = mutableListOf()
+        for (block in ocrout.textBlocks) {
+            lines += block.lines
+        }
+
+
+        val ocroutOutPath = "/storage/self/primary/Documents/autohag_bm/$iterate_counter.txt"
+        val ocroutOut = FileOutputStream(ocroutOutPath)
+        ocroutOut.write(lines.joinToString("\n") { it.text + "***" + it.boundingBox }.toByteArray())
+        iterate_counter += 1
+
+        log(lines.joinToString("\n") { it.text + "***" + it.boundingBox })
         log(actionHistory.joinToString("\n") { it.toString() });
+
 
         // testRequest() - tests the openai api. blocks background thread until response received.
 
         try {
-            decoder(ocrout)
+            // decoder(ocrout)
             // arknights(ocrout)
         } catch (e: Exception) {
             println(e.stackTraceToString())

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkCWE5wtiX6bGSZKLRN6BAcfoqXr",
+  "object": "chat.completion",
+  "created": 1718306104,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let's initiate the auto battle on JT8-3 by tapping the \"Mission Start\" button.\n\ntap(950, 450)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 26,
+    "total_tokens": 1272
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

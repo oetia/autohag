@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zj5cj6sWvb4wqb8j7ZOr1tVaETD6",
+  "object": "chat.completion",
+  "created": 1718301832,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "This is a loading screen, so no action is required at the moment.\n\nAction: `wait()`"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1223,
+    "completion_tokens": 20,
+    "total_tokens": 1243
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

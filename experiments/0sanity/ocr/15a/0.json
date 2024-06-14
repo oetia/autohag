@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9Zrndk2EqC15cmyJdD40dnk8hPBvZ",
+  "object": "chat.completion",
+  "created": 1718335313,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The game has indicated an immediate post-mission completion screen. To proceed with spending Sanity on the recent stage, we need to get past the results screen.\n\nclick_box(13)"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1330,
+    "completion_tokens": 37,
+    "total_tokens": 1367
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

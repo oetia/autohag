@@ -1,0 +1,13 @@
+3 21
+4 congmen
+5 nomadic city
+6 lungmen
+7 segon
+8 lungmen
+9 a city built on a giant vehicle. the frequent and destructive catastrophes have forced all the nations to move their cities regularly to
+10 avert massive losses. the birth the originium engine made it possible to industrialize origiium, and that was when people started to
+11 build larger and larger vehicles. the concept of nomadic cities was realized after vehicles became large enough to move entire cities.
+12 with the help of the multimethod catastrophe prediction system, it only takes 2-8 weeks to completely evacuate from the catastrophe
+13 area depending on the situation.
+14 start,
+15 22

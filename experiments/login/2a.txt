@@ -1,0 +1,5 @@
+0 global_back
+1 no_op
+2 complete
+3 showers. atastrophes occur frequently, but also at unpredictable intervals. therefore, most civilizations can only hide from catastrophes
+4 start

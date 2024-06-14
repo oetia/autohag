@@ -1,0 +1,5 @@
+0 global_back
+1 no_op
+2 complete
+3 resöurce
+4 skip

@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkZf9jbEeqUiH6iw8KZHa8dOPFGh",
+  "object": "chat.completion",
+  "created": 1718307539,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Currently, you have received a new recruit, Myrtle. To proceed with hiring all recruits and setting up new hires, you'll need to continue by exiting this screen and moving to the next recruitment screen if more actions are necessary.\n\nAction:\n```plaintext\ntap(600, 500)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1272,
+    "completion_tokens": 57,
+    "total_tokens": 1329
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

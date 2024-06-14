@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZlaBPfEsFELIEjfcva43i984rlwv",
+  "object": "chat.completion",
+  "created": 1718311415,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The game is prompting to confirm the removal of selected operators even if they are currently working. To proceed with the management of the base, we can confirm this action.\n\nAction: \n```\ntap(950, 450)\n```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 46,
+    "total_tokens": 1267
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}

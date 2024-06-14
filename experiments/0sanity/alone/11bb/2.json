@@ -1,0 +1,23 @@
+{
+  "id": "chatcmpl-9ZkFOT7qUXAGmE4MRrRDQMniJxeYT",
+  "object": "chat.completion",
+  "created": 1718306282,
+  "model": "gpt-4o-2024-05-13",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "This screenshot is showing the current battle in progress, and you are currently in autoplay mode.\n\nI recommend waiting for the battle to complete.\n\nAction:\n```wait()```"
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1246,
+    "completion_tokens": 33,
+    "total_tokens": 1279
+  },
+  "system_fingerprint": "fp_aa87380ac5"
+}
